@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diccionario de Datos Normalizado (3FN) | Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Sidebar */
+        aside.sidebar {
+            width: 320px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        aside.sidebar .logo-area {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        aside.sidebar .badge-db {
+            display: inline-block;
+            background: #8b5cf6;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        aside.sidebar h1 { font-size: 18px; color: var(--secondary); font-weight: 800; }
+        aside.sidebar h2 { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+        aside.sidebar nav ul { list-style: none; }
+        aside.sidebar nav li { margin-bottom: 6px; }
+        aside.sidebar nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        aside.sidebar nav a:hover { background-color: #f3e8ff; color: #6b21a8; transform: translateX(4px); }
+        aside.sidebar nav a.active { background-color: var(--purple); color: white; }
+
+        aside.sidebar .nav-group-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin: 16px 0 6px 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content */
+        main.content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1200px;
+            overflow-x: hidden;
+        }
+
+        .header-doc {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            border-left: 6px solid var(--purple);
+        }
+
+        .header-doc h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+        .header-doc p { font-size: 15.5px; opacity: 0.95; max-width: 850px; }
+
+        .meta-tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .meta-tag { background: rgba(255, 255, 255, 0.18); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        /* KPI Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 35px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-card .num { font-size: 26px; font-weight: 800; color: var(--purple); }
+        .stat-card .label { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+
+        section.section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        section.section-card h2 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 800;
+            border-bottom: 2px solid #ede9fe;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge-module {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .bm-blue { background: #e0f2fe; color: #0369a1; }
+        .bm-green { background: #dcfce7; color: #15803d; }
+        .bm-purple { background: #f3e8ff; color: #6b21a8; }
+        .bm-amber { background: #fef3c7; color: #b45309; }
+        .bm-rose { background: #ffe4e6; color: #be123c; }
+
+        .table-desc {
+            font-size: 14.5px;
+            color: #475569;
+            margin-bottom: 16px;
+        }
+
+        .table-container {
+            margin: 20px 0 32px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .table-header {
+            background: #f8fafc;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--secondary);
+            font-family: "JetBrains Mono", Consolas, monospace;
+        }
+
+        .table-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 12px;
+        }
+
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        table.doc-table th, table.doc-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        table.doc-table th {
+            background: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 12.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table.doc-table tr:hover { background-color: #faf5ff; }
+
+        code {
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            background: #f1f5f9;
+            color: #4338ca;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .key-badge {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .pk { background: #fef08a; color: #854d0e; border: 1px solid #fde047; }
+        .fk { background: #bfdbfe; color: #1e40af; border: 1px solid #93c5fd; }
+        .uq { background: #fed7aa; color: #9a3412; border: 1px solid #fdba74; }
+        .nn { color: #dc2626; font-weight: 700; }
+
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            display: flex;
+            gap: 12px;
+        }
+        .callout.info { background-color: #f0f9ff; border-left: 4px solid var(--primary); color: #075985; }
+        .callout.tip { background-color: #f0fdf4; border-left: 4px solid var(--accent); color: #166534; }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            main.content { padding: 24px 20px; }
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: #ffffff !important;
+            }
+            aside.sidebar {
+                display: none !important;
+            }
+            main.content {
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .header-doc {
+                background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%) !important;
+                color: #ffffff !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                border-left: 6px solid var(--purple) !important;
+                page-break-after: avoid;
+            }
+            .meta-tags {
+                display: flex !important;
+            }
+            .meta-tag {
+                background: rgba(255, 255, 255, 0.2) !important;
+                color: #ffffff !important;
+            }
+            .stats-grid {
+                display: grid !important;
+                page-break-after: avoid;
+            }
+            .stat-card {
+                border: 1px solid #e2e8f0 !important;
+                background: #ffffff !important;
+            }
+            section.section-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                page-break-inside: auto;
+                break-inside: auto;
+                margin-bottom: 30px !important;
+            }
+            .table-container {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border: 1px solid #cbd5e1 !important;
+                margin-bottom: 20px !important;
+            }
+            .table-header {
+                background: #f8fafc !important;
+                border-bottom: 1px solid #cbd5e1 !important;
+            }
+            .key-badge.pk {
+                background: #fef08a !important;
+                color: #854d0e !important;
+            }
+            .key-badge.fk {
+                background: #bfdbfe !important;
+                color: #1e40af !important;
+            }
+            .key-badge.uq {
+                background: #fed7aa !important;
+                color: #9a3412 !important;
+            }
+            code {
+                color: #4338ca !important;
+            }
+            .btn-print-action {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <span class="badge-db">POSTGRESQL 16 · 3FN</span>
+            <h1>Congreso ETS 2026</h1>
+            <h2>Diccionario de Datos</h2>
+            <div style="margin-top: 12px; display: flex; gap: 6px;">
+                <button onclick="window.print()" style="background: #8b5cf6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; items-center; gap: 4px;">
+                    📥 Descargar PDF
+                </button>
+                <a href="index.html" style="background: #f1f5f9; color: #334155; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                    ← Índice
+                </a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <div class="nav-group-title">Módulo 1: Identidad & Roles</div>
+                <li><a href="#mod-usuarios">1. Usuarios e Identidades</a></li>
+                <li><a href="#tab-roles">→ roles</a></li>
+                <li><a href="#tab-estados-inscripcion">→ estados_inscripcion</a></li>
+                <li><a href="#tab-usuarios">→ usuarios</a></li>
+                <li><a href="#tab-usuario-roles">→ usuario_roles_adicionales</a></li>
+                <li><a href="#tab-operadores">→ operadores</a></li>
+
+                <div class="nav-group-title">Módulo 2: Agenda & Sedes</div>
+                <li><a href="#mod-agenda">2. Eventos, Salas & Actividades</a></li>
+                <li><a href="#tab-eventos">→ eventos</a></li>
+                <li><a href="#tab-puntos-acceso">→ puntos_acceso</a></li>
+                <li><a href="#tab-tipos-acreditacion">→ tipos_acreditacion</a></li>
+                <li><a href="#tab-catalogo-actividades">→ catalogo_actividades</a></li>
+                <li><a href="#tab-actividades">→ actividades</a></li>
+                <li><a href="#tab-actividad-inscripciones">→ actividad_inscripciones</a></li>
+
+                <div class="nav-group-title">Módulo 3: Acreditaciones & QR</div>
+                <li><a href="#mod-acreditacion">3. Acreditación & Seguridad</a></li>
+                <li><a href="#tab-acreditaciones">→ acreditaciones</a></li>
+                <li><a href="#tab-blacklist">→ blacklist</a></li>
+                <li><a href="#tab-confirmaciones">→ confirmaciones_asistencia</a></li>
+                <li><a href="#tab-homologaciones">→ homologaciones_expositores</a></li>
+
+                <div class="nav-group-title">Módulo 4: Certificación Digital</div>
+                <li><a href="#mod-certificados">4. Certificados Vectoriales</a></li>
+                <li><a href="#tab-certificados">→ certificados</a></li>
+
+                <div class="nav-group-title">Módulo 5: Encuestas WYSIWYG</div>
+                <li><a href="#mod-encuestas">5. Encuestas & Satisfacción</a></li>
+                <li><a href="#tab-categorias-tematicas">→ categorias_tematicas</a></li>
+                <li><a href="#tab-encuestas">→ encuestas</a></li>
+                <li><a href="#tab-encuesta-preguntas">→ encuesta_preguntas</a></li>
+                <li><a href="#tab-encuesta-opciones">→ encuesta_opciones</a></li>
+                <li><a href="#tab-encuesta-respuestas">→ encuesta_respuestas</a></li>
+                <li><a href="#tab-encuesta-detalles">→ encuesta_respuestas_detalles</a></li>
+
+                <div class="nav-group-title">Módulo 6: Sistema & Auditoría</div>
+                <li><a href="#mod-sistema">6. Configuración & Logs</a></li>
+                <li><a href="#tab-configuraciones">→ configuraciones_sistema</a></li>
+                <li><a href="#tab-suscripciones-push">→ suscripciones_push</a></li>
+                <li><a href="#tab-logs-auditoria">→ logs_auditoria</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- HEADER -->
+        <header class="header-doc">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1>Diccionario de Datos de la Plataforma</h1>
+                    <p>Especificación técnica relacional exhaustiva clasificada por módulos funcionales. Describe cada entidad, atributos, tipos de datos PostgreSQL, claves primarias/foráneas, restricciones de unicidad, nulabilidad, valores por defecto y propósitos de negocio en estricto cumplimiento de la Tercera Forma Normal (3FN).</p>
+                </div>
+                <button onclick="window.print()" class="btn-print-action" style="background: #8b5cf6; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.25); transition: all 0.2s ease;">
+                    <span style="font-size: 16px;">📥</span>
+                    <span>Descargar PDF</span>
+                </button>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">PostgreSQL 16 Engine</span>
+                <span class="meta-tag">Normalización Estricta 3FN</span>
+                <span class="meta-tag">21 Tablas Normalizadas</span>
+                <span class="meta-tag">6 Módulos Funcionales</span>
+                <span class="meta-tag">UUID v4 + Criptografía Simétrica</span>
+            </div>
+        </header>
+
+        <!-- KPI SUMMARY -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="num">21</div>
+                <div class="label">Tablas Relacionales</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">6</div>
+                <div class="label">Módulos de Negocio</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">3FN</div>
+                <div class="label">Forma Normal</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">100%</div>
+                <div class="label">Trazabilidad Forense</div>
+            </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 1: USUARIOS, IDENTIDAD Y ACCESO                              -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-usuarios">
+            <h2>
+                <span>Módulo 1: Identidad, Roles y Usuarios</span>
+                <span class="badge-module bm-blue">Autenticación & RBAC</span>
+            </h2>
+            <p class="table-desc">Gobierna las credenciales de asistentes, disertantes, operadores y personal directivo DETS. Gestiona la jerarquía de roles, estados del ciclo de vida de la preinscripción y cuentas con credenciales de acceso administrativo.</p>
+
+            <!-- TABLA: roles -->
+            <div class="table-container" id="tab-roles">
+                <div class="table-header">
+                    <span class="table-title">roles</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Registros Base:</strong> 8 jerarquías</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental del rol.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Nombre único del rol (Estudiante, Docente, Expositor, Autoridad, Operador, Verificador, Administrador, Superadmin).</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Explicación de las facultades y perfil del usuario.</td>
+                        </tr>
+                        <tr>
+                            <td><code>jerarquia</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 1</span></td>
+                            <td>-</td>
+                            <td>Nivel numérico de autorización para el middleware <code>requerirJerarquia(N)</code>: 1: Asistente/Estudiante, 2: Expositor/Autoridad, 3: Operador acreditador, 4: Administrador/Verificador, 5: Superadmin.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de creación del rol.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: estados_inscripcion -->
+            <div class="table-container" id="tab-estados-inscripcion">
+                <div class="table-header">
+                    <span class="table-title">estados_inscripcion</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Normalización:</strong> Catálogo maestro de aforos</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador autoincremental del estado de inscripción.</td>
+                        </tr>
+                        <tr>
+                            <td><code>codigo</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Código nemotécnico: <code>CONFIRMADO</code>, <code>LISTA_ESPERA</code>, <code>SANCIONADO</code>, <code>BAJA_AUTOMATICA</code>, <code>CANCELADO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Etiqueta amigable legible en interfaces de usuario.</td>
+                        </tr>
+                        <tr>
+                            <td><code>permite_ingreso</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT FALSE</span></td>
+                            <td>-</td>
+                            <td>Flag booleano consultado por la PWA en puerta. Solo <code>TRUE</code> si el código es <code>CONFIRMADO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Regla operativa asociada a la categoría de inscripción.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: usuarios -->
+            <div class="table-container" id="tab-usuarios">
+                <div class="table-header">
+                    <span class="table-title">usuarios</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (UUID)</span>
+                        <span><strong>Restricción:</strong> UNIQUE (dni_pasaporte, evento_id)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT gen_random_uuid()</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador global universal del participante (UUID v4).</td>
+                        </tr>
+                        <tr>
+                            <td><code>dni_pasaporte</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UQ COMP</span></td>
+                            <td>Documento de identidad. No puede repetirse para el mismo <code>evento_id</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 1</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia foránea a <code>eventos(id)</code>. Permite multi-evento temporal.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Nombre de pila del asistente.</td>
+                        </tr>
+                        <tr>
+                            <td><code>apellido</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Apellido del asistente.</td>
+                        </tr>
+                        <tr>
+                            <td><code>email</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Dirección de correo para notificaciones, confirmaciones y certificados.</td>
+                        </tr>
+                        <tr>
+                            <td><code>celular</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Número de contacto telefónico / WhatsApp.</td>
+                        </tr>
+                        <tr>
+                            <td><code>rol_principal_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>roles(id)</code> asignado durante la inscripción.</td>
+                        </tr>
+                        <tr>
+                            <td><code>estado_inscripcion_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>estados_inscripcion(id)</code> (calculado por cupo FIFO o blacklist).</td>
+                        </tr>
+                        <tr>
+                            <td><code>foto_url</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Ruta relativa o URI de la fotografía para la credencial oficial.</td>
+                        </tr>
+                        <tr>
+                            <td><code>foto_metadata</code></td>
+                            <td><code>JSONB</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Dimensiones, peso, hash SHA-256 o estado de moderación de la imagen.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Fecha y hora exacta de la preinscripción inicial.</td>
+                        </tr>
+                        <tr>
+                            <td><code>actualizado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de la última actualización del registro.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: usuario_roles_adicionales -->
+            <div class="table-container" id="tab-usuario-roles">
+                <div class="table-header">
+                    <span class="table-title">usuario_roles_adicionales</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria Compuesta:</strong> (usuario_id, rol_id)</span>
+                        <span><strong>Relación:</strong> N:M Usuarios y Roles</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span> <span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>usuarios(id)</code> con borrado en cascada (<code>ON DELETE CASCADE</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>rol_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span> <span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>roles(id)</code> asignado adicionalmente.</td>
+                        </tr>
+                        <tr>
+                            <td><code>asignado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal en que se confirió el rol secundario.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: operadores -->
+            <div class="table-container" id="tab-operadores">
+                <div class="table-header">
+                    <span class="table-title">operadores</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Seguridad:</strong> PBKDF2-SHA512 + Salting</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental del operador.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Nombre del operador o funcionario asignado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>apellido</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Apellido del operador.</td>
+                        </tr>
+                        <tr>
+                            <td><code>email_institucional</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Correo oficial GCABA utilizado como nombre de usuario para iniciar sesión.</td>
+                        </tr>
+                        <tr>
+                            <td><code>punto_acceso_default_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>puntos_acceso(id)</code> asignado por defecto para check-ins rápidos.</td>
+                        </tr>
+                        <tr>
+                            <td><code>rol_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 5</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>roles(id)</code> que define el nivel jerárquico operativo.</td>
+                        </tr>
+                        <tr>
+                            <td><code>password_hash</code></td>
+                            <td><code>VARCHAR(255)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Hash criptográfico de contraseña con formato <code>[salt_hex]:[hash_pbkdf2_hex]</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Permite inhabilitar el acceso al panel sin destruir registros de auditoría históricos.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de alta del operador.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 2: EVENTOS, ACTIVIDADES Y AFOROS                             -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-agenda">
+            <h2>
+                <span>Módulo 2: Eventos, Puntos de Acceso y Actividades</span>
+                <span class="badge-module bm-purple">Gestión de Agenda & Salas</span>
+            </h2>
+            <p class="table-desc">Administra las sedes físicas, puertas de acceso, ediciones anuales del congreso, catálogo pedagógico de talleres, asignación horaria y control de aforo por sala.</p>
+
+            <!-- TABLA: eventos -->
+            <div class="table-container" id="tab-eventos">
+                <div class="table-header">
+                    <span class="table-title">eventos</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Capacidad:</strong> Multi-evento y Ediciones Anuales</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico de la edición o congreso.</td>
+                        </tr>
+                        <tr>
+                            <td><code>codigo</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Código alfanumérico identificador único (ej: <code>ETS_2026</code>, <code>ETS_2027</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Nombre institucional completo del congreso o jornada.</td>
+                        </tr>
+                        <tr>
+                            <td><code>lema</code></td>
+                            <td><code>VARCHAR(250)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Lema o subtítulo pedagógico rector de la edición.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Memoria descriptiva de objetivos y alcances.</td>
+                        </tr>
+                        <tr>
+                            <td><code>anio</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Año lectivo calendario de celebración.</td>
+                        </tr>
+                        <tr>
+                            <td><code>fecha_inicio</code></td>
+                            <td><code>DATE</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Fecha de inicio formal del evento.</td>
+                        </tr>
+                        <tr>
+                            <td><code>fecha_fin</code></td>
+                            <td><code>DATE</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Fecha de finalización y entrega de certificaciones.</td>
+                        </tr>
+                        <tr>
+                            <td><code>cupo_maximo</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 400</span></td>
+                            <td>-</td>
+                            <td>Aforo total permitido del predio para bloqueo pesimista en <code>registrar_usuario_seguro</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>estado</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'PUBLICADO'</span></td>
+                            <td>-</td>
+                            <td>Estado: <code>EN_PLANIFICACION</code>, <code>PUBLICADO</code>, <code>EN_CURSO</code>, <code>FINALIZADO</code>, <code>ARCHIVADO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Indica si el evento es el predeterminado para el registro público.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: puntos_acceso -->
+            <div class="table-container" id="tab-puntos-acceso">
+                <div class="table-header">
+                    <span class="table-title">puntos_acceso</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Normalización 3FN:</strong> Desacople de puertas y terminales</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador del punto físico de control.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>eventos(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Nombre identificador del acceso (ej: <em>Puerta Principal Hall PB</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>ubicacion_fisica</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Referencia espacial en el plano del edificio sede.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_punto</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'PUESTO_ACCESO'</span></td>
+                            <td>-</td>
+                            <td>Tipo: <code>PUESTO_ACCESO</code>, <code>SALA_CONFERENCIA</code>, <code>AULA_TALLER</code>, <code>ESPACIO_NETWORKING</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Estado de habilitación del puesto para escaneo óptico.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: tipos_acreditacion -->
+            <div class="table-container" id="tab-tipos-acreditacion">
+                <div class="table-header">
+                    <span class="table-title">tipos_acreditacion</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Propósito:</strong> Tipología y permisos de paso</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico del tipo de acreditación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>codigo</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Código unívoco: <code>ACCESO_GENERAL</code>, <code>ACTIVIDAD_AULA</code>, <code>TALLER</code>, <code>MASTERCLASS</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Descripción del permiso y nivel de acceso otorgado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>requiere_actividad</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT FALSE</span></td>
+                            <td>-</td>
+                            <td>Exige que el asistente esté previamente inscripto a la actividad para conceder paso.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: catalogo_actividades -->
+            <div class="table-container" id="tab-catalogo-actividades">
+                <div class="table-header">
+                    <span class="table-title">catalogo_actividades</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Propósito:</strong> Oferta pedagógica reutilizable</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental de la propuesta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>codigo</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Código pedagógico oficial de la temática (ej: <code>TALLER_CIBERDEF</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Título oficial del taller, panel o conferencia magistral.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Contenidos mínimos, requerimientos previos y objetivos pedagógicos.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_acreditacion_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>tipos_acreditacion(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>categoria_tematica_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>categorias_tematicas(id)</code> (eje temático del Congreso).</td>
+                        </tr>
+                        <tr>
+                            <td><code>horas_catedra</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 2</span></td>
+                            <td>-</td>
+                            <td>Carga horaria acreditada para cómputo de certificados.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Disponibilidad para ser programada en las salas del evento.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: actividades -->
+            <div class="table-container" id="tab-actividades">
+                <div class="table-header">
+                    <span class="table-title">actividades</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Restricción:</strong> Validación contra solapamiento temporal (ConflictEngine)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico de la sesión o actividad programada.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>eventos(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Denominación de la sesión o panel específico.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Resumen de la disertación o contenido de la mesa redonda.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_acreditacion_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>tipos_acreditacion(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>punto_acceso_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>puntos_acceso(id)</code> (aula o auditorio donde se dicta).</td>
+                        </tr>
+                        <tr>
+                            <td><code>cupo_maximo</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 50</span></td>
+                            <td>-</td>
+                            <td>Capacidad física de butacas o puestos disponibles para la actividad.</td>
+                        </tr>
+                        <tr>
+                            <td><code>horario_inicio</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Inicio programado de la sesión.</td>
+                        </tr>
+                        <tr>
+                            <td><code>horario_fin</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Finalización programada de la sesión.</td>
+                        </tr>
+                        <tr>
+                            <td><code>disertante_nombre</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Nombre del expositor, moderador o panelista a cargo.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Visibilidad en la grilla horaria pública.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: actividad_inscripciones -->
+            <div class="table-container" id="tab-actividad-inscripciones">
+                <div class="table-header">
+                    <span class="table-title">actividad_inscripciones</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Regla:</strong> Aforo estricto y prevención de solapamiento</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental del cupo asignado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>actividad_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia foránea a <code>actividades(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia foránea a <code>usuarios(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>estado</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'CONFIRMADO'</span></td>
+                            <td>-</td>
+                            <td>Estado: <code>CONFIRMADO</code> (titular), <code>LISTA_ESPERA</code> (en cola FIFO), <code>CANCELADO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca de tiempo para el orden de prelación en lista de espera.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 3: ACREDITACIONES, CONTROL EN PUERTA Y SEGURIDAD            -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-acreditacion">
+            <h2>
+                <span>Módulo 3: Acreditaciones, Control en Puerta y Seguridad</span>
+                <span class="badge-module bm-green">PWA Offline & Criptografía QR</span>
+            </h2>
+            <p class="table-desc">Registra los movimientos físicos de ingreso y egreso en los puntos de control, la intercepción automática de sanciones disciplinarias (Blacklist), la homologación de pergaminos de disertantes y los tokens de reconfirmación de 48 horas.</p>
+
+            <!-- TABLA: acreditaciones -->
+            <div class="table-container" id="tab-acreditaciones">
+                <div class="table-header">
+                    <span class="table-title">acreditaciones</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (UUID)</span>
+                        <span><strong>Rendimiento:</strong> Índices compuestos para Anti-Passback</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT gen_random_uuid()</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador universal único e inmutable del check-in.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>usuarios(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>operador_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>operadores(id)</code> que validó el ingreso en la estación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_acreditacion_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>tipos_acreditacion(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>actividad_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>actividades(id)</code> (solo si se acredita acceso a taller específico).</td>
+                        </tr>
+                        <tr>
+                            <td><code>punto_acceso_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>puntos_acceso(id)</code> donde se produjo la lectura física.</td>
+                        </tr>
+                        <tr>
+                            <td><code>es_manual</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT FALSE</span></td>
+                            <td>-</td>
+                            <td>Indica si el check-in fue por contingencia sin lectura óptica directa de QR.</td>
+                        </tr>
+                        <tr>
+                            <td><code>motivo_manual</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Justificación asentada por el operador (ej: <em>Gafete extraviado, validado por DNI físico</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_movimiento</code></td>
+                            <td><code>VARCHAR(20)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'INGRESO'</span></td>
+                            <td>-</td>
+                            <td>Dirección del paso físico: <code>INGRESO</code> o <code>EGRESO</code> (Control Anti-Passback).</td>
+                        </tr>
+                        <tr>
+                            <td><code>timestamp_acreditacion</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal exacta del escaneo óptico o sincronización PWA offline.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: blacklist -->
+            <div class="table-container" id="tab-blacklist">
+                <div class="table-header">
+                    <span class="table-title">blacklist</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Integridad:</strong> Intercepción en tiempo real por Trigger</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico del registro disciplinario.</td>
+                        </tr>
+                        <tr>
+                            <td><code>dni_pasaporte</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Número de documento sancionado o restringido.</td>
+                        </tr>
+                        <tr>
+                            <td><code>motivo</code></td>
+                            <td><code>TEXT</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Fundamentación institucional o resolución ministerial de sanción.</td>
+                        </tr>
+                        <tr>
+                            <td><code>registrado_por</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><code>DEFAULT 'SISTEMA'</code></td>
+                            <td>-</td>
+                            <td>Nombre o correo del funcionario/auditor que ordenó la inclusión.</td>
+                        </tr>
+                        <tr>
+                            <td><code>registrado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Fecha y hora del registro disciplinario.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Vigencia de la sanción. Si se desactiva, el asistente puede volver a inscribirse.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: confirmaciones_asistencia -->
+            <div class="table-container" id="tab-confirmaciones">
+                <div class="table-header">
+                    <span class="table-title">confirmaciones_asistencia</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Mecanismo:</strong> Liberación automática de cupos 48hs</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico del token de reconfirmación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>usuarios(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>token_hash</code></td>
+                            <td><code>VARCHAR(128)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Hash criptográfico SHA-256 remitido en el hipervínculo del correo de aviso 48hs.</td>
+                        </tr>
+                        <tr>
+                            <td><code>emitido_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de emisión del correo de reconfirmación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>expira_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Límite estricto de confirmación (típicamente 24 horas tras la emisión).</td>
+                        </tr>
+                        <tr>
+                            <td><code>confirmado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Instante en el que el asistente pulsó el botón confirmando su asistencia.</td>
+                        </tr>
+                        <tr>
+                            <td><code>ip_confirmacion</code></td>
+                            <td><code>VARCHAR(45)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Dirección IPv4/IPv6 de origen para trazabilidad y auditoría.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: homologaciones_expositores -->
+            <div class="table-container" id="tab-homologaciones">
+                <div class="table-header">
+                    <span class="table-title">homologaciones_expositores</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Módulo:</strong> Validación documental de disertantes</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico del trámite de homologación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span> <span class="key-badge uq">UQ</span></td>
+                            <td>Referencia foránea unívoca al expositor en <code>usuarios(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>estado_homologacion</code></td>
+                            <td><code>VARCHAR(30)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'PENDIENTE'</span></td>
+                            <td>-</td>
+                            <td>Estado: <code>PENDIENTE</code>, <code>VALIDADO</code>, <code>RECHAZADO</code>, <code>ANULADO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>documentacion_presentada</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Detalle o enlace al pergamino, CV o título académico acreditado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>observaciones</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Anotaciones técnicas del funcionario auditor.</td>
+                        </tr>
+                        <tr>
+                            <td><code>funcionario_validador_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>operadores(id)</code> que certificó la autenticidad del expositor.</td>
+                        </tr>
+                        <tr>
+                            <td><code>fecha_validacion</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Instante en el que se concedió la homologación oficial.</td>
+                        </tr>
+                        <tr>
+                            <td><code>motivo_anulacion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Causal de rechazo o revocación en caso de irregularidad.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 4: CERTIFICADOS Y VALIDACIÓN CRIPTOGRÁFICA                  -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-certificados">
+            <h2>
+                <span>Módulo 4: Certificación Digital y Diplomas</span>
+                <span class="badge-module bm-amber">Vectorial PDF-Lib & Hash SHA-256</span>
+            </h2>
+            <p class="table-desc">Almacena el registro fehaciente de los diplomas oficiales emitidos por el motor de PDF vectorial dinámico. Cada credencial cuenta con código de verificación criptográfica y enlace público de validación inmediata.</p>
+
+            <!-- TABLA: certificados -->
+            <div class="table-container" id="tab-certificados">
+                <div class="table-header">
+                    <span class="table-title">certificados</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (UUID)</span>
+                        <span><strong>Restricción:</strong> UNIQUE (usuario_id, tipo_certificado)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT gen_random_uuid()</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador único inmutable del diploma emitido.</td>
+                        </tr>
+                        <tr>
+                            <td><code>codigo_verificacion</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Hash alfanumérico SHA-256 único incrustado en el QR del diploma para validación en línea.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span> <span class="key-badge uq">UQ COMP</span></td>
+                            <td>Referencia a <code>usuarios(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><code>DEFAULT 1</code></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>eventos(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_certificado</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'ASISTENCIA'</span></td>
+                            <td><span class="key-badge uq">UQ COMP</span></td>
+                            <td>Modalidad: <code>ASISTENCIA</code>, <code>EXPOSITOR</code>, <code>DISERTANTE</code>, <code>ORGANIZADOR</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>horas_catedra</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 16</span></td>
+                            <td>-</td>
+                            <td>Carga horaria académica certificada para puntaje docente o curricular.</td>
+                        </tr>
+                        <tr>
+                            <td><code>emitido_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Fecha y hora oficial de emisión del certificado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>metadata</code></td>
+                            <td><code>JSONB</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Snapshot de autoridades firmantes, texto del diploma y versión de la plantilla utilizada.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 5: ENCUESTAS DE CALIDAD Y SATISFACCIÓN (WYSIWYG)             -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-encuestas">
+            <h2>
+                <span>Módulo 5: Encuestas Dinámicas y Métricas de Satisfacción</span>
+                <span class="badge-module bm-rose">Bloqueo Pedagógico & Diseñador WYSIWYG</span>
+            </h2>
+            <p class="table-desc">Sustenta el Diseñador Visual WYSIWYG de Encuestas. Estructura baterías de preguntas de opciones múltiples, estrellas y respuestas abiertas, garantizando la recolección de métricas de calidad y la restricción pedagógica de descarga de diplomas.</p>
+
+            <!-- TABLA: categorias_tematicas -->
+            <div class="table-container" id="tab-categorias-tematicas">
+                <div class="table-header">
+                    <span class="table-title">categorias_tematicas</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Propósito:</strong> Ejes temáticos del Congreso</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico de la categoría temático-académica.</td>
+                        </tr>
+                        <tr>
+                            <td><code>nombre</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>Denominación del eje (ej: <em>Inteligencia Artificial y Machine Learning</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Alcance del área tecnológica e impacto curricular.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activo</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Habilita la categoría para asignación en talleres y preguntas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: encuestas -->
+            <div class="table-container" id="tab-encuestas">
+                <div class="table-header">
+                    <span class="table-title">encuestas</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Regla Clave:</strong> Bloqueo pedagógico de diplomas</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental de la encuesta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>eventos(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>titulo</code></td>
+                            <td><code>VARCHAR(150)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Título descriptivo de la evaluación (ej: <em>Evaluación de Satisfacción Institucional ETS 2026</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Instrucciones de llenado y agradecimiento al participante.</td>
+                        </tr>
+                        <tr>
+                            <td><code>etapa</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'INSCRIPCION'</span></td>
+                            <td>-</td>
+                            <td>Fase: <code>INSCRIPCION</code>, <code>CONFIRMACION</code>, <code>ACREDITACION</code>, <code>POST_EVENTO</code>, <code>SONDEO_ABIERTO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>es_obligatoria</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT FALSE</span></td>
+                            <td>-</td>
+                            <td>Si es <code>TRUE</code>, el motor de certificados bloquea la descarga del diploma hasta que se asiente la respuesta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>activa</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT TRUE</span></td>
+                            <td>-</td>
+                            <td>Habilita la visualización y respuesta activa en el portal del asistente.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: encuesta_preguntas -->
+            <div class="table-container" id="tab-encuesta-preguntas">
+                <div class="table-header">
+                    <span class="table-title">encuesta_preguntas</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>WYSIWYG:</strong> Tipología configurable (estrellas, radio, texto)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental del ítem.</td>
+                        </tr>
+                        <tr>
+                            <td><code>encuesta_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>encuestas(id)</code> con borrado en cascada.</td>
+                        </tr>
+                        <tr>
+                            <td><code>categoria_tematica_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>categorias_tematicas(id)</code> para análisis segmentado.</td>
+                        </tr>
+                        <tr>
+                            <td><code>orden</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 1</span></td>
+                            <td>-</td>
+                            <td>Secuencia ordinal de presentación en el formulario reactivo.</td>
+                        </tr>
+                        <tr>
+                            <td><code>texto_pregunta</code></td>
+                            <td><code>TEXT</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Consigna o pregunta visible formulada al asistente.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tipo_pregunta</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 'OPCION_MULTIPLE'</span></td>
+                            <td>-</td>
+                            <td>Tipos admitidos: <code>OPCION_UNICA</code>, <code>OPCION_MULTIPLE</code>, <code>CALIFICACION_1_A_5</code>, <code>TEXTO_ABIERTO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>es_obligatoria</code></td>
+                            <td><code>BOOLEAN</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT FALSE</span></td>
+                            <td>-</td>
+                            <td>Indica si el asistente puede omitir la respuesta al enviar el cuestionario.</td>
+                        </tr>
+                        <tr>
+                            <td><code>peso_ponderacion</code></td>
+                            <td><code>NUMERIC(4,2)</code></td>
+                            <td><code>DEFAULT 1.00</code></td>
+                            <td>-</td>
+                            <td>Factor de ponderación matemática para cómputo de métricas agregadas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: encuesta_opciones -->
+            <div class="table-container" id="tab-encuesta-opciones">
+                <div class="table-header">
+                    <span class="table-title">encuesta_opciones</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Propósito:</strong> Opciones seleccionables de preguntas cerradas</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental de la alternativa.</td>
+                        </tr>
+                        <tr>
+                            <td><code>pregunta_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>encuesta_preguntas(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>orden</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT 1</span></td>
+                            <td>-</td>
+                            <td>Orden de aparición en la lista de opciones.</td>
+                        </tr>
+                        <tr>
+                            <td><code>texto_opcion</code></td>
+                            <td><code>VARCHAR(250)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Texto de la opción de respuesta (ej: <em>Excelente, Muy Bueno, Regular</em>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>valor_ponderacion</code></td>
+                            <td><code>NUMERIC(4,2)</code></td>
+                            <td><code>DEFAULT 1.00</code></td>
+                            <td>-</td>
+                            <td>Puntaje ponderado asignado a la elección.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: encuesta_respuestas -->
+            <div class="table-container" id="tab-encuesta-respuestas">
+                <div class="table-header">
+                    <span class="table-title">encuesta_respuestas</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (UUID)</span>
+                        <span><strong>Restricción:</strong> UNIQUE (encuesta_id, usuario_id)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL DEFAULT gen_random_uuid()</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador universal del envío completado de la encuesta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>encuesta_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span> <span class="key-badge uq">UQ COMP</span></td>
+                            <td>Referencia a <code>encuestas(id)</code> con <code>ON DELETE CASCADE</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span> <span class="key-badge uq">UQ COMP</span></td>
+                            <td>Referencia a <code>usuarios(id)</code>. Impide envíos duplicados por participante.</td>
+                        </tr>
+                        <tr>
+                            <td><code>ip_origen</code></td>
+                            <td><code>VARCHAR(45)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Dirección IP del cliente al momento de completar la encuesta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de registro y desbloqueo del certificado.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: encuesta_respuestas_detalles -->
+            <div class="table-container" id="tab-encuesta-detalles">
+                <div class="table-header">
+                    <span class="table-title">encuesta_respuestas_detalles</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (BIGSERIAL)</span>
+                        <span><strong>Normalización 3FN:</strong> Desglose atómico de respuestas</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>BIGSERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador autoincremental de 64 bits de la respuesta individual.</td>
+                        </tr>
+                        <tr>
+                            <td><code>respuesta_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a la cabecera en <code>encuesta_respuestas(id)</code> con borrado en cascada.</td>
+                        </tr>
+                        <tr>
+                            <td><code>pregunta_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>encuesta_preguntas(id)</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>opcion_id</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia a <code>encuesta_opciones(id)</code> (en caso de preguntas de opción múltiple/única).</td>
+                        </tr>
+                        <tr>
+                            <td><code>valor_numerico</code></td>
+                            <td><code>INTEGER</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Puntaje numérico asignado (en preguntas de estrellas 1 a 5).</td>
+                        </tr>
+                        <tr>
+                            <td><code>respuesta_texto</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Devolución cualitativa abierta redactada por el participante.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- MÓDULO 6: CONFIGURACIÓN, AUDITORÍA FORENSE Y PUSH                 -->
+        <!-- =================================================================== -->
+        <section class="section-card" id="mod-sistema">
+            <h2>
+                <span>Módulo 6: Configuración del Sistema, Push y Auditoría</span>
+                <span class="badge-module bm-amber">Gobernanza & Trazabilidad</span>
+            </h2>
+            <p class="table-desc">Mantiene los parámetros operativos y plantillas en formato JSONB, las suscripciones Web Push conforme al estándar VAPID (RFC 8292) y la bitácora inmutable de auditoría forense.</p>
+
+            <!-- TABLA: configuraciones_sistema -->
+            <div class="table-container" id="tab-configuraciones">
+                <div class="table-header">
+                    <span class="table-title">configuraciones_sistema</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> clave (VARCHAR 100)</span>
+                        <span><strong>Estructura:</strong> Almacén NoSQL flexible JSONB</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>clave</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Nombre identificador del parámetro del sistema (ej: <code>plantilla_certificado_oficial</code>, <code>smtp_google</code>, <code>aforo_maximo_confirmados</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><code>valor</code></td>
+                            <td><code>JSONB</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Estructura JSON binaria con los parámetros dinámicos, fuentes, firmantes y credenciales.</td>
+                        </tr>
+                        <tr>
+                            <td><code>descripcion</code></td>
+                            <td><code>TEXT</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Documentación funcional de la configuración para administradores.</td>
+                        </tr>
+                        <tr>
+                            <td><code>categoria</code></td>
+                            <td><code>VARCHAR(50)</code></td>
+                            <td><code>DEFAULT 'GENERAL'</code></td>
+                            <td>-</td>
+                            <td>Agrupación operativa: <code>GENERAL</code>, <code>CERTIFICADOS</code>, <code>CORREO</code>, <code>BACKUP</code>, <code>SEGURIDAD</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>actualizado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal de la última modificación en la tabla.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: suscripciones_push -->
+            <div class="table-container" id="tab-suscripciones-push">
+                <div class="table-header">
+                    <span class="table-title">suscripciones_push</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (SERIAL)</span>
+                        <span><strong>Estándar:</strong> VAPID Web Push (RFC 8292)</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>SERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador numérico autoincremental de la suscripción.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia opcional a <code>usuarios(id)</code> para notificaciones personalizadas.</td>
+                        </tr>
+                        <tr>
+                            <td><code>endpoint</code></td>
+                            <td><code>TEXT</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge uq">UNIQUE</span></td>
+                            <td>URI del servicio de mensajería Push de los navegadores (Google FCM, Mozilla Push, etc.).</td>
+                        </tr>
+                        <tr>
+                            <td><code>p256dh</code></td>
+                            <td><code>TEXT</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Clave pública ECDH para cifrado de los payloads de aviso push.</td>
+                        </tr>
+                        <tr>
+                            <td><code>auth</code></td>
+                            <td><code>TEXT</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Secreto de autenticación del cliente push.</td>
+                        </tr>
+                        <tr>
+                            <td><code>creado_en</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Fecha y hora de suscripción a avisos del navegador.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABLA: logs_auditoria -->
+            <div class="table-container" id="tab-logs-auditoria">
+                <div class="table-header">
+                    <span class="table-title">logs_auditoria</span>
+                    <div class="table-meta">
+                        <span><strong>Clave Primaria:</strong> id (BIGSERIAL)</span>
+                        <span><strong>Gobernanza:</strong> Inmutabilidad forense absoluta</span>
+                    </div>
+                </div>
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo de Dato</th>
+                            <th>Modificador</th>
+                            <th>Clave</th>
+                            <th>Descripción / Regla de Negocio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td><code>BIGSERIAL</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td><span class="key-badge pk">PK</span></td>
+                            <td>Identificador autoincremental de 64 bits para alta concurrencia de eventos.</td>
+                        </tr>
+                        <tr>
+                            <td><code>evento</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Tipo de operación auditada: <code>LOGIN_OPERADOR</code>, <code>CHECKIN_ACREDITACION</code>, <code>CAMBIO_PLANTILLA_CERTIFICADO</code>, <code>SYNC_ENCUESTA</code>, <code>OVERRIDE_SOBRECUPO</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code>actor_usuario</code></td>
+                            <td><code>VARCHAR(100)</code></td>
+                            <td><span class="nn">NOT NULL</span></td>
+                            <td>-</td>
+                            <td>Correo o identificador del operador o subsistema que ejecutó la mutación.</td>
+                        </tr>
+                        <tr>
+                            <td><code>usuario_afectado_id</code></td>
+                            <td><code>UUID</code></td>
+                            <td>NULL</td>
+                            <td><span class="key-badge fk">FK</span></td>
+                            <td>Referencia opcional a <code>usuarios(id)</code> sujeto de la acción.</td>
+                        </tr>
+                        <tr>
+                            <td><code>detalles</code></td>
+                            <td><code>JSONB</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Fotografía de datos previos y nuevos, campos modificados o respuesta del servidor.</td>
+                        </tr>
+                        <tr>
+                            <td><code>ip_origen</code></td>
+                            <td><code>VARCHAR(45)</code></td>
+                            <td>NULL</td>
+                            <td>-</td>
+                            <td>Dirección IP remota del cliente desde donde se originó la petición.</td>
+                        </tr>
+                        <tr>
+                            <td><code>timestamp</code></td>
+                            <td><code>TIMESTAMPTZ</code></td>
+                            <td><code>DEFAULT NOW()</code></td>
+                            <td>-</td>
+                            <td>Marca temporal exacta e inmutable de asentamiento forense.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="callout info">
+            <div>
+                <strong>Garantía de Normalización en 3FN:</strong> Todas las tablas han sido auditadas para eliminar dependencias funcionales transitivas y garantizar que cada atributo no-clave dependa directa y exclusivamente de la clave primaria completa, asegurando la consistencia e integridad de datos ante cualquier operación transaccional concurrente.
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

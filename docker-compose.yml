@@ -1,0 +1,77 @@
+services:
+  # Base de Datos Relacional PostgreSQL 15
+  db:
+    image: postgres:15-alpine
+    container_name: congreso_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-congreso_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-V-129057-t}
+      POSTGRES_DB: ${POSTGRES_DB:-congreso_ets2026}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/schema_3fn.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./backend/database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-congreso_app} -d ${POSTGRES_DB:-congreso_ets2026}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - congreso_net
+
+  # Backend API Express / TypeScript
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: congreso_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-congreso_app}:${POSTGRES_PASSWORD:-V-129057-t}@db:5432/${POSTGRES_DB:-congreso_ets2026}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-e4b7c1a89f2d3e4b5a6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a}
+      CRON_SECRET: ${CRON_SECRET:-congreso_ets2026_cron_secret_48hs}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-nestor.pineiro@gmail.com}
+      SMTP_PASS: ${SMTP_PASS:-V-129057-T}
+      EMAIL_FROM: ${EMAIL_FROM:-"Congreso ETS 2026 – DETS GCABA <nestor.pineiro@gmail.com>"}
+    ports:
+      - "4000:4000"
+    networks:
+      - congreso_net
+
+  # Frontend Next.js PWA
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: congreso_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      BACKEND_INTERNAL_URL: http://backend:4000
+    ports:
+      - "3000:3000"
+    networks:
+      - congreso_net
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  congreso_net:
+    driver: bridge

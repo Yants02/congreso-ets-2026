@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Operativo y de Administración | Sistema Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        aside.sidebar {
+            width: 320px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        aside.sidebar .logo-area {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        aside.sidebar .badge-ops {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        aside.sidebar h1 { font-size: 18px; color: var(--secondary); font-weight: 800; }
+        aside.sidebar h2 { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+        aside.sidebar nav ul { list-style: none; }
+        aside.sidebar nav li { margin-bottom: 6px; }
+        aside.sidebar nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        aside.sidebar nav a:hover { background-color: var(--primary-light); color: var(--primary-dark); transform: translateX(4px); }
+        aside.sidebar nav a.active { background-color: var(--primary); color: white; }
+
+        main.content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1180px;
+            overflow-x: hidden;
+        }
+
+        .header-doc {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            border-left: 6px solid #34d399;
+        }
+
+        .header-doc h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+        .header-doc p { font-size: 16px; opacity: 0.95; max-width: 800px; }
+
+        .meta-tags { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .meta-tag { background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        section.section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        section.section-card h2 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 800;
+            border-bottom: 2px solid #a7f3d0;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        section.section-card h3 {
+            font-size: 18px;
+            color: #065f46;
+            margin: 28px 0 12px 0;
+            font-weight: 700;
+        }
+
+        section.section-card p { margin-bottom: 16px; color: #334155; font-size: 15px; }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin: 18px 0;
+            border: 1px solid #334155;
+        }
+
+        code {
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            background: #f1f5f9;
+            color: #065f46;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code { background: transparent; color: inherit; padding: 0; }
+
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14.5px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .callout.tip { background-color: #f0fdf4; border-left: 4px solid var(--accent); color: #166534; }
+        .callout.warning { background-color: #fffbeb; border-left: 4px solid var(--warning); color: #92400e; }
+        .callout.info { background-color: #f0f9ff; border-left: 4px solid var(--primary); color: #075985; }
+
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        table.doc-table th, table.doc-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        table.doc-table th { background: #f1f5f9; color: var(--secondary); font-weight: 700; }
+        table.doc-table tr:nth-child(even) { background: #f8fafc; }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 32px;
+            height: 32px;
+            background: #059669;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            main.content { padding: 24px 20px; }
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: #ffffff !important;
+            }
+            aside.sidebar {
+                display: none !important;
+            }
+            main.content {
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .header-doc {
+                background: linear-gradient(135deg, #065f46 0%, #047857 100%) !important;
+                color: #ffffff !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                border-left: 6px solid #34d399 !important;
+                page-break-after: avoid;
+            }
+            .meta-tags {
+                display: flex !important;
+            }
+            .meta-tag {
+                background: rgba(255, 255, 255, 0.2) !important;
+                color: #ffffff !important;
+            }
+            section.section-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                page-break-inside: auto;
+                break-inside: auto;
+                margin-bottom: 30px !important;
+            }
+            pre {
+                background: #1e293b !important;
+                color: #e2e8f0 !important;
+                border: 1px solid #334155 !important;
+                page-break-inside: avoid;
+            }
+            code {
+                color: #065f46 !important;
+            }
+            table.doc-table {
+                page-break-inside: auto;
+            }
+            table.doc-table tr {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            table.doc-table th {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
+            .step-list li::before {
+                background: #059669 !important;
+                color: #ffffff !important;
+            }
+            .btn-print-action {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <span class="badge-ops">OPERACIONES & IT</span>
+            <h1>Congreso ETS 2026</h1>
+            <h2>Manual Operativo del Sistema</h2>
+            <div style="margin-top: 12px; display: flex; gap: 6px;">
+                <button onclick="window.print()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; items-center; gap: 4px;">
+                    📥 Descargar PDF
+                </button>
+                <a href="index.html" style="background: #f1f5f9; color: #334155; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                    ← Índice
+                </a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#infraestructura">1. Requisitos de Infraestructura</a></li>
+                <li><a href="#instalacion-ops">2. Despliegue en Windows y Linux</a></li>
+                <li><a href="#operacion-diaria">3. Operación y Ciclo de Vida</a></li>
+                <li><a href="#base-datos">4. Administración de Base de Datos</a></li>
+                <li><a href="#backups-dr">5. Backups y Recuperación</a></li>
+                <li><a href="#smtp-google">6. Configuración de Correo Google</a></li>
+                <li><a href="#protocolos-evento">7. Protocolos Durante el Evento</a></li>
+                <li><a href="#contingencia">8. Contingencia Offline</a></li>
+                <li><a href="#mantenimiento">9. Mantenimiento y Auditoría</a></li>
+                <li><a href="#soporte">10. Matriz de Soporte y Contacto</a></li>
+                <li><a href="#temas-admin">11. Gestión de Temas del Backend</a></li>
+                <li><a href="#temas-frontend">12. Temas del Frontend (4 Vistas)</a></li>
+                <li><a href="#journaling-ops">13. Journaling, Diagnóstico y Rate Limiting</a></li>
+                <li><a href="#sedes-mapas-ops">14. Gestión de Sede Física y Mapas Interactivos</a></li>
+                <li><a href="#correo-ops">15. Operación de Envíos Masivos y Sandbox de Correo</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <header class="header-doc">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1>Manual de Operación, Mantenimiento y Administración IT</h1>
+                    <p>Guía de referencia técnica y operativa para administradores de sistemas, personal de soporte IT y coordinadores de acreditación del Congreso ETS 2026.</p>
+                </div>
+                <button onclick="window.print()" class="btn-print-action" style="background: #059669; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.25); transition: all 0.2s ease;">
+                    <span style="font-size: 16px;">📥</span>
+                    <span>Descargar PDF</span>
+                </button>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">Despliegue Nativo Windows 10/11</span>
+                <span class="meta-tag">PostgreSQL Service Manager</span>
+                <span class="meta-tag">SMTP Google App Passwords</span>
+                <span class="meta-tag">Protocolo de Contingencia Offline</span>
+            </div>
+        </header>
+
+        <!-- 1. INFRAESTRUCTURA -->
+        <section class="section-card" id="infraestructura">
+            <h2>1. Requisitos de Infraestructura y Servidor</h2>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Parámetro</th>
+                        <th>Requisito Mínimo</th>
+                        <th>Recomendado para Producción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sistema Operativo</strong></td>
+                        <td>Microsoft Windows 10 (64-bit)</td>
+                        <td>Windows 10 / 11 Pro o Windows Server 2022</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procesador</strong></td>
+                        <td>Intel Core i3 / AMD Ryzen 3 (4 núcleos)</td>
+                        <td>Intel Core i5 / AMD Ryzen 5 o superior</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria RAM</strong></td>
+                        <td>4 GB</td>
+                        <td>8 GB a 16 GB</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Almacenamiento</strong></td>
+                        <td>5 GB libres en disco SSD</td>
+                        <td>20 GB libres en disco NVMe SSD</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Motor de Base de Datos</strong></td>
+                        <td>PostgreSQL 14 Nativo para Windows</td>
+                        <td>PostgreSQL 16 (Servicio Windows estándar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Runtime de Aplicación</strong></td>
+                        <td>Node.js 18.18.0 LTS</td>
+                        <td>Node.js 20.x o 22.x LTS</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout tip">
+                <div>
+                    <strong>Sin Docker en el Equipo Destino:</strong> El sistema corre de forma nativa sobre el sistema operativo Windows utilizando el servicio oficial de PostgreSQL y los binarios de Node.js, optimizando el consumo de memoria a menos de 300 MB totales.
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INSTALACIÓN OPS -->
+        <section class="section-card" id="instalacion-ops">
+            <h2>2. Instalación y Despliegue en Windows y Linux</h2>
+            <p>El despliegue se realiza mediante los paquetes autónomos distribuibles:</p>
+
+            <h3>2.1 Despliegue en Microsoft Windows 10 y 11</h3>
+            <p>Utilizando el paquete <code>CongresoETS2026_Instalador_Windows.zip</code>:</p>
+            <ol class="step-list">
+                <li><strong>Descompresión:</strong> Extraer el archivo ZIP en cualquier ubicación temporal (ej: el escritorio o unidad externa).</li>
+                <li><strong>Ejecución del Lanzador:</strong> Hacer clic derecho sobre <code>Instalar_CongresoETS2026.bat</code> y seleccionar <em>"Ejecutar como Administrador"</em>.</li>
+                <li><strong>Auditoría Previa:</strong> El instalador revisará la presencia de Node.js, NPM y PostgreSQL. Si algún componente está ausente, presentará opciones directas para abrir los instaladores oficiales.</li>
+                <li><strong>Directorio Destino:</strong> Elegir la carpeta definitiva (por defecto: <code>C:\CongresoETS2026</code>).</li>
+                <li><strong>Aprovisionamiento de Base de Datos:</strong> El asistente creará automáticamente la base de datos <code>congreso_ets2026</code> y ejecutará <code>schema_3fn.sql</code> y <code>seed.sql</code>.</li>
+                <li><strong>Generación de Claves Criptográficas:</strong> Se generará una clave aleatoria de 32 bytes (AES-256) en <code>backend/.env</code>.</li>
+                <li><strong>Compilación y Accesos Directos:</strong> Se instalarán los paquetes de Node y se creará el acceso directo en el Escritorio.</li>
+            </ol>
+
+            <h3>2.2 Despliegue en Distribuciones Linux (Ubuntu, Debian, Mint, Fedora)</h3>
+            <p>Utilizando el paquete <code>CongresoETS2026_Instalador_Linux.tar.gz</code>:</p>
+            <ol class="step-list">
+                <li><strong>Descompresión:</strong> Extraer el archivo comprimido mediante el comando:
+                    <pre><code>tar -xzf CongresoETS2026_Instalador_Linux.tar.gz
+cd CongresoETS2026_Instalador_Linux</code></pre>
+                </li>
+                <li><strong>Ejecución del Asistente:</strong> Lanzar el script instalador interactivo:
+                    <pre><code>./instalar.sh</code></pre>
+                </li>
+                <li><strong>Auditoría y Parámetros:</strong> El asistente verificará la versión de Node.js, NPM y el daemon de PostgreSQL, solicitará la carpeta destino (por defecto: <code>~/CongresoETS2026</code>) e inicializará el esquema 3FN y las claves criptográficas.</li>
+                <li><strong>Arranque del Sistema:</strong> Para iniciar el congreso en cualquier momento, basta con ejecutar <code>./Iniciar_Congreso.sh</code> o hacer doble clic en el acceso directo de escritorio generado (<code>Congreso_ETS_2026.desktop</code>).</li>
+            </ol>
+        </section>
+
+        <!-- 3. OPERACIÓN DIARIA -->
+        <section class="section-card" id="operacion-diaria">
+            <h2>3. Operación y Ciclo de Vida del Servicio</h2>
+
+            <h3>3.1 Rutina de Inicio del Sistema</h3>
+            <p>Para encender la plataforma al inicio de la jornada:</p>
+            <pre><code># Desde la carpeta de instalación (C:\CongresoETS2026) o acceso directo:
+Iniciar_Congreso.bat</code></pre>
+            <p>El script:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li>Levanta el Backend API en <code>http://localhost:4000</code>.</li>
+                <li>Levanta el Frontend Web en <code>http://localhost:3000</code>.</li>
+                <li>Espera la respuesta del servidor y abre automáticamente el navegador en <code>http://localhost:3000</code>.</li>
+            </ul>
+
+            <h3>3.2 Rutina de Detención Limpia</h3>
+            <p>Para apagar los servicios de forma ordenada sin dejar procesos huérfanos:</p>
+            <pre><code># Ejecutar:
+Detener_Congreso.bat</code></pre>
+            <p>El script detecta los identificadores de proceso (PIDs) que ocupan los puertos 3000 y 4000 y envía una señal de terminación limpia.</p>
+
+            <h3>3.3 Comprobación de Estado (Health Check)</h3>
+            <pre><code># Comprobar estado de la API:
+curl -s http://localhost:4000/api/configuraciones</code></pre>
+        </section>
+
+        <!-- 4. BASE DE DATOS -->
+        <section class="section-card" id="base-datos">
+            <h2>4. Administración de Base de Datos PostgreSQL</h2>
+            <p>PostgreSQL se ejecuta como un Servicio de Windows denominado <code>postgresql-x64-16</code>.</p>
+
+            <h3>4.1 Control del Servicio desde Consola Administrativa (PowerShell)</h3>
+            <pre><code># Iniciar el servicio:
+Start-Service -Name postgresql*
+
+# Detener el servicio:
+Stop-Service -Name postgresql*
+
+# Comprobar estado:
+Get-Service -Name postgresql*</code></pre>
+
+            <h3>4.2 Conexión Manual por Consola (psql)</h3>
+            <pre><code>psql -h localhost -p 5432 -U postgres -d congreso_ets2026</code></pre>
+        </section>
+
+        <!-- 5. BACKUPS Y RECUPERACIÓN -->
+        <section class="section-card" id="backups-dr">
+            <h2>5. Política de Backups y Recuperación de Desastres (DR)</h2>
+            <p>El sistema cuenta con un motor de respaldo con <strong>separación estricta de responsabilidades</strong> entre la estructura (DDL) y los datos transaccionales.</p>
+
+            <h3>5.1 Generación de Backups desde el Panel de Control</h3>
+            <p>Desde <code>/admin?tab=auditoria</code>, el Superadmin puede generar y descargar copias de seguridad en formato ZIP:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><code>backup_completo_[fecha].zip</code>: Incluye DDL de tablas y volcado completo de datos.</li>
+                <li><code>backup_datos_[fecha].sql</code>: Solo sentencias INSERT de datos de participantes y acreditaciones.</li>
+            </ul>
+
+            <h3>5.2 Procedimiento de Restauración Manual de Emergencia</h3>
+            <pre><code># 1. Detener el sistema con Detener_Congreso.bat
+# 2. Restaurar el esquema y datos utilizando psql:
+set PGPASSWORD=tu_password_postgres
+psql -h localhost -p 5432 -U postgres -d congreso_ets2026 -f C:\Ruta\schema_3fn.sql
+psql -h localhost -p 5432 -U postgres -d congreso_ets2026 -f C:\Ruta\volcado_datos.sql</code></pre>
+        </section>
+
+        <!-- 6. SMTP GOOGLE -->
+        <section class="section-card" id="smtp-google">
+            <h2>6. Configuración de Correo SMTP Google y Notificaciones</h2>
+            <p>Google exige el uso obligatorio de <strong>Contraseñas de Aplicación de 16 caracteres</strong> para clientes de correo de terceros sin OAuth2.</p>
+
+            <div class="callout warning">
+                <div>
+                    <strong>Requisito Google:</strong> No utilice la contraseña personal habitual de Gmail. Debe generar un token de aplicación desde la consola de seguridad de Google.
+                </div>
+            </div>
+
+            <ol class="step-list">
+                <li>Acceder a la cuenta institucional en: <a href="https://myaccount.google.com/security" target="_blank">https://myaccount.google.com/security</a></li>
+                <li>Verificar que la <strong>"Verificación en dos pasos"</strong> esté activada.</li>
+                <li>Ingresar a <strong>Contraseñas de aplicaciones</strong> (<a href="https://myaccount.google.com/apppasswords" target="_blank">https://myaccount.google.com/apppasswords</a>).</li>
+                <li>Crear una nueva contraseña asignando el nombre <em>"Congreso ETS 2026"</em>.</li>
+                <li>Copiar el código de 16 letras generado (ej: <code>xxxx yyyy zzzz wwww</code>).</li>
+                <li>Ingresar al panel administrativo en <code>/admin?tab=configuracion</code>, pegar el código en el campo de contraseña y pulsar <strong>"Probar Conexión"</strong>.</li>
+            </ol>
+
+            <h3>Uso del Modo Sandbox Institucional:</h3>
+            <p>Durante los ensayos previos al evento, se recomienda activar el interruptor <strong>"Modo Sandbox Institucional"</strong>. En este modo, todas las inscripciones y acreditaciones generan los gafetes y QRs normalmente, pero los correos se simulan registrándose en los logs sin enviar correos reales al exterior.</p>
+        </section>
+
+        <!-- 7. PROTOCOLOS DEL EVENTO -->
+        <section class="section-card" id="protocolos-evento">
+            <h2>7. Protocolos Operativos Durante el Evento</h2>
+
+            <h3>7.1 Puntos de Entrada y Check-in Rápido</h3>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li>Cada operador se posiciona en una terminal o dispositivo móvil con acceso a <code>/pwa-operador</code>.</li>
+                <li>El asistente presenta su código QR desde la pantalla de su celular o en gafete impreso.</li>
+                <li>El escáner confirma el ingreso con una señal visual verde y un pitido audible en menos de 0.3 segundos.</li>
+                <li>Si el asistente no posee su código QR, el operador realiza la búsqueda por DNI en el padrón y pulsa <em>"Acreditar Manualmente"</em>.</li>
+            </ul>
+
+            <h3>7.2 Prevención de Doble Ingreso:</h3>
+            <p>Si una misma credencial se escanea por segunda vez, el sistema emite una alerta roja indicando <em>"ASISTENTE YA ACREDITADO HOY A LAS XX:XX HS"</em> con el nombre de la puerta anterior.</p>
+
+            <h3>7.3 Procedimiento de Configuración de Diplomas y Encuestas Post-Evento</h3>
+            <p>Previo a la ceremonia de clausura y apertura de descarga de certificados, el Administrador o Director debe ejecutar las siguientes verificaciones operativas:</p>
+            <ol class="step-list">
+                <li><strong>Revisión de Firmantes Oficiales (WYSIWYG Diplomas):</strong> Ingresar a <code>/admin?tab=certificados</code> y pulsar <em>"🎨 Diseñar Plantilla de Certificado"</em>. Validar que las autoridades firmantes (Nombre, Cargo y Orden) coincidan con la comitiva que presidirá la entrega oficial.</li>
+                <li><strong>Auditoría de Descarga de Prueba:</strong> Pulsar <em>"Descargar PDF de Prueba"</em> para inspeccionar visualmente que no existan desbordes tipográficos ni solapamientos en las líneas de rúbrica vectoriales.</li>
+                <li><strong>Activación de la Encuesta de Satisfacción con Bloqueo Pedagógico:</strong> Ingresar a <code>/admin?tab=encuestas</code>, verificar que la encuesta del congreso tenga la casilla <em>"Obligatoria para descargar certificado"</em> activada y el rango de fechas en curso.</li>
+                <li><strong>Monitoreo de Devoluciones:</strong> Consultar el panel de <em>"Métricas y Satisfacción"</em> periódicamente para observar el índice de respuesta y calificaciones de los talleres en vivo.</li>
+            </ol>
+
+            <h3>7.4 Criterios Operativos de Admisión y Estados por Rol</h3>
+            <p>Al gestionar el padrón de participantes en <code>/admin?tab=usuarios</code> o <code>/admin?tab=acreditaciones</code>, los coordinadores deben respetar las siguientes directrices:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Participantes con Rol "Estudiante":</strong> Son los únicos sujetos a las reglas de <em>"Lista de espera"</em>, <em>"Baja Automática 48hs"</em> (por falta de confirmación tras notificación de cupo) y <em>"Sancionados"</em> (por inasistencia injustificada reiterada según normativa).</li>
+                <li><strong>Docentes, Autoridades, Invitados Especiales y Prensa:</strong> Su estado solo transita entre <code>Confirmado</code> y <code>Cancelado</code>. La interfaz bloquea automáticamente cualquier intento accidental de asignar estados disciplinarios o de lista de espera a estos roles.</li>
+            </ul>
+
+            <h3>7.5 Difusión de Avisos por Notificaciones Push PWA y Segmentación de Destinatarios</h3>
+            <p>Para emitir avisos urgentes (cambio de sala de un panel, inicio de receso o recordatorio de encuestas) desde el panel de control (<code>/admin?tab=push</code>):</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Requisito de Suscripción Previa:</strong> Los destinatarios deben haber pulsado <em>"Activar Notificaciones"</em> desde el portal público estando registrados con su cuenta.</li>
+                <li><strong>Garantía Anti-Spam a Visitantes Anónimos:</strong> El sistema nunca envía avisos masivos a usuarios sin registrar o anónimos; cada notificación está anclada a una cuenta del padrón oficial.</li>
+                <li><strong>Segmentación Operativa por Audiencia:</strong>
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><strong>Todos los Inscriptos:</strong> Difunde la novedad a todo el padrón de participantes registrados que tengan su dispositivo suscrito. Ideal para avisos generales de apertura o cierre.</li>
+                        <li><strong>Por Rol Institucional (Estudiantes, Docentes, Disertantes):</strong> Segmenta el mensaje únicamente para el grupo seleccionado (ej. aviso de reunión exclusiva de disertantes o indicaciones para docentes).</li>
+                        <li><strong>Solo Acreditados Presentes en Sala:</strong> Filtro de alta precisión que entrega la notificación <em>únicamente</em> a los participantes que ya ingresaron físicamente a la sede (registrados por el escáner de acreditación QR). Permite avisar cambios de sala o pausas de café sin importunar a quienes siguen en su domicilio o viaje.</li>
+                    </ul>
+                </li>
+                <li><strong>Notificaciones Automáticas Individuales:</strong> El sistema emite de forma automática avisos push privados y exclusivos al participante correspondiente cuando es promovido de <em>Lista de espera</em> a <em>Confirmado</em> por liberación de cupo.</li>
+            </ul>
+
+            <h3>7.6 Personalización Visual: Temas del Backend y Temas del Frontend</h3>
+            <p>Desde la pestaña <code>/admin?tab=configuracion</code>, los administradores disponen de dos módulos de tematización visual independiente:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>🎨 Temas del Backend:</strong> Permite personalizar la apariencia de todo el panel administrativo de control (fondos, tarjetas de datos, inputs, tablas y botones de acción).</li>
+                <li><strong>🌐 Temas del Frontend:</strong> Brinda un inspector interactivo en tiempo real para modificar la estética del portal público visible por los participantes (Hero principal, Barra de navegación, Tarjetas de conferencias, Botón de Inscripción y Footer).</li>
+                <li><strong>Fijar como Default Global:</strong> Al pulsar <em>"💾 Fijar como Default Global"</em> en cualquiera de los dos módulos, la configuración seleccionada se almacena en PostgreSQL y se aplica automáticamente a todos los nuevos visitantes u operadores del sistema.</li>
+                <li><strong>Exportación e Importación:</strong> Se pueden exportar las paletas en formato JSON para transferirlas entre entornos de desarrollo, pruebas y producción sin fricción.</li>
+            </ul>
+        </section>
+
+        <!-- 8. CONTINGENCIA OFFLINE Y MODALIDADES DE OPERACIÓN -->
+        <section class="section-card" id="contingencia">
+            <h2>8. Protocolo de Contingencia sin Conexión y Modalidades de Operación</h2>
+            <p>Si la red de la sede colapsa o sufre micro-cortes:</p>
+
+            <ol class="step-list">
+                <li><strong>Detección Automática:</strong> La PWA detecta el evento <code>window.onoffline</code> y conmuta de inmediato a modo desconectado.</li>
+                <li><strong>Validación Local:</strong> El escáner valida la autenticidad del código QR descifrando el payload criptográfico y contrastándolo con la copia local en IndexedDB.</li>
+                <li><strong>Registro en Cola:</strong> Cada check-in se guarda en la cola local <code>queue_acreditaciones</code> con marca de tiempo precisa.</li>
+                <li><strong>Reconexión y Sincronización:</strong> En cuanto el dispositivo vuelve a tener señal Wi-Fi o datos móviles, la cola se despacha automáticamente al endpoint <code>/api/operator/acreditar-batch</code> sin duplicar registros.</li>
+                <li><strong>Panel de Monitoreo Offline:</strong> Tanto en la terminal de acreditación como en la barra superior del panel administrativo se dispone del botón <em>"Gestor Cola" / "Sync OK"</em>. Este modal permite ver en detalle los tokens retenidos localmente, forzar la subida manual o purgar la cola si fuera necesario.</li>
+            </ol>
+
+            <h3>8.1 Modo Kiosco para Terminales Fijas y Tótems de Acreditación</h3>
+            <p>En puestos de alta demanda o tótems equipados con pistolas lectoras de códigos de barras/QR USB o Bluetooth:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Activación Pantalla Completa:</strong> Al presionar el botón <em>"Modo Kiosco"</em>, la interfaz entra en modo inmersivo a pantalla completa sin distracciones.</li>
+                <li><strong>Auto-Foco Permanente:</strong> El cursor se ancla de forma persistente en el campo de lectura. Incluso si el operador hace clic accidentalmente fuera de la ventana, el foco se recupera automáticamente permitiendo disparar lecturas continuas sin tocar el ratón.</li>
+                <li><strong>Salida de Emergencia:</strong> Se puede salir del modo kiosco en cualquier instante presionando la tecla <kbd>Esc</kbd> o pulsando el botón rojo superior <em>"Salir de Kiosco"</em>.</li>
+            </ul>
+        </section>
+
+        <!-- 9. MANTENIMIENTO Y PRUEBAS DE ESTRÉS -->
+        <section class="section-card" id="mantenimiento">
+            <h2>9. Mantenimiento Preventivo, Auditoría y Pruebas de Estrés</h2>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Simulador de Carga y Pruebas de Estrés:</strong> Para certificar la capacidad de respuesta del servidor antes de la apertura de puertas, ejecute en la terminal del backend:
+                <pre><code>npm run test:stress</code></pre>
+                Este test inyecta ráfagas masivas de registros concurrentes y acreditaciones QR simultáneas, reportando percentiles de latencia (p50, p95, p99), respuesta del rate-limiter y consumo de memoria del pool de conexiones PostgreSQL.</li>
+                <li><strong>Despliegue Contenedorizado (Docker Compose):</strong> Para entornos de producción con Docker, se provee el archivo <code>docker-compose.yml</code>. Para levantarlo:
+                <pre><code>docker compose up -d</code></pre></li>
+                <li><strong>Revisión de Disco:</strong> Asegurar al menos 2 GB libres en la unidad para almacenamiento de logs y temporales de PDF.</li>
+                <li><strong>Purga de Logs Transitorios:</strong> El planificador Cron ejecuta diariamente a las 03:00 AM la limpieza de registros de sesiones obsoletas.</li>
+                <li><strong>Sincronización Git:</strong> Para aplicar actualizaciones del equipo de desarrollo, ejecutar:
+                <pre><code>bash scripts/git-sync.sh</code></pre></li>
+            </ul>
+        </section>
+
+        <!-- 10. SOPORTE -->
+        <section class="section-card" id="soporte">
+            <h2>10. Matriz de Soporte y Canales de Asistencia</h2>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Nivel de Incidencia</th>
+                        <th>Tipo de Problema</th>
+                        <th>Acción de Contingencia / Contacto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nivel 1 (Operativo)</strong></td>
+                        <td>DNI no encontrado en padrón o acreditación manual</td>
+                        <td>Verificador en mesa de informes / Consulta en pestaña Acreditaciones.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 2 (Red y PWA)</strong></td>
+                        <td>Caída de Wi-Fi en puerta de acceso</td>
+                        <td>Mantener PWA en modo offline. Los datos se sincronizan al volver la red.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 3 (Servicios)</strong></td>
+                        <td>Puerto ocupado o servicio detenido</td>
+                        <td>Ejecutar <code>Detener_Congreso.bat</code> y luego <code>Iniciar_Congreso.bat</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 4 (Crítico)</strong></td>
+                        <td>Fallo de hardware o corrupción de datos</td>
+                        <td>Restaurar última copia desde <code>backups/</code> con script de recuperación.</td>
+                    </tr>
+        </section>
+
+        <!-- 11. GESTIÓN DE TEMAS Y PERFILES VISUALES DEL BACKEND -->
+        <section class="section-card" id="temas-admin">
+            <h2>11. Gestión de Temas y Perfiles Visuales del Backend</h2>
+            <p>El personal de administración y soporte IT cuenta con herramientas centralizadas para configurar, respaldar y auditar los perfiles visuales del panel de control:</p>
+
+            <h3>11.1 Selección del Perfil Institucional CABA</h3>
+            <p>Para estaciones de trabajo oficiales, se recomienda aplicar como estándar la <strong>Paleta Oficial CABA Institucional</strong>. Esta paleta sincroniza los códigos cromáticos oficiales de la Ciudad (Azul Oscuro <code>#1D3343</code>, Amarillo GCABA <code>#FFCD02</code> y Blanco <code>#FCFCFC</code>) con el resto de los sistemas de gobierno.</p>
+
+            <h3>11.2 Procedimiento de Respaldo y Distribución de Paletas (JSON)</h3>
+            <p>Para estandarizar el entorno visual en puestos de operadores o migrar personalizaciones entre navegadores:</p>
+            <ol class="step-list">
+                <li>Acceder a <strong>Configuración ➔ 🎨 Temas del Backend ➔ Clic & Corrección en Vivo</strong>.</li>
+                <li>Hacer clic en <strong>📋 Exportar JSON</strong>: el sistema copiará al portapapeles la estructura con los 24 tokens normalizados de estilo.</li>
+                <li>En la máquina de destino, abrir el panel, pulsar <strong>📥 Importar JSON</strong>, pegar la definición y confirmar. El tema se activará de inmediato sin reiniciar servicios.</li>
+            </ol>
+
+            <h3>11.3 Estandarización Centralizada en Base de Datos (Default Global)</h3>
+            <p>Para no depender de configuraciones puesto por puesto, el Superadministrador o Administrador puede almacenar el tema corporativo en el servidor central:</p>
+            <ol class="step-list">
+                <li>Seleccionar o editar el tema deseado (por ejemplo, la <em>Paleta Oficial CABA</em>).</li>
+                <li>Hacer clic en <strong>💾 Fijar como Default Global</strong> (o <em>Fijar tema activo como Default Global</em>).</li>
+                <li>Confirmar el diálogo. La configuración se persistirá en la tabla <code>configuraciones_sistema</code> de PostgreSQL bajo la clave <code>'tema_backend_default'</code> y quedará registrada en los registros de auditoría (<code>logs_auditoria</code>).</li>
+                <li>Todos los nuevos operadores o puestos que inicien sesión sin preferencias locales previas adoptarán automáticamente este diseño institucional.</li>
+            </ol>
+
+            <div class="callout tip">
+                <span style="font-size: 20px;">🛡️</span>
+                <div>
+                    <strong>Resiliencia de Estilos:</strong> En caso de que un operador aplique una combinación de colores de bajo contraste que dificulte la lectura, basta con pulsar el botón <strong>↺ Restablecer</strong> para retornar de inmediato a la plantilla base homologada.
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. GESTIÓN DE TEMAS Y PERFILES VISUALES DEL FRONTEND (PORTAL PÚBLICO) -->
+        <section class="section-card" id="temas-frontend">
+            <h2>12. Gestión de Temas y Perfiles Visuales del Frontend (Portal Público)</h2>
+            <p>El portal público del congreso dispone de un sistema modular de tematización que permite a los operadores personalizar y estandarizar integralmente la experiencia visual para todos los visitantes, congresistas y expositores.</p>
+
+            <h3>12.1 Las 4 Vistas Interactivas del Editor Clic & Corrección</h3>
+            <p>El editor en <strong>Parámetros del Sistema ➔ 🌐 Temas del Frontend</strong> incluye un conmutador de 4 vistas interactivas que replican la totalidad de pantallas y páginas del portal:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px; font-size: 14.5px; line-height: 1.6;">
+                <li><strong>🏠 Vista 1: Home (Página Principal):</strong> Permite inspeccionar y ajustar la Barra de Navegación (Header), el bloque Hero principal con título y botón de llamado a la acción (CTA), el Banner de Notificaciones Push PWA, la sección informativa "Sobre el Congreso", las tarjetas de actividades y módulos formativos, los filtros interactivos del cronograma y el Pie de Página (Footer).</li>
+                <li><strong>📝 Vista 2: Inscripción y Login (<code>/participa</code> y <code>/login</code>):</strong> Permite ajustar la cabecera con indicadores de cupos y aforo, el contenedor del formulario oficial, cajas de texto (inputs), selectores desplegables de roles institucionales y el botón de confirmación de registro.</li>
+                <li><strong>🪪 Vista 3: Portal del Participante (<code>/mi-credencial</code>):</strong> Permite inspeccionar el pase digital oficial del congresista, incluyendo el fondo de la credencial, la cabecera institucional con escudo, el contenedor del código QR criptográfico HMAC, la insignia (badge) de rol o categoría de asistente y el botón de descarga del Certificado/Diploma A4 en PDF.</li>
+                <li><strong>📚 Vista 4: Centro de Recursos y FAQs (<code>/materiales</code>, <code>/como-llego</code> y FAQs):</strong> Permite ajustar las tarjetas de descargas de documentos/papers/flyers con sus etiquetas de tipo de archivo, y el acordeón interactivo de Preguntas Frecuentes (cajas contenedoras, color de pregunta y tipografía explicativa de respuesta).</li>
+            </ul>
+
+            <h3>12.2 Persistencia Centralizada en PostgreSQL (Default Global del Portal)</h3>
+            <p>Al pulsar <strong>💾 Fijar como Default Global</strong> en el editor del Frontend, la configuración activa se almacena en la tabla <code>configuraciones_sistema</code> bajo la clave <code>'tema_frontend_default'</code>. Esto garantiza que cualquier ciudadano, asistente o evaluador que ingrese al portal desde cualquier dispositivo disfrute de la paleta oficial sin necesidad de configuraciones previas.</p>
+        </section>
+
+        <!-- 13. JOURNALING, DIAGNÓSTICO EN CALIENTE Y RATE LIMITING -->
+        <section class="section-card" id="journaling-ops">
+            <h2>13. Journaling, Diagnóstico de Errores y Seguridad (Rate Limiting)</h2>
+            <p>El sistema cuenta con un subsistema de telemetría y diagnóstico dinámico (<em>Journaling</em>) que permite registrar las transacciones HTTP, depurar incidentes en tiempo real e inspeccionar los payloads que provocan fallos, sin requerir reinicio de los servicios.</p>
+
+            <h3>13.1 ¿Cómo Acceder al Módulo de Journaling?</h3>
+            <p>El visor y conmutador de Journaling está restringido a operadores con rol de <strong>Administrador (Nivel 4 o 5)</strong>:</p>
+            <ol class="step-list">
+                <li>Ingresar al <strong>Panel de Administración</strong> con credenciales de Administrador.</li>
+                <li>Hacer clic en el menú superior o lateral en <strong>⚙️ Parámetros del Sistema</strong> (o navegar a la pestaña de configuración).</li>
+                <li>En la barra de pestañas secundarias de configuración, seleccionar <strong>📝 Journaling & Diagnóstico</strong> (ubicada junto a <em>Variables Generales</em>, <em>Temas del Backend</em> y <em>Temas del Frontend</em>).</li>
+            </ol>
+
+            <h3>13.2 Los 3 Niveles de Operación en Caliente</h3>
+            <p>Desde el selector de nivel, el administrador puede conmutar el comportamiento del interceptor de tráfico de forma inmediata:</p>
+            <table class="doc-table" style="margin-bottom: 20px;">
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Estado</th>
+                        <th>Impacto en Rendimiento</th>
+                        <th>Casos de Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>DISABLED</code></td>
+                        <td><span style="background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">APAGADO</span></td>
+                        <td><strong>0% Sobrecarga:</strong> Omite toda escritura a base de datos.</td>
+                        <td>Operación normal del congreso en días pico de alta concurrencia de acreditaciones.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ERRORS_ONLY</code></td>
+                        <td><span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">SOLO FALLOS (Recomendado)</span></td>
+                        <td><strong>Mínimo (&lt; 0.1%):</strong> Solo guarda trazas HTTP 4xx y 5xx.</td>
+                        <td>Monitoreo proactivo de producción. Detecta errores sin saturar los discos con lecturas exitosas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>VERBOSE_ALL</code></td>
+                        <td><span style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">TRAZA COMPLETA</span></td>
+                        <td><strong>Medio:</strong> Registra el 100% de las solicitudes entrantes y salientes.</td>
+                        <td>Pruebas de laboratorio, homologación de nuevas integraciones o detección de cuellos de botella de latencia.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>13.3 Inspección Forense y Purga Automática</h3>
+            <p>La vista interactiva permite:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px; font-size: 14.5px; line-height: 1.6;">
+                <li><strong>Filtros por Nivel y Búsqueda:</strong> Filtrar eventos por niveles <code>ERROR</code>, <code>WARN</code> o <code>INFO</code>, además de filtrar por método HTTP (<code>POST</code>, <code>GET</code>, <code>PUT</code>) o ruta del endpoint.</li>
+                <li><strong>Desplegable de Payloads:</strong> Al hacer clic en cualquier fila de evento, se expande un panel oscuro con el <strong>Cuerpo de la Petición (Request Body)</strong>, los encabezados HTTP recibidos y la traza detallada del error (Stack Trace). <em>Nota: Los campos sensibles como contraseñas son sanitizados automáticamente.</em></li>
+                <li><strong>Métricas de Latencia:</strong> Permite ordenar los registros por duración en milisegundos (<code>duracion_ms</code>) para identificar consultas SQL lentas o demoras en la emisión de PDFs.</li>
+                <li><strong>Botón 🗑️ Purgar > 7 días:</strong> Elimina con un solo clic los registros antiguos de la tabla <code>logs_journaling</code> para evitar el crecimiento innecesario del almacenamiento.</li>
+            </ul>
+
+            <h3>13.4 Limitación de Tasa (Rate Limiting de Seguridad)</h3>
+            <p>Para proteger el backend contra ataques de fuerza bruta, denegación de servicio (DoS) o script scraping malicioso durante el congreso, se implementaron ventanas de limitación de solicitudes (<code>express-rate-limit</code>):</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px; font-size: 14.5px; line-height: 1.6;">
+                <li><strong>Ruta <code>/api/registro</code> (Inscripción pública):</strong> Máximo <strong>25 peticiones cada 15 minutos</strong> por dirección IP de origen. Si un bot o usuario excede este cupo, recibe un código de error <code>HTTP 429 Too Many Requests</code> con el mensaje informativo correspondiente.</li>
+                <li><strong>Ruta <code>/api/credencial</code> (Consulta y descarga de credenciales):</strong> Máximo <strong>60 peticiones cada 5 minutos</strong> por dirección IP.</li>
+            </ul>
+
+            <div class="callout tip">
+                <span style="font-size: 20px;">⚡</span>
+                <div>
+                    <strong>Manejo Operativo del Error 429:</strong> Si un puesto de acreditación en una red compartida (misma IP pública) reporta error 429 durante una prueba masiva, el personal de IT puede verificar el registro en el visor de Journaling o solicitar al operador esperar 5 minutos a que expire la ventana del limitador.
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. GESTIÓN DE SEDE FÍSICA Y MAPAS -->
+        <section class="section-card" id="sedes-mapas-ops">
+            <h2>
+                <span>14. Gestión de Sede Física y Mapas Interactivos</span>
+                <span class="badge-ops" style="background:#dcfce7; color:#15803d; font-size:12px;">Infraestructura del Evento</span>
+            </h2>
+            <p>El personal técnico puede actualizar la ubicación del evento y la cartografía interactiva sin interrumpir la operación pública:</p>
+
+            <h3>14.1 Configuración de Ubicación en el Evento Activo</h3>
+            <ol class="step-list">
+                <li>Acceder a <strong>Ediciones & Eventos</strong> en el panel de control.</li>
+                <li>Editar la edición vigente (<code>ETS_2026</code>) e ingresar en la sección <strong>Ubicación y Sede</strong>.</li>
+                <li>Completar: <strong>Nombre del Edificio / Sede</strong> (ej: <em>Centro Metropolitano de Diseño - CMD</em>), <strong>Dirección Postal</strong> y <strong>URL de Mapa Embebido (Google Maps / OpenStreetMap)</strong>.</li>
+                <li>Guardar cambios: el portal web público y los mapas en el pie de página se actualizan al instante para los asistentes.</li>
+            </ol>
+        </section>
+
+        <!-- 15. OPERACIÓN DE CORREO Y SANDBOX -->
+        <section class="section-card" id="correo-ops">
+            <h2>
+                <span>15. Operación de Envíos Masivos y Sandbox de Correo</span>
+                <span class="badge-ops" style="background:#dcfce7; color:#15803d; font-size:12px;">Servicio SMTP</span>
+            </h2>
+            <p>Protocolos de contingencia y validación previa antes de despachar comunicaciones masivas a miles de inscriptos:</p>
+
+            <h3>15.1 Activación del Modo Sandbox</h3>
+            <p>En el archivo de entorno del backend (<code>.env</code>):</p>
+            <pre><code># Modo Sandbox: los correos no se envían al servidor SMTP sino que se registran en logs
+EMAIL_SANDBOX=true</code></pre>
+            <p>Con <code>EMAIL_SANDBOX=true</code>, los operadores pueden registrar asistentes de prueba, regenerar credenciales y probar la plantilla sin consumir cuota de envío diaria de Google Workspace ni saturar servidores institucionales.</p>
+
+            <h3>15.2 Conmutación a Producción</h3>
+            <p>Para habilitar el envío real durante el congreso:</p>
+            <pre><code>EMAIL_SANDBOX=false
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=congreso.ets@bue.edu.ar
+SMTP_PASS=xxxx-xxxx-xxxx-xxxx</code></pre>
+            <p>Verificar que la contraseña de aplicación generada en la consola de Google Workspace tenga permisos SMTP activos.</p>
+        </section>
+
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('section.section-card');
+        const navLinks = document.querySelectorAll('aside.sidebar nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

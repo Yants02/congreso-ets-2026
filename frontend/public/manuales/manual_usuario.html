@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario | Sistema Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Sidebar Navegación */
+        aside.sidebar {
+            width: 320px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        aside.sidebar .logo-area {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        aside.sidebar .badge-gov {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #334155;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        aside.sidebar h1 {
+            font-size: 18px;
+            color: var(--secondary);
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        aside.sidebar h2 {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        aside.sidebar nav ul {
+            list-style: none;
+        }
+
+        aside.sidebar nav li {
+            margin-bottom: 6px;
+        }
+
+        aside.sidebar nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        aside.sidebar nav a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            transform: translateX(4px);
+        }
+
+        aside.sidebar nav a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Contenido Principal */
+        main.content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1180px;
+            overflow-x: hidden;
+        }
+
+        .header-doc {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-doc h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .header-doc p {
+            font-size: 16px;
+            opacity: 0.95;
+            max-width: 800px;
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Secciones */
+        section.section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        section.section-card h2 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 800;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        section.section-card h3 {
+            font-size: 18px;
+            color: var(--primary-dark);
+            margin: 28px 0 12px 0;
+            font-weight: 700;
+        }
+
+        section.section-card p {
+            margin-bottom: 16px;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        /* Bloques de Ilustración / Capturas */
+        .figure-container {
+            margin: 24px 0;
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #1e293b;
+            box-shadow: var(--shadow-md);
+        }
+
+        .figure-container .window-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 10px;
+        }
+
+        .figure-container .circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .figure-container .circle.red { background: #ef4444; }
+        .figure-container .circle.yellow { background: #f59e0b; }
+        .figure-container .circle.green { background: #10b981; }
+
+        .figure-container .title-bar {
+            color: #94a3b8;
+            font-size: 12px;
+            font-family: monospace;
+            margin-left: 8px;
+        }
+
+        .figure-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            display: block;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .figure-container img:hover {
+            opacity: 0.96;
+        }
+
+        .figure-container figcaption {
+            color: #cbd5e1;
+            font-size: 13px;
+            padding: 10px 4px 4px 4px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Callouts / Avisos */
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14.5px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .callout.tip {
+            background-color: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            color: #166534;
+        }
+
+        .callout.warning {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--warning);
+            color: #92400e;
+        }
+
+        .callout.info {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            color: #075985;
+        }
+
+        /* Tablas */
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        table.doc-table th, table.doc-table td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        table.doc-table th {
+            background: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        table.doc-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        /* Pasos Numerados */
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Modal Lightbox para imágenes */
+        #imgModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #imgModal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            main.content { padding: 24px 20px; }
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: #ffffff !important;
+            }
+            aside.sidebar {
+                display: none !important;
+            }
+            main.content {
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .header-doc {
+                background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+                color: #ffffff !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                page-break-after: avoid;
+            }
+            .meta-tags {
+                display: flex !important;
+            }
+            .meta-tag {
+                background: rgba(255, 255, 255, 0.25) !important;
+                color: #ffffff !important;
+            }
+            section.section-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                page-break-inside: auto;
+                break-inside: auto;
+                margin-bottom: 30px !important;
+            }
+            .figure-container {
+                background: #0f172a !important;
+                border: 1px solid #1e293b !important;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .figure-container .window-top {
+                border-bottom: 1px solid #334155 !important;
+            }
+            .figure-container .title-bar {
+                color: #94a3b8 !important;
+            }
+            .figure-container figcaption {
+                color: #94a3b8 !important;
+            }
+            img {
+                max-width: 100% !important;
+                page-break-inside: avoid;
+            }
+            pre {
+                background: #1e293b !important;
+                color: #e2e8f0 !important;
+                page-break-inside: avoid;
+            }
+            code {
+                color: #0369a1 !important;
+            }
+            .btn-print-action {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <span class="badge-gov">DETS · GCABA</span>
+            <h1>Congreso ETS 2026</h1>
+            <h2>Manual de Usuario del Sistema</h2>
+            <div style="margin-top: 12px; display: flex; gap: 6px;">
+                <button onclick="window.print()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; items-center; gap: 4px;">
+                    📥 Descargar PDF
+                </button>
+                <a href="index.html" style="background: #f1f5f9; color: #334155; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                    ← Índice
+                </a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#intro">1. Introducción y Acceso</a></li>
+                <li><a href="#roles">2. Categorías y Roles</a></li>
+                <li><a href="#portal">3. Portal Público y Participa</a></li>
+                <li><a href="#credencial">4. Gafete con QR Criptográfico</a></li>
+                <li><a href="#dashboard">5. Panel Administrativo</a></li>
+                <li><a href="#usuarios">6. Gestión de Usuarios</a></li>
+                <li><a href="#actividades">7. Actividades y Salas</a></li>
+                <li><a href="#puntos">8. Puntos de Acceso</a></li>
+                <li><a href="#acreditacion">9. Acreditaciones y PWA</a></li>
+                <li><a href="#certificados">10. Certificados de Asistencia & Editor WYSIWYG</a></li>
+                <li><a href="#encuestas">11. Encuestas de Satisfacción & Diseñador WYSIWYG</a></li>
+                <li><a href="#correo">12. Cuentas de Correo y Avisos</a></li>
+                <li><a href="#auditoria">13. Auditoría y Backups</a></li>
+                <li><a href="#cron">14. Tareas Programadas</a></li>
+                <li><a href="#estadisticas">15. Estadísticas y Reportes</a></li>
+                <li><a href="#temas-backend">16. Personalización Visual & Editor de Temas</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="content">
+
+        <header class="header-doc">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1>Manual Integral de Usuario y Operador</h1>
+                    <p>Guía de operación paso a paso profusamente ilustrada para la administración, acreditación, control de aforos y certificación del 1° Congreso de Educación Técnica Superior.</p>
+                </div>
+                <button onclick="window.print()" class="btn-print-action" style="background: #ffffff; color: #0284c7; border: none; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); transition: all 0.2s ease;">
+                    <span style="font-size: 16px;">📥</span>
+                    <span>Descargar PDF</span>
+                </button>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">Versión 2.0 (CongresoNew)</span>
+                <span class="meta-tag">Vigencia: 2026</span>
+                <span class="meta-tag">Plataforma Web & PWA Offline</span>
+                <span class="meta-tag">Documento Oficial DETS</span>
+            </div>
+        </header>
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN Y ACCESO -->
+        <section class="section-card" id="intro">
+            <h2>1. Introducción y Acceso a la Plataforma</h2>
+            <p>La plataforma del Congreso ETS 2026 centraliza la experiencia de los participantes y el trabajo operativo del equipo organizador, verificadores y directivos de la Dirección de Educación Técnica Superior (DETS).</p>
+
+            <h3>1.1 Portal Web Público</h3>
+            <p>A través de la portada institucional, los participantes y la comunidad educativa acceden al programa oficial, información sobre la sede, expositores y enlaces de auto-gestión.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/ — Portal Público Institucional</span>
+                </div>
+                <img src="capturas/01_portal_publico.png" alt="Portal Público Institucional del Congreso ETS 2026" onclick="openModal(this)">
+                <figcaption>Figura 1: Vista general del portal público con acceso al programa y menú institucional.</figcaption>
+            </div>
+
+            <h3>1.2 Inicio de Sesión Administrativo y Operativo</h3>
+            <p>Para ingresar al panel de control administrativo o a la estación de acreditación, los operadores deben acceder a <code>/login</code> utilizando su correo institucional y su contraseña.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/login — Pantalla de Inicio de Sesión</span>
+                </div>
+                <img src="capturas/02_login.png" alt="Pantalla de Login" onclick="openModal(this)">
+                <figcaption>Figura 2: Formulario de autenticación con validación en tiempo real de credenciales.</figcaption>
+            </div>
+
+            <h3>1.3 Botón de Visualización de Contraseña</h3>
+            <p>A petición de los operadores en puntos de acreditación rápida, el formulario de ingreso cuenta con un botón interactivo con icono de ojo para <strong>revelar/ocultar la contraseña</strong>, evitando errores tipográficos en dispositivos táctiles o terminales móviles.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/login — Revelar Clave</span>
+                </div>
+                <img src="capturas/03_login_con_clave_visible.png" alt="Login con clave visible" onclick="openModal(this)">
+                <figcaption>Figura 3: Funcionalidad del botón para visualizar u ocultar la clave al iniciar sesión.</figcaption>
+            </div>
+
+            <div class="callout tip">
+                <div>
+                    <strong>Persistencia de Sesión:</strong> Al iniciar sesión, la plataforma almacena de forma segura una cookie cifrada HTTP-Only con token JWT. Si retrocede o navega por otras pestañas, la sesión se conserva automáticamente sin desconectar al usuario.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CATEGORÍAS Y ROLES -->
+        <section class="section-card" id="roles">
+            <h2>2. Jerarquía de Categorías y Permisos</h2>
+            <p>El acceso a cada menú y botón del sistema está estrictamente gobernado por el rol del usuario, manteniendo fidelidad con el esquema institucional:</p>
+
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Rol del Sistema</th>
+                        <th>Permisos y Accesos Habilitados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nivel 5</strong></td>
+                        <td><strong>Superadmin</strong></td>
+                        <td>Acceso total. Configuración del sistema, auditoría, cron, override de cupos, asignación de roles y backups.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 4</strong></td>
+                        <td><strong>Administrador</strong></td>
+                        <td>Gestión de actividades, usuarios, acreditados, emisión de diplomas y reportes de aforo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 3</strong></td>
+                        <td><strong>Verificador</strong></td>
+                        <td>Consulta avanzada de acreditaciones, homologación de certificados y monitoreo de salas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 2</strong></td>
+                        <td><strong>Operador</strong></td>
+                        <td>Escaneo de credenciales en accesos asignados, búsqueda manual por DNI y check-in.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nivel 1</strong></td>
+                        <td><strong>Asistente</strong></td>
+                        <td>Consulta de agenda personal, visualización de gafete QR y descarga de certificado propio.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECCIÓN 3: PORTAL PÚBLICO, INSCRIPCIÓN Y NOTIFICACIONES PUSH -->
+        <section class="section-card" id="portal">
+            <h2>3. Portal Público, Formulario de Inscripción y Notificaciones Push</h2>
+            <p>A través de la portada del Congreso (<code>/</code>) y el botón <strong>"Inscribirse"</strong>, los interesados acceden al formulario oficial de registro en <code>/participa</code>:</p>
+
+            <ol class="step-list">
+                <li><strong>Métricas de Aforo en Tiempo Real:</strong> El formulario consulta la API de vacantes (<code>/api/vacantes</code>) e informa instantáneamente los cupos disponibles en el Auditorio Polo Saavedra 5085 o la activación de la lista de espera.</li>
+                <li><strong>Datos Personales y Documento:</strong> Ingreso de DNI/Pasaporte (sanitizado alfanumérico), Teléfono Celular (para alertas de cronograma y salas), Nombre, Apellido y Correo Electrónico.</li>
+                <li><strong>Rol Institucional Dinámico:</strong> Carga directa desde la base de datos de los roles oficiales (<em>Estudiante</em>, <em>Docente</em>, <em>Expositor</em>, <em>Autoridad</em>), con opción de tildar roles adicionales no excluyentes.</li>
+                <li><strong>Consentimiento Normativo (Ley 25.326):</strong> Casilla obligatoria de autorización para el tratamiento de datos personales, control de aforo y expedición de diplomas ministeriales.</li>
+                <li><strong>Confirmación y Conexión Automática a Credencial:</strong> Si la inscripción resulta confirmada o en espera, el sistema brinda acceso inmediato a la credencial digital (<code>/mi-credencial?dni=...</code>) con su token criptográfico QR. Si el DNI ya existía previamente, ofrece consulta directa sin duplicar el registro.</li>
+            </ol>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/participa — Formulario de Inscripción Vinculado</span>
+                </div>
+                <img src="capturas/15_formulario_inscripcion.png" alt="Formulario de Participa" onclick="openModal(this)">
+                <figcaption>Figura 4: Formulario de inscripción en línea conectado a la base de datos con control de cupos y ley 25.326.</figcaption>
+            </div>
+
+            <h3>3.1 Notificaciones Push en Vivo (Web Push PWA para Registrados)</h3>
+            <p>Tanto en la portada institucional como en la vista de credencial se dispone del banner interactivo <strong>"🔔 Activar Notificaciones"</strong>. El servicio está reservado exclusivamente para la comunidad de asistentes inscriptos:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Exclusividad para Participantes Registrados:</strong> Si el usuario pulsa el botón desde la portada, el sistema solicita su DNI o Pasaporte y valida contra la base de datos PostgreSQL que se encuentre efectivamente registrado en el congreso antes de habilitar la suscripción. Si accede desde <code>/mi-credencial</code>, la vinculación se realiza automáticamente con su identidad.</li>
+                <li><strong>Protocolo Estándar VAPID Web Push:</strong> El navegador solicita permiso nativo y suscribe al Service Worker mediante el estándar <em>RFC 8292</em> con claves públicas del servidor.</li>
+                <li><strong>Almacenamiento y Emisión Focalizada:</strong> La suscripción se guarda vinculada al identificador del participante (<code>suscripciones_push.usuario_id</code>). Las emisiones masivas y segmentadas del panel de control solo se dirigen a inscriptos válidos.</li>
+                <li><strong>Confirmación Inmediata:</strong> Al activarse, el dispositivo recibe un <strong>aviso de bienvenida emergente</strong> confirmando que está conectado al canal oficial de avisos en tiempo real.</li>
+            </ul>
+
+            <h3>3.2 ¿A quiénes se envían las novedades y notificaciones del sistema?</h3>
+            <p>El sistema cuenta con reglas estrictas de segmentación para garantizar que las notificaciones lleguen únicamente a los destinatarios pertinentes:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>1. Aviso Inmediato de Bienvenida (Al Activar):</strong> Se emite <em>únicamente al dispositivo</em> del participante que acaba de presionar el botón y validó su registro, confirmándole que su terminal quedó enlazada exitosamente.</li>
+                <li><strong>2. Promociones Individuales de Vacante (Lista de Espera ➔ Confirmado):</strong> Se remite <em>exclusivamente al aspirante beneficiado</em> (mediante su <code>usuario_id</code> único). Al ser promovido manualmente o por vacante liberada, sus dispositivos reciben el aviso confirmándole que su vacante fue asignada y su credencial está activa.</li>
+                <li><strong>3. Comunicados y Novedades en Vivo desde el Panel Admin (<code>/admin?tab=push</code>):</strong> La comitiva organizadora y los directivos pueden emitir avisos categorizados seleccionando tres niveles de audiencia:
+                    <ol style="margin-left: 20px; margin-top: 6px;">
+                        <li><strong>Todos los Participantes Registrados:</strong> Emisión generalizada (la base de datos aplica el filtro estricto <code>sp.usuario_id IS NOT NULL</code>, impidiendo envíos a visitantes anónimos o no inscriptos).</li>
+                        <li><strong>Segmentado por Rol Institucional:</strong> Permite filtrar avisos específicos exclusivamente para <em>Estudiantes</em>, <em>Docentes</em>, <em>Disertantes / Expositores</em>, etc.</li>
+                        <li><strong>Solo Asistentes Acreditados en la Sede (Ingreso Físico):</strong> Se cruza en tiempo real con la tabla forense de <code>acreditaciones</code> (<code>tipo_movimiento = 'INGRESO'</code>). De este modo, ante un llamado a sala urgente, inicio de receso o cambio de aula in situ, la alerta solo suena en los teléfonos de quienes ya atravesaron los puntos de acceso del predio.</li>
+                    </ol>
+                </li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 4: GAFETE CON QR CRIPTOGRÁFICO -->
+        <section class="section-card" id="credencial">
+            <h2>4. Consulta y Descarga de Credencial (Gafete QR)</h2>
+            <p>Cada asistente registrado puede consultar y descargar su credencial digital ingresando su DNI en <code>/mi-credencial</code>.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/mi-credencial — Búsqueda de Credencial</span>
+                </div>
+                <img src="capturas/16_credencial_participante.png" alt="Consulta de Credencial" onclick="openModal(this)">
+                <figcaption>Figura 5: Módulo de autoservicio para consulta y descarga del gafete institucional.</figcaption>
+            </div>
+
+            <div class="callout info">
+                <div>
+                    <strong>Criptografía Anti-Falsificación AES-256:</strong> El código QR del gafete contiene un payload cifrado simétricamente con clave de 32 bytes (64 caracteres hex) generada en el servidor. Esto impide que se generen credenciales falsas o se manipule el DNI.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: PANEL ADMINISTRATIVO -->
+        <section class="section-card" id="dashboard">
+            <h2>5. Panel Administrativo Central (Dashboard)</h2>
+            <p>Al autenticarse con perfil Administrador o Superadmin, se despliega el Tablero de Comando Central con indicadores métricos consolidados:</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin — Tablero de Comando</span>
+                </div>
+                <img src="capturas/04_admin_dashboard.png" alt="Dashboard Principal" onclick="openModal(this)">
+                <figcaption>Figura 6: Métricas en vivo de inscriptos, acreditados presenciales, capacidad ocupada y accesos directos.</figcaption>
+            </div>
+
+            <h3>Indicadores Principales:</h3>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Total de Inscriptos:</strong> Registro acumulado de participantes registrados.</li>
+                <li><strong>Presentes en Sede:</strong> Conteo en tiempo real de personas que han realizado check-in hoy.</li>
+                <li><strong>Ocupación de Salas:</strong> Porcentaje consolidado de aforo utilizado vs disponibilidad.</li>
+                <li><strong>Certificados Homologados:</strong> Cantidad de diplomas habilitados por cumplimiento del 75% de asistencia.</li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 6: GESTIÓN DE USUARIOS Y PARTICIPANTES -->
+        <section class="section-card" id="usuarios">
+            <h2>6. Gestión de Usuarios y Categorías del Sistema</h2>
+            <p>En la pestaña <strong>Usuarios</strong>, los directivos pueden administrar las cuentas de acceso del personal, asignar roles institucionales y gestionar el reseteo de claves.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=usuarios — CRUD de Usuarios</span>
+                </div>
+                <img src="capturas/05_admin_usuarios.png" alt="Gestión de Usuarios" onclick="openModal(this)">
+                <figcaption>Figura 7: Listado de operadores y personal con edición de roles y permisos.</figcaption>
+            </div>
+
+            <h3>Reglas de Admisión y Estados según Rol:</h3>
+            <p>El sistema cuenta con validaciones estrictas en la selección de estados tanto en edición individual como en cambios masivos (batch):</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Rol Estudiante:</strong> Admite la totalidad de los estados del congreso: <code>Confirmado</code>, <code>Cancelado</code>, <code>Lista de espera</code>, <code>Baja Automática 48hs</code> y <code>Sancionados</code>. Permite aplicar los protocolos disciplinarios y cupos estudiantiles del reglamento oficial.</li>
+                <li><strong>Otros Roles (Docentes, Invitados, Prensa, Autoridades, Operadores, Administradores):</strong> Únicamente admiten los estados estándar <code>Confirmado</code> y <code>Cancelado</code>. Cualquier intento de asignación de estados de sanción o lista de espera queda bloqueado tanto en la interfaz como en el backend.</li>
+            </ul>
+
+            <div class="callout warning">
+                <div>
+                    <strong>Principio de Mínimo Privilegio:</strong> Solo el rol <em>Superadmin</em> puede elevar a un operador al rango de Administrador o Superadmin. Los operadores comunes solo acceden a las vistas de escaneo.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: ACTIVIDADES Y SALAS -->
+        <section class="section-card" id="actividades">
+            <h2>7. Cronograma, Actividades y Prevención de Solapamientos</h2>
+            <p>La pestaña <strong>Actividades</strong> permite configurar conferencias, paneles y talleres prácticos en cada una de las salas de la sede. Toda la información ingresada alimenta de forma inmediata el <strong>Programa Oficial del Congreso</strong> visible en el portal público (<code>/programa</code> y sección principal), garantizando consistencia absoluta entre la base de datos PostgreSQL y la interfaz de usuario.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=actividades — Salas y Cronograma</span>
+                </div>
+                <img src="capturas/06_admin_actividades.png" alt="Actividades y Salas" onclick="openModal(this)">
+                <figcaption>Figura 8: Matriz de actividades con aforos máximos, salas y horarios programados.</figcaption>
+            </div>
+
+            <h3>Motor de Lista de Espera Inteligente:</h3>
+            <p>Si una actividad completa su aforo, los nuevos registros pasan automáticamente a la <em>Lista de Espera</em>. Si un participante inscripto cancela o se libera un cupo, el sistema promueve de forma automática al primer asistente en espera y le remite un aviso por correo electrónico.</p>
+        </section>
+
+        <!-- SECCIÓN 8: PUNTOS DE ACCESO -->
+        <section class="section-card" id="puntos">
+            <h2>8. Configuración de Puntos de Acceso Físicos</h2>
+            <p>Para sectorizar el ingreso (Ej: <em>Entrada Principal</em>, <em>Auditorio A</em>, <em>Taller Informática</em>), el sistema administra puntos de acceso independientes vinculados a los operadores:</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=puntos — Puntos de Acceso</span>
+                </div>
+                <img src="capturas/07_admin_puntos_acceso.png" alt="Puntos de Acceso" onclick="openModal(this)">
+                <figcaption>Figura 9: Administración de puntos de ingreso físico y terminales lectoras.</figcaption>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: ACREDITACIONES Y PWA MÓVIL -->
+        <section class="section-card" id="acreditacion">
+            <h2>9. Módulo de Acreditación y Aplicación PWA Offline</h2>
+            <p>La acreditación puede gestionarse desde dos interfaces complementarias:</p>
+
+            <h3>9.1 Gestión Administrativa de Acreditados</h3>
+            <p>Permite visualizar el padrón general, filtrar por estado (Pre-inscripto, Acreditado, En Espera), buscar por DNI y registrar acreditaciones manuales de contingencia.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=acreditaciones — Padrón de Asistentes</span>
+                </div>
+                <img src="capturas/08_admin_acreditaciones.png" alt="Acreditaciones" onclick="openModal(this)">
+                <figcaption>Figura 10: Control de participantes con filtros por DNI, correo y estado de asistencia.</figcaption>
+            </div>
+
+            <h3>9.2 PWA de Acreditación Rápida para Operadores Móviles</h3>
+            <p>Diseñada para tablets y celulares en la puerta de entrada (<code>/pwa-operador</code>). Utiliza la cámara integrada para escanear los códigos QR de los gafetes en menos de 0.3 segundos.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/pwa-operador — Escáner Móvil con Cámara</span>
+                </div>
+                <img src="capturas/14_pwa_operador_acreditacion.png" alt="PWA Operador de Acreditación" onclick="openModal(this)">
+                <figcaption>Figura 11: Interfaz de escaneo rápido con soporte de cámara y base local IndexedDB.</figcaption>
+            </div>
+
+            <div class="callout tip">
+                <div>
+                    <strong>Contingencia Offline Garantizada:</strong> Si se interrumpe la red Wi-Fi en la sede, la PWA sigue escaneando y registrando acreditaciones localmente en IndexedDB. Al restablecerse la conectividad, se sincronizan automáticamente con el servidor central.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 10: CERTIFICADOS Y EDITOR WYSIWYG -->
+        <section class="section-card" id="certificados">
+            <h2>10. Emisión de Certificados y Diseñador Visual WYSIWYG</h2>
+            <p>El módulo de <strong>Certificados</strong> valida el cumplimiento de las políticas de acreditación institucional (75% de asistencia mínima o presencia en actividades clave) y proporciona un <strong>Editor Visual WYSIWYG</strong> integrado para personalizar diplomas en tiempo real sin modificar código.</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=certificados — Certificados Oficiales</span>
+                </div>
+                <img src="capturas/09_admin_certificados.png" alt="Módulo de Certificados" onclick="openModal(this)">
+                <figcaption>Figura 12: Generador de certificados PDF oficiales con firmas digitales y código de verificación.</figcaption>
+            </div>
+
+            <h3>10.1 Diseñador Visual WYSIWYG de Diplomas</h3>
+            <p>Al hacer clic en el botón destacado <strong>"🎨 Diseñar Plantilla de Certificado"</strong>, se abre una ventana modal de edición en pantalla dividida (split-screen):</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Panel Izquierdo de Personalización:</strong>
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><strong>Identidad Institucional:</strong> Título del emisor superior (ej. <em>"DIRECCIÓN DE EDUCACIÓN TÉCNICA SUPERIOR"</em>), subtítulo del organismo y título de certificación (ej. <em>"CERTIFICADO DE ASISTENCIA"</em>).</li>
+                        <li><strong>Cuerpo del Diploma:</strong> Texto declarativo con placeholders automáticos interactivos (<code>{NOMBRE}</code>, <code>{DNI}</code>, <code>{EVENTO}</code>, <code>{FECHA}</code>, <code>{HORAS}</code>).</li>
+                        <li><strong>Paleta Cromática Oficial:</strong> Selectores de color hex para el borde exterior/orla, el texto del encabezado y el texto del nombre del participante, con previsualización inmediata.</li>
+                        <li><strong>Gestión Dinámica de Autoridades Firmantes:</strong> Permite agregar, editar o remover de 1 a 4 autoridades firmantes (Nombre y Cargo/Función). El motor ajusta de forma responsiva las líneas de firma y sus distancias relativas.</li>
+                    </ul>
+                </li>
+                <li><strong>Panel Derecho de Previsualización en Vivo:</strong>
+                    <p>Muestra el diploma renderizado con las dimensiones exactas A4 apaisadas, recreando fielmente la tipografía, orlas geométricas, sellos y el código QR de validación canónica.</p>
+                </li>
+                <li><strong>Descarga de Prueba Inmediata:</strong>
+                    <p>El botón <strong>"Descargar PDF de Prueba"</strong> solicita al backend el renderizado vectorial real del documento binario mediante <code>pdf-lib</code>, permitiendo inspeccionar la calidad de impresión antes de aplicar cambios a nivel productivo.</p>
+                </li>
+                <li><strong>Persistencia Segura en Base de Datos:</strong>
+                    <p>El botón <strong>"Guardar Plantilla"</strong> persiste la nueva estructura JSON en la tabla <code>configuraciones_sistema</code> con auditoría forense inmediata.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 11: ENCUESTAS DE CALIDAD Y SATISFACCIÓN (WYSIWYG) -->
+        <section class="section-card" id="encuestas">
+            <h2>11. Gestión de Encuestas de Calidad y Diseñador Visual WYSIWYG</h2>
+            <p>Ubicado en la pestaña <strong>"Encuestas"</strong> del panel administrativo. Permite evaluar la calidad pedagógica y organizativa del congreso, así como aplicar el <strong>bloqueo pedagógico</strong> que condiciona la entrega del certificado a la previa respuesta del cuestionario.</p>
+
+            <h3>11.1 Gestión y Métricas de Satisfacción</h3>
+            <p>La vista principal del módulo lista las encuestas registradas, su ventana de fechas activas, estado de obligatoriedad y el botón de <strong>Métricas y Resultados</strong> que presenta:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li>Puntuación promedio de satisfacción global en escala 1 a 5 estrellas.</li>
+                <li>Gráficos de barras con la distribución porcentual de opciones elegidas en preguntas cerradas.</li>
+                <li>Muro analítico de comentarios cualitativos y sugerencias pedagógicas para futuras ediciones.</li>
+            </ul>
+
+            <h3>11.2 Diseñador Visual WYSIWYG de Encuestas</h3>
+            <p>Al pulsar <strong>"🎨 Diseñador WYSIWYG"</strong> en cualquier encuesta, se inicia el constructor interactivo que sincroniza en una sola vista la edición y la experiencia del asistente:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Metadatos y Reglas de Negocio:</strong> Edición en vivo de título, descripción de bienvenida, fechas de inicio/fin y casilla de verificación <strong>"Obligatoria para descargar certificado"</strong>.</li>
+                <li><strong>Batería de Preguntas Dinámica:</strong>
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><strong>⭐ Calificación por Estrellas (1 a 5):</strong> Ideal para evaluar aspectos organizativos, sonido, oradores y talleres.</li>
+                        <li><strong>🔘 Selección Única (Radio Buttons):</strong> Preguntas cerradas con agregado dinámico de opciones personalizadas.</li>
+                        <li><strong>📝 Texto Abierto / Devolución Libre:</strong> Espacio de redacción para comentarios y observaciones del asistente.</li>
+                    </ul>
+                </li>
+                <li><strong>Previsualizador Interactivo en Tiempo Real:</strong>
+                    <p>Muestra cómo visualizará la encuesta el asistente en su teléfono móvil o computadora. Permite alternar entre la vista <strong>📱 Móvil (390px)</strong> y <strong>💻 Escritorio (100%)</strong> con simulación completa de clics en estrellas, opciones y campos de texto.</p>
+                </li>
+                <li><strong>Sincronización Transaccional Batch:</strong>
+                    <p>El botón <strong>"💾 Sincronizar y Guardar Encuesta"</strong> envía todo el formulario al endpoint <code>PUT /api/encuestas/:id/sync-completa</code>, garantizando consistencia relacional mediante una transacción ACID que reemplaza y actualiza en un solo paso preguntas y metadatos.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 12: CUENTAS DE CORREO Y AVISOS -->
+        <section class="section-card" id="correo">
+            <h2>12. Parámetros del Sistema, Notificaciones y Correo Google</h2>
+            <p>En la pestaña <strong>Configuración</strong>, el administrador configura las cuentas de correo institucional, los avisos push y el entorno de pruebas:</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=configuracion — Cuentas de Correo</span>
+                </div>
+                <img src="capturas/10_admin_configuracion_correo.png" alt="Configuración de Correo" onclick="openModal(this)">
+                <figcaption>Figura 13: Panel de configuración SMTP de Google, Notificaciones Push y Modo Sandbox.</figcaption>
+            </div>
+
+            <h3>Configuración de Google SMTP:</h3>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Servidor:</strong> <code>smtp.gmail.com</code> | <strong>Puerto:</strong> <code>587</code> (STARTTLS).</li>
+                <li><strong>Usuario:</strong> <code>nestor.pineiro@gmail.com</code>.</li>
+                <li><strong>Contraseña de Aplicación de 16 caracteres:</strong> Obligatoria para clientes externos según los requisitos de seguridad de Google.</li>
+                <li><strong>Modo Sandbox Institucional:</strong> Permite probar todo el flujo de inscripciones y emisión de QRs sin emitir correos externos reales.</li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 13: AUDITORÍA Y BACKUPS -->
+        <section class="section-card" id="auditoria">
+            <h2>13. Auditoría Forense y Respaldo de Datos (Backups)</h2>
+            <p>El sistema registra de manera inmutable cada acción relevante (inicios de sesión, cambios de roles, acreditaciones y modificaciones de cupos):</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=auditoria — Auditoría y Respaldo</span>
+                </div>
+                <img src="capturas/11_admin_auditoria_backups.png" alt="Auditoría y Backups" onclick="openModal(this)">
+                <figcaption>Figura 14: Registro forense de eventos y generación de copias de seguridad de la base de datos.</figcaption>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 14: CRON Y TAREAS PROGRAMADAS -->
+        <section class="section-card" id="cron">
+            <h2>14. Tareas Programadas y Cron Automático</h2>
+            <p>El monitor de tareas programadas muestra los procesos que corren en segundo plano (recordatorios de 48hs previas, auditoría periódica y purga de sesiones inactivas):</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=cron — Monitor de Tareas Cron</span>
+                </div>
+                <img src="capturas/12_admin_cron_tareas.png" alt="Monitor de Cron" onclick="openModal(this)">
+                <figcaption>Figura 15: Monitoreo de ejecuciones automáticas y estado de tareas en segundo plano.</figcaption>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 15: ESTADÍSTICAS Y REPORTES -->
+        <section class="section-card" id="estadisticas">
+            <h2>15. Estadísticas Desglosadas y Reportes de Gestión</h2>
+            <p>En la pestaña <strong>Estadísticas 5 Ejes</strong>, se presentan los informes de gestión institucional organizados por los ejes temáticos del Congreso:</p>
+
+            <div class="figure-container">
+                <div class="window-top">
+                    <span class="circle red"></span><span class="circle yellow"></span><span class="circle green"></span>
+                    <span class="title-bar">http://localhost:3000/admin?tab=estadisticas_5ejes — Reportes 5 Ejes</span>
+                </div>
+                <img src="capturas/13_admin_estadisticas.png" alt="Estadísticas de 5 Ejes" onclick="openModal(this)">
+                <figcaption>Figura 16: Desglose analítico de asistencia y participación por eje temático e institución.</figcaption>
+        <!-- SECCIÓN 16: PERSONALIZACIÓN VISUAL Y EDITOR DE TEMAS DEL BACKEND -->
+        <section class="section-card" id="temas-backend">
+            <h2>16. Personalización Visual y Editor de Temas del Backend</h2>
+            <p>El sistema cuenta con un motor de personalización cromática y un <strong>Editor de Temas en Vivo</strong> accesible desde <strong>Configuración ➔ 🎨 Temas del Backend</strong>. Permite transformar la apariencia de todo el panel administrativo en tiempo real, adaptando la interfaz al confort visual de cada operador sin alterar jamás el portal público ni las credenciales oficiales de los asistentes.</p>
+
+            <h3>16.1 Paletas Predefinidas Disponibles</h3>
+            <p>El operador puede seleccionar con un solo clic cualquiera de las plantillas cromáticas integradas:</p>
+            <ul class="step-list">
+                <li>
+                    <strong>🏛️ Paleta Oficial CABA Institucional:</strong> Basada estrictamente en la identidad visual del Gobierno de la Ciudad y el Frontend oficial: Azul Oscuro (<code>#1D3343</code>), Azul Claro (<code>#035C80</code>), Amarillo GCABA (<code>#FFCD02</code>) y Blanco Nieve (<code>#FCFCFC</code>).
+                </li>
+                <li>
+                    <strong>☀️ Claro Institucional:</strong> Esquema blanco luminoso con escala de grises slate y acento azul gubernamental.
+                </li>
+                <li>
+                    <strong>🌙 Oscuro Profundo:</strong> Modo nocturno carbón pizarra con fondos oscuros (<code>#0B1120</code> / <code>#1E293B</code>) y tipografía blanca de alto contraste para reducir la fatiga ocular.
+                </li>
+                <li>
+                    <strong>🌿 Menta & Salvia Pastel:</strong> Fondo pastel suave verde menta (<code>#E8F5E9</code>) combinado con tipografía densa verde bosque (<code>#14532D</code>) bajo estándares de accesibilidad WCAG AAA.
+                </li>
+                <li>
+                    <strong>🌊 Cielo & Zafiro Pastel:</strong> Fondo celeste pastel (<code>#E0F2FE</code>) con tipografía azul marino profundo (<code>#0C4A6E</code>).
+                </li>
+                <li>
+                    <strong>🌸 Lavanda & Ciruela Pastel:</strong> Fondo lila pastel (<code>#F3E8FF</code>) con tipografía ciruela púrpura (<code>#3B0764</code>).
+                </li>
+                <li>
+                    <strong>🍑 Durazno & Café Pastel:</strong> Fondo cálido durazno (<code>#FFEDD5</code>) con tipografía chocolate oscuro (<code>#431407</code>).
+                </li>
+            </ul>
+
+            <h3>16.2 Inspector Interactivo "Clic para Corregir"</h3>
+            <p>En la subpestaña <strong>🎯 Clic & Corrección en Vivo</strong>, el operador visualiza una maqueta funcional del sistema. Al hacer clic directamente sobre cualquier componente, el editor lo detecta y abre a la derecha únicamente los valores a modificar:</p>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Elemento Clicado</th>
+                        <th>Variables Modificables</th>
+                        <th>Propósito Visual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fondo General</strong></td>
+                        <td><code>--admin-bg</code>, <code>--admin-text-main</code></td>
+                        <td>Fondo perimetral del sistema y color base del texto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Encabezado / Header</strong></td>
+                        <td><code>--admin-header-bg</code>, <code>--admin-text-header</code>, <code>--admin-border</code></td>
+                        <td>Barra superior de logos, accesos y divisores.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tarjetas y Paneles (Cards)</strong></td>
+                        <td><code>--admin-card-bg</code>, <code>--admin-border</code>, <code>--admin-text-muted</code></td>
+                        <td>Contenedores modulares donde se ubican formularios y tablas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cajas de Entrada (Inputs/Selects)</strong></td>
+                        <td><code>--admin-input-bg</code>, <code>--admin-input-text</code>, <code>--admin-input-border</code></td>
+                        <td>Campos de búsqueda, filtros y cajas de edición.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Botón de Acción (Acento)</strong></td>
+                        <td><code>--admin-accent</code>, <code>--admin-accent-text</code>, <code>--admin-accent-hover</code></td>
+                        <td>Botones principales de guardar, confirmar o filtrar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Botón Secundario (Cancelar)</strong></td>
+                        <td><code>--admin-btn-secondary-bg</code>, <code>--admin-btn-secondary-text</code>, <code>--admin-btn-secondary-border</code></td>
+                        <td>Botones neutros para volver, cancelar modales o limpiar filtros.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acciones Críticas / Peligro</strong></td>
+                        <td><code>--admin-danger-bg</code>, <code>--admin-danger-text</code></td>
+                        <td>Botones de eliminación, rechazo o sanciones disciplinarias.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acciones Positivas / Éxito</strong></td>
+                        <td><code>--admin-success-bg</code>, <code>--admin-success-text</code></td>
+                        <td>Botones de aprobación, emisión de diplomas y confirmación de asistencia.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Insignias y Badges</strong></td>
+                        <td><code>--admin-badge-bg</code>, <code>--admin-badge-text</code></td>
+                        <td>Etiquetas de estado (Acreditado, Pendiente, Confirmado) y roles de usuario.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ventanas Modales y Diálogos</strong></td>
+                        <td><code>--admin-modal-bg</code>, <code>--admin-modal-text</code>, <code>--admin-border</code></td>
+                        <td>Superficies y textos de ventanas flotantes de edición o confirmación.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tablas de Datos</strong></td>
+                        <td><code>--admin-table-header-bg</code>, <code>--admin-table-row-hover</code>, <code>--admin-border</code></td>
+                        <td>Cabeceras de columnas y efecto visual al apoyar el cursor.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>16.3 Fijar Tema como Predeterminado Global del Sistema</h3>
+            <p>Los administradores y superadministradores pueden estandarizar el tema visual para <strong>toda la organización</strong>:</p>
+            <ul class="step-list">
+                <li>
+                    <strong>Botón 💾 Fijar como Default Global:</strong> Disponible tanto en la barra de acciones del <em>Inspector en Vivo</em> como en la cabecera de <em>Paletas Predefinidas</em>.
+                </li>
+                <li>
+                    <strong>Persistencia en Base de Datos:</strong> Al pulsar el botón y confirmar el diálogo interactivo, la configuración activa (sea una paleta oficial como <em>CABA</em> o una personalizada creada con el inspector) se envía al servidor y se graba en PostgreSQL (tabla <code>configuraciones_sistema</code>, clave <code>tema_backend_default</code>).
+                </li>
+                <li>
+                    <strong>Aplicación Inmediata a Nuevos Operadores:</strong> Cualquier operador que ingrese al sistema desde una nueva terminal o navegador recibirá automáticamente este tema oficial por defecto, sin necesidad de configuración manual.
+                </li>
+            </ul>
+
+            <div class="callout tip">
+                <span style="font-size: 20px;">💡</span>
+                <div>
+                    <strong>Persistencia y Portabilidad:</strong> Las preferencias individuales se guardan en el navegador del operador (<code>localStorage</code>), pero si se desea que un tema sea la imagen corporativa oficial para todos, basta pulsar <strong>💾 Fijar como Default Global</strong>. Además, <strong>📋 Exportar JSON</strong> permite compartir configuraciones y <strong>📥 Importar JSON</strong> cargarlas instantáneamente.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL LIGHTBOX PARA AMPLIAR IMÁGENES -->
+    <div id="imgModal" onclick="closeModal()">
+        <img id="modalImg" src="" alt="Captura ampliada">
+    </div>
+
+    <script>
+        function openModal(imgElement) {
+            const modal = document.getElementById('imgModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = imgElement.src;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imgModal').style.display = 'none';
+        }
+
+        // Resaltar navegación activa al desplazarse
+        const sections = document.querySelectorAll('section.section-card');
+        const navLinks = document.querySelectorAll('aside.sidebar nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

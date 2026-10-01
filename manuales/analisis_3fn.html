@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Normalización 3FN | Congreso ETS 2026</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; padding: 40px; }
+        .container { max-width: 900px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        h2 { color: #0284c7; margin-top: 30px; font-size: 1.3em; }
+        p { margin-bottom: 16px; }
+        ul { margin-bottom: 16px; padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        code { background: #f1f5f9; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-family: "JetBrains Mono", Consolas, monospace; font-size: 0.9em; }
+        .highlight { background: #f0fdf4; border-left: 4px solid #10b981; padding: 16px; margin: 20px 0; border-radius: 4px; }
+        .highlight p { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análisis de Normalización (Tercera Forma Normal - 3FN)</h1>
+        
+        <p>Tras analizar la estructura de la base de datos (<code>schema_3fn.sql</code> y <code>reparar_integridad.sql</code>), se determina que, aunque el script se titula "NORMALIZACIÓN ESTRICTA EN TERCERA FORMA NORMAL (3FN)" y hace un excelente trabajo separando catálogos y entidades principales, <strong>no es 3FN pura</strong>.</p>
+
+        <p>Existen violaciones intencionales a la Tercera Forma Normal (transiciones de dependencias e información redundante). Esto es muy común y suele hacerse a propósito (desnormalización controlada) para ganar rendimiento en las lecturas, evitar múltiples <em>JOINs</em> o congelar datos históricos.</p>
+
+        <p>A continuación se detalla exactamente dónde no cumple con la 3FN y el porqué:</p>
+
+        <h2>1. Tabla <code>actividades</code> (Doble fuente de verdad y dependencia transitiva)</h2>
+        <ul>
+            <li><strong><code>disertante_nombre</code> vs <code>disertante_usuario_id</code>:</strong> La tabla almacena el ID del disertante (<code>disertante_usuario_id</code> que apunta a <code>usuarios</code>) pero también guarda explícitamente el <code>disertante_nombre</code>. En 3FN pura, el nombre depende del usuario, no de la actividad. Si el usuario actualiza su nombre en la tabla <code>usuarios</code>, el nombre en <code>actividades</code> quedaría desactualizado.</li>
+            <li><strong>Redundancia con el Catálogo:</strong> Existe un FK <code>catalogo_actividad_id</code> que apunta a <code>catalogo_actividades</code>. Sin embargo, en <code>actividades</code> se repiten los campos <code>nombre</code>, <code>descripcion</code> y <code>tipo_acreditacion_id</code>. Si la actividad hereda estos datos de su catálogo padre, copiarlos en la instancia hija es una violación directa a la 3FN (dependencia transitiva).</li>
+        </ul>
+
+        <h2>2. Tabla <code>certificados</code> (Dependencia transitiva de Evento)</h2>
+        <ul>
+            <li>La tabla tiene la columna <code>evento_id</code>, pero también tiene <code>usuario_id</code>. Observando la tabla <code>usuarios</code>, se evidencia que cada registro de usuario ya está rígidamente atado a un evento (<code>evento_id</code> en la tabla <code>usuarios</code>). Por lo tanto: <code>certificados.usuario_id &rarr; usuarios.evento_id</code>. Almacenar el <code>evento_id</code> nuevamente en <code>certificados</code> es redundante y viola la 3FN, ya que el evento puede deducirse puramente a través del usuario.</li>
+        </ul>
+
+        <h2>3. Tabla <code>encuesta_respuestas</code> (Dependencia transitiva de Rol)</h2>
+        <ul>
+            <li>La tabla almacena <code>rol_id</code> además de <code>usuario_id</code>. Puesto que el ID del usuario ya define inequívocamente cuál es su rol (<code>usuarios.rol_principal_id</code>), guardar el <code>rol_id</code> en cada respuesta de la encuesta es un dato derivado y redundante.</li>
+        </ul>
+
+        <h2>4. Tabla <code>encuesta_respuestas_detalles</code> (Dependencia transitiva de Categoría)</h2>
+        <ul>
+            <li>Se almacena explícitamente <code>categoria_tematica_id</code> junto a la respuesta. Sin embargo, este detalle ya apunta a un <code>pregunta_id</code> y a un <code>opcion_id</code>, los cuales (en sus respectivas tablas) ya tienen asignada su <code>categoria_tematica_id</code>. La categoría depende de la pregunta, no de la instancia de respuesta individual.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Conclusión:</strong>
+            <p style="margin-top: 10px;">La base de datos está fuertemente en <strong>2FN</strong> y gran parte en <strong>3FN</strong>, pero aplica lo que en arquitectura de software se llama <strong>Desnormalización Táctica</strong>. Repetir nombres de disertantes, roles al momento de votar o el evento en un certificado es útil para hacer consultas analíticas rápidas o para "congelar" el estado de los datos en el momento en que se emitió el certificado/respuesta, evitando que cambios futuros en los catálogos alteren el registro histórico. No es "3FN Pura", pero es <strong>pragmáticamente correcto</strong> para un sistema de producción moderno.</p>
+        </div>
+
+        <h2>Datos Estructurados (JSON)</h2>
+        <pre><code class="language-json">{
+  "analisis": "Desnormalización Táctica en 3FN",
+  "cumple_3fn_pura": false,
+  "violaciones": [
+    {
+      "tabla": "actividades",
+      "tipo_dependencia": "Transitiva y Redundancia",
+      "detalles": [
+        "disertante_nombre depende de disertante_usuario_id (transitiva a usuarios)",
+        "nombre, descripcion y tipo_acreditacion_id redundantes con el FK catalogo_actividad_id"
+      ]
+    },
+    {
+      "tabla": "certificados",
+      "tipo_dependencia": "Transitiva",
+      "detalles": [
+        "evento_id depende directamente de usuario_id, ya que cada usuario está atado a un evento"
+      ]
+    },
+    {
+      "tabla": "encuesta_respuestas",
+      "tipo_dependencia": "Transitiva",
+      "detalles": [
+        "rol_id se deduce del usuario_id, por lo que es redundante almacenarlo en la respuesta"
+      ]
+    },
+    {
+      "tabla": "encuesta_respuestas_detalles",
+      "tipo_dependencia": "Transitiva",
+      "detalles": [
+        "categoria_tematica_id se hereda de pregunta_id y opcion_id, no depende de la respuesta"
+      ]
+    }
+  ],
+  "justificacion": "Optimización analítica y preservación del histórico inmutable"
+}</code></pre>
+    </div>
+</body>
+</html>

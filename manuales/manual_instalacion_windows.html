@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Instalación y Desinstalación en Windows | Sistema Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        aside.sidebar {
+            width: 320px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        aside.sidebar .logo-area {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        aside.sidebar .badge-win {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        aside.sidebar h1 { font-size: 18px; color: var(--secondary); font-weight: 800; }
+        aside.sidebar h2 { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+        aside.sidebar nav ul { list-style: none; }
+        aside.sidebar nav li { margin-bottom: 6px; }
+        aside.sidebar nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        aside.sidebar nav a:hover { background-color: var(--primary-light); color: var(--primary-dark); transform: translateX(4px); }
+        aside.sidebar nav a.active { background-color: var(--primary); color: white; }
+
+        main.content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1180px;
+            overflow-x: hidden;
+        }
+
+        .header-doc {
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            border-left: 6px solid #38bdf8;
+        }
+
+        .header-doc h1 { font-size: 30px; font-weight: 800; margin-bottom: 12px; }
+        .header-doc p { font-size: 15.5px; opacity: 0.95; max-width: 820px; }
+
+        .meta-tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .meta-tag { background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        section.section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        section.section-card h2 {
+            font-size: 22px;
+            color: var(--secondary);
+            font-weight: 800;
+            border-bottom: 2px solid #bae6fd;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        section.section-card h3 {
+            font-size: 17px;
+            color: #0369a1;
+            margin: 26px 0 12px 0;
+            font-weight: 700;
+        }
+
+        section.section-card h4 {
+            font-size: 15px;
+            color: var(--secondary);
+            margin: 18px 0 8px 0;
+            font-weight: 700;
+        }
+
+        section.section-card p { margin-bottom: 16px; color: #334155; font-size: 14.5px; }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 16px 0;
+            border: 1px solid #334155;
+        }
+
+        code {
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            background: #f1f5f9;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            font-weight: normal;
+        }
+
+        .callout {
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 20px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .callout.tip { background-color: #ecfdf5; border-left: 4px solid var(--accent); color: #065f46; }
+        .callout.warning { background-color: #fffbeb; border-left: 4px solid var(--warning); color: #92400e; }
+        .callout.danger { background-color: #fef2f2; border-left: 4px solid var(--danger); color: #991b1b; }
+        .callout.info { background-color: #f0f9ff; border-left: 4px solid var(--primary); color: #075985; }
+
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13.5px;
+        }
+
+        table.doc-table th, table.doc-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        table.doc-table th { background: #f1f5f9; color: var(--secondary); font-weight: 700; }
+        table.doc-table tr:nth-child(even) { background: #f8fafc; }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 22px;
+            font-size: 14.5px;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 32px;
+            height: 32px;
+            background: #0284c7;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            main.content { padding: 24px 20px; }
+        }
+
+        @media print {
+            body { background: #fff !important; }
+            aside.sidebar { display: none !important; }
+            main.content { padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+            .header-doc { box-shadow: none !important; border-radius: 0 !important; }
+            .btn-print-action { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <span class="badge-win">WINDOWS 10 & 11</span>
+            <h1>Congreso ETS 2026</h1>
+            <h2>Manual de Instalación y Desinstalación</h2>
+            <div style="margin-top: 12px; display: flex; gap: 6px;">
+                <button onclick="window.print()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                    📥 Descargar PDF
+                </button>
+                <a href="index.html" style="background: #f1f5f9; color: #334155; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                    ← Índice
+                </a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#requisitos">1. Requisitos y Prerrequisitos</a></li>
+                <li><a href="#preparacion">2. Preparación del Entorno Windows</a></li>
+                <li><a href="#instalacion-pasos">3. Proceso de Instalación Paso a Paso</a></li>
+                <li><a href="#control-diario">4. Control y Operación Diaria</a></li>
+                <li><a href="#actualizacion">5. Actualización e Idempotencia</a></li>
+                <li><a href="#desinstalacion">6. Procedimiento de Desinstalación</a></li>
+                <li><a href="#desinstalacion-manual">7. Desinstalación Manual Detallada</a></li>
+                <li><a href="#resolucion-problemas">8. Resolución de Problemas (FAQ)</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <header class="header-doc">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1>Manual Específico de Instalación y Desinstalación en Windows</h1>
+                    <p>Guía técnica exhaustiva que detalla todos los pormenores de aprovisionamiento, despliegue, auditoría, migración segura y baja limpia del Sistema Congreso ETS 2026 en Microsoft Windows 10 y Windows 11 (64-bit).</p>
+                </div>
+                <button onclick="window.print()" class="btn-print-action" style="background: #0284c7; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.25);">
+                    <span>📥</span>
+                    <span>Descargar PDF</span>
+                </button>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">Windows 10 / Windows 11 (x64)</span>
+                <span class="meta-tag">PostgreSQL 14 / 15 / 16 / 17</span>
+                <span class="meta-tag">Node.js LTS (npm.cmd seguro)</span>
+                <span class="meta-tag">Desinstalación Asistida con Resguardo SQL</span>
+            </div>
+        </header>
+
+        <!-- 1. REQUISITOS -->
+        <section class="section-card" id="requisitos">
+            <h2>1. Requisitos de Infraestructura y Prerrequisitos de Software</h2>
+            <p>La plataforma está diseñada para ejecutarse de forma nativa sobre Windows sin requerir subsistemas pesados como Docker o WSL2, garantizando máxima velocidad y mínimo consumo de memoria.</p>
+
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Requisito Mínimo</th>
+                        <th>Recomendado para Producción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sistema Operativo</strong></td>
+                        <td>Windows 10 Home/Pro (64-bit) Versión 21H2+</td>
+                        <td>Windows 10 / 11 Pro o Windows Server 2022 (x64)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procesador (CPU)</strong></td>
+                        <td>Intel Core i3 / AMD Ryzen 3 (2.0 GHz, 4 núcleos)</td>
+                        <td>Intel Core i5 / AMD Ryzen 5 o superior (6+ núcleos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memoria RAM</strong></td>
+                        <td>4 GB de memoria física</td>
+                        <td>8 GB o 16 GB (para compilación y escaneo simultáneo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Almacenamiento</strong></td>
+                        <td>3 GB de espacio libre en disco (SSD recomendado)</td>
+                        <td>10 GB libres para resguardos (backups) y logs</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Software Obligatorio Previo</h3>
+            <ol class="step-list">
+                <li>
+                    <strong>Node.js LTS (Versión 18.18.0 o superior; recomendado v20.x, v22.x o v24.x LTS):</strong>
+                    <br>Descarga oficial: <a href="https://nodejs.org/es/download" target="_blank">https://nodejs.org/es/download</a>.
+                    <br><em>Importante:</em> En el asistente de instalación de Windows, marque la casilla <strong>"Add to PATH"</strong> para que los comandos de terminal se reconozcan globalmente.
+                </li>
+                <li>
+                    <strong>NPM Package Manager (v10.x o superior):</strong>
+                    <br>Se incluye y enlaza de forma automática con el paquete oficial de Node.js.
+                </li>
+                <li>
+                    <strong>PostgreSQL Database Server (Versión 14, 15, 16 o 17 para Windows x64):</strong>
+                    <br>Descarga oficial (EnterpriseDB): <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads" target="_blank">https://www.enterprisedb.com/downloads/postgres-postgresql-downloads</a>.
+                    <br>Durante la instalación, registre la contraseña asignada al superusuario <code>postgres</code> y verifique el puerto de escucha (habitualmente <code>5432</code> o <code>5433</code>).
+                </li>
+                <li>
+                    <strong>Git for Windows (Opcional recomendado - v2.x):</strong>
+                    <br>Descarga oficial: <a href="https://git-scm.com/download/win" target="_blank">https://git-scm.com/download/win</a>.
+                </li>
+            </ol>
+        </section>
+
+        <!-- 2. PREPARACIÓN -->
+        <section class="section-card" id="preparacion">
+            <h2>2. Preparación del Entorno Windows</h2>
+
+            <h3>2.1 Política de Ejecución de PowerShell (ExecutionPolicy)</h3>
+            <p>Por defecto, Windows restringe la ejecución de scripts <code>.ps1</code>. El instalador autónomo y todos los lanzadores por lote (<code>.bat</code>) resuelven esto de forma nativa invocando PowerShell con el parámetro <code>-ExecutionPolicy Bypass</code>, por lo que <strong>no es necesario degradar la directiva de seguridad global del sistema operativo</strong>.</p>
+
+            <h3>2.2 Permisos de Ejecución (Usuario Local vs Administrador)</h3>
+            <div class="callout tip">
+                <div>
+                    <strong>Instalación Flexible:</strong> Si instala en una carpeta de usuario (como <code>C:\CongresoETS2026</code> o <code>D:\Sistemas\Congreso</code>), puede ejecutar <code>Instalar_CongresoETS2026.bat</code> con doble clic directo. Si decide instalar dentro de carpetas protegidas como <code>C:\Program Files</code>, haga clic derecho y seleccione <strong>"Ejecutar como administrador"</strong>.
+                </div>
+            </div>
+
+            <h3>2.3 Configuración de Red y Firewall de Windows Defender</h3>
+            <p>Para permitir que las estaciones de acreditación móviles (celulares y tablets en la puerta mediante la PWA <code>/pwa-operador</code>) se comuniquen con el servidor del congreso en la red local (LAN / Wi-Fi del predio):</p>
+            <pre><code># Ejecutar en PowerShell como Administrador para habilitar puertos 3000 y 4000 en la red local:
+New-NetFirewallRule -DisplayName "Congreso ETS 2026 - Frontend" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Congreso ETS 2026 - Backend API" -Direction Inbound -LocalPort 4000 -Protocol TCP -Action Allow</code></pre>
+        </section>
+
+        <!-- 3. INSTALACIÓN PASO A PASO -->
+        <section class="section-card" id="instalacion-pasos">
+            <h2>3. Proceso de Instalación Paso a Paso</h2>
+            <p>El instalador está programado para ser <strong>100% independiente de rutas absolutas</strong>. Puede ejecutarse desde un pendrive USB, disco externo o carpeta descargada.</p>
+
+            <ol class="step-list">
+                <li>
+                    <strong>Lanzamiento del Asistente:</strong>
+                    <p>Haga doble clic en el archivo raíz:</p>
+                    <pre><code>Instalar_CongresoETS2026.bat</code></pre>
+                    <p>El lanzador inicializa la consola en codificación UTF-8 para garantizar que todos los caracteres y acentos se visualicen correctamente.</p>
+                </li>
+                <li>
+                    <strong>Auditoría Diagnóstica en Tiempo Real:</strong>
+                    <p>Antes de modificar ningún archivo, el instalador inspecciona los servicios locales y despliega una tabla de diagnóstico:</p>
+                    <pre><code> ==========================================================================
+   ESTADO DE SERVICIOS Y PRERREQUISITOS DEL SISTEMA                        
+ ==========================================================================
+
+ [ OK       ] Node.js Runtime              : Instalado (v24.21.0)
+ [ OK       ] NPM Package Manager          : Instalado (v11.19.0)
+ [ OK       ] PostgreSQL Database          : Instalado y activo en puerto 5433
+ [ OK       ] Git for Windows (Opcional)   : Instalado (v2.55.0)
+ [ OK       ] Puertos Web (3000 / 4000)    : Puertos 3000 y 4000 disponibles</code></pre>
+                    <p>Si falta Node.js o el servicio de PostgreSQL está detenido, el asistente ofrece un menú interactivo para abrir los instaladores o la consola de servicios (<code>services.msc</code>) con tecla de re-evaluación inmediata <code>[R]</code>.</p>
+                </li>
+                <li>
+                    <strong>Selección de Directorio Destino:</strong>
+                    <p>El asistente abre un selector gráfico de carpetas de Windows (<em>Folder Browser Dialog</em>). La ruta predeterminada sugerida es <code>C:\CongresoETS2026</code>. El instalador normaliza comillas, barras finales y realiza una prueba de escritura antes de avanzar.</p>
+                </li>
+                <li>
+                    <strong>Despliegue Limpio de Componentes:</strong>
+                    <p>Mediante un copiado selectivo con <code>robocopy</code>, se transfieren los módulos de Backend, Frontend, scripts y manuales excluyendo de forma estricta <code>node_modules</code>, cachés temporales de Next.js y archivos de entorno antiguos.</p>
+                </li>
+                <li>
+                    <strong>Asistente de Base de Datos PostgreSQL:</strong>
+                    <p>El instalador solicita confirmar el Host (<code>localhost</code>), Puerto (detecta automáticamente si es <code>5432</code> o <code>5433</code>), Usuario (<code>postgres</code>) y Contraseña:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 12px;">
+                        <li><strong>Si la base no existe:</strong> Crea <code>congreso_ets2026</code> con codificación <code>UTF-8</code>, aplica el esquema relacional de 26 entidades (<code>schema_3fn.sql</code>) y los datos semilla (<code>seed.sql</code>).</li>
+                        <li><strong>Si la base ya existe (actualización):</strong> Conserva el 100% de los datos existentes y ejecuta de forma idempotente la rutina <code>reparar_integridad.sql</code> para anexar columnas faltantes (como <code>capacidad_maxima</code> en <code>puntos_acceso</code>) y sincronizar secuencias.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Generación de Entorno y Claves Criptográficas:</strong>
+                    <p>El instalador genera automáticamente los archivos de configuración local:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 12px;">
+                        <li><code>backend\.env</code>: Con la cadena de conexión protegida, una clave simétrica <strong>AES-256-CBC</strong> de 32 bytes (64 caracteres hexadecimales) de alta entropía para cifrado de códigos QR, y el secreto de tareas programadas (<code>CRON_SECRET</code>).</li>
+                        <li><code>frontend\.env.local</code>: Con la URL base enlazada al Backend API (<code>http://localhost:4000</code>).</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Instalación de Paquetes y Compilación:</strong>
+                    <p>Ejecuta <code>npm.cmd install --no-audit --no-fund</code> para resolver paquetes sin bloqueos de directiva de script. Luego compila TypeScript en Backend (<code>dist/server.js</code>) y Next.js en Frontend (<code>.next/</code>).</p>
+                </li>
+                <li>
+                    <strong>Creación de Accesos Directos:</strong>
+                    <p>Genera en el Escritorio del usuario el acceso directo oficial <strong><code>Congreso ETS 2026.lnk</code></strong> apuntando al lanzador de la plataforma.</p>
+                </li>
+            </ol>
+        </section>
+
+        <!-- 4. OPERACIÓN DIARIA -->
+        <section class="section-card" id="control-diario">
+            <h2>4. Control y Operación Diaria</h2>
+            <p>Una vez completada la instalación, la administración cotidiana se realiza mediante los accesos directos por lote provistos en la raíz:</p>
+
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Script por Lote</th>
+                        <th>Propósito Operativo</th>
+                        <th>Comportamiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Iniciar_Congreso.bat</code></td>
+                        <td>Arranque general de la plataforma</td>
+                        <td>Inicia Backend (4000), Frontend (3000), espera la disponibilidad en red y abre el navegador en <code>http://localhost:3000</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Detener_Congreso.bat</code></td>
+                        <td>Detención limpia de servicios</td>
+                        <td>Localiza los identificadores de proceso (PIDs) que ocupan los puertos 3000 y 4000 y los finaliza sin dejar instancias en memoria.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Revisar_Servicios.bat</code></td>
+                        <td>Diagnóstico en caliente</td>
+                        <td>Audita Node.js, NPM, PostgreSQL y ejecuta un Smoke Test HTTP contra <code>/health</code> y el portal web.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Reparar_BaseDatos.bat</code></td>
+                        <td>Integridad referencial y aforos</td>
+                        <td>Verifica y repara columnas ausentes, valida que las capacidades de recintos cubran los cupos y resincroniza secuencias.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Desinstalar_Congreso.bat</code></td>
+                        <td>Baja controlada del sistema</td>
+                        <td>Asistente interactivo de desinstalación con opción de backup preventivo y remoción de base de datos.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 5. ACTUALIZACIÓN E IDEMPOTENCIA -->
+        <section class="section-card" id="actualizacion">
+            <h2>5. Procedimiento de Actualización e Idempotencia</h2>
+            <div class="callout tip">
+                <div>
+                    <strong>Principio de Idempotencia:</strong> Ejecutar el instalador sobre una carpeta o base de datos preexistente <strong>NO destruye ni borra los datos operativos de asistentes o acreditaciones</strong>.
+                </div>
+            </div>
+            <p>Cuando se requiere actualizar la plataforma a una versión más reciente (por ejemplo, incorporando nuevas funcionalidades de aforo, tematización o reparaciones de base de datos):</p>
+            <ol class="step-list">
+                <li>Detenga la plataforma ejecutando <code>Detener_Congreso.bat</code>.</li>
+                <li>Ejecute el nuevo instalador <code>Instalar_CongresoETS2026.bat</code> indicando la misma carpeta de destino.</li>
+                <li>El asistente actualizará los archivos de código fuente, mantendrá los parámetros en <code>.env</code> y disparará automáticamente la rutina <code>reparar_integridad.sql</code> en PostgreSQL, asegurando que cualquier nueva columna se agregue sin truncar las tablas.</li>
+                <li>Vuelva a iniciar la plataforma con <code>Iniciar_Congreso.bat</code>.</li>
+            </ol>
+        </section>
+
+        <!-- 6. DESINSTALACIÓN -->
+        <section class="section-card" id="desinstalacion">
+            <h2>6. Procedimiento Completo de Desinstalación del Sistema</h2>
+            <p>La desinstalación del sistema puede realizarse en cualquier momento de manera ordenada, evitando dejar servicios colgados o residuos en disco.</p>
+
+            <h3>6.1 Método Asistido: Desinstalar_Congreso.bat</h3>
+            <p>Haga doble clic en el archivo ubicado en la carpeta del sistema:</p>
+            <pre><code>Desinstalar_Congreso.bat</code></pre>
+
+            <h4>Fases del Asistente de Desinstalación:</h4>
+            <ol class="step-list">
+                <li>
+                    <strong>Confirmación Inicial:</strong> Solicita al operador confirmación explícita (<code>S/N</code>) para prevenir ejecuciones accidentales.
+                </li>
+                <li>
+                    <strong>Detención de Procesos:</strong> Libera los puertos web <code>3000</code> y <code>4000</code> cerrando de forma segura las instancias de Node.js asociadas.
+                </li>
+                <li>
+                    <strong>Resguardo Preventivo Opcional (Backup SQL):</strong> Pregunta si desea generar un respaldo de seguridad previo. Si responde <code>S</code>, invoca <code>pg_dump</code> y almacena el archivo completo <code>backup_previo_desinstalacion_[fecha].sql</code> en el <strong>Escritorio de Windows</strong>.
+                </li>
+                <li>
+                    <strong>Gestión de PostgreSQL:</strong> Pregunta si desea eliminar la base de datos <code>congreso_ets2026</code>. Si se confirma, desconecta los clientes concurrentes con <code>pg_terminate_backend</code> y ejecuta <code>DROP DATABASE</code>. Si responde <code>N</code>, la base queda almacenada intacta en PostgreSQL.
+                </li>
+                <li>
+                    <strong>Remoción de Accesos Directos:</strong> Elimina el acceso directo <code>Congreso ETS 2026.lnk</code> del Escritorio.
+                </li>
+                <li>
+                    <strong>Cierre y Eliminación Física:</strong> Concluye informando que los servicios fueron dados de baja y que puede borrarse la carpeta contenedora.
+                </li>
+            </ol>
+        </section>
+
+        <!-- 7. DESINSTALACIÓN MANUAL -->
+        <section class="section-card" id="desinstalacion-manual">
+            <h2>7. Desinstalación Manual Paso a Paso (Vía Terminal)</h2>
+            <p>Si un administrador de sistemas requiere automatizar la baja mediante scripts desatendidos de PowerShell o CMD:</p>
+
+            <h3>Paso 1: Detener los servicios en ejecución</h3>
+            <pre><code># Detener procesos en puertos 3000 y 4000:
+$puertos = @(3000, 4000)
+foreach ($p in $puertos) {
+    Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue | ForEach-Object {
+        Stop-Process -Id $_.OwningProcess -Force
+    }
+}</code></pre>
+
+            <h3>Paso 2: Generar Backup de Resguardo (Opcional)</h3>
+            <pre><code>set PGPASSWORD=tu_password_postgres
+pg_dump -h localhost -p 5432 -U postgres -d congreso_ets2026 -F p -f "%USERPROFILE%\Desktop\backup_seguridad_congreso.sql"
+set PGPASSWORD=</code></pre>
+
+            <h3>Paso 3: Eliminar la Base de Datos PostgreSQL</h3>
+            <pre><code>set PGPASSWORD=tu_password_postgres
+psql -h localhost -p 5432 -U postgres -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'congreso_ets2026' AND pid <> pg_backend_pid();"
+psql -h localhost -p 5432 -U postgres -d postgres -c "DROP DATABASE IF EXISTS congreso_ets2026;"
+set PGPASSWORD=</code></pre>
+
+            <h3>Paso 4: Eliminar Accesos Directos del Escritorio</h3>
+            <pre><code>Remove-Item -Path "$([Environment]::GetFolderPath('Desktop'))\Congreso ETS 2026.lnk" -Force -ErrorAction SilentlyContinue</code></pre>
+
+            <h3>Paso 5: Eliminar el Directorio Físico</h3>
+            <pre><code># Reemplazar con la ruta donde fue instalado:
+Remove-Item -Path "C:\CongresoETS2026" -Recurse -Force</code></pre>
+
+            <h3>Paso 6: Nota sobre Motores Compartidos (Node.js y PostgreSQL)</h3>
+            <div class="callout warning">
+                <div>
+                    <strong>Preservación de Prerrequisitos:</strong> Node.js y PostgreSQL son motores compartidos que pueden albergar otros desarrollos o bases de datos en la máquina. Por esta razón, el desinstalador <strong>no los desinstala</strong>. Si desea retirarlos por completo del equipo, hágalo desde <em>Configuración de Windows -> Aplicaciones instaladas</em>.
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. RESOLUCIÓN DE PROBLEMAS -->
+        <section class="section-card" id="resolucion-problemas">
+            <h2>8. Matriz de Resolución de Incidentes y Preguntas Frecuentes</h2>
+
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Síntoma / Incidencia</th>
+                        <th>Causa Raíz</th>
+                        <th>Solución Técnica Inmediata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>"Directiva de ejecución restringida" en PowerShell</strong></td>
+                        <td>La directiva global de Windows prohíbe scripts <code>.ps1</code>.</td>
+                        <td>Ejecute siempre los scripts mediante los archivos <code>.bat</code> provistos, los cuales aplican <code>-ExecutionPolicy Bypass</code> automáticamente sin alterar la seguridad del equipo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PostgreSQL se instaló en el puerto 5433</strong></td>
+                        <td>Coexistencia con otra instancia o instalador de EnterpriseDB.</td>
+                        <td>El instalador detecta automáticamente si el puerto 5433 está escuchando y lo sugiere por defecto; solo presione Enter al configurar la base de datos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>El puerto 3000 o 4000 aparece ocupado</strong></td>
+                        <td>Instancia previa de Node.js o proceso huérfano activo.</td>
+                        <td>Haga doble clic en <code>Detener_Congreso.bat</code> para liberar los puertos de inmediato.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error "No existe la columna capacidad_maxima"</strong></td>
+                        <td>Base de datos previa desactualizada o migración incompleta.</td>
+                        <td>Ejecute <code>Reparar_BaseDatos.bat</code> en la raíz. La utilidad añadirá las columnas faltantes y regularizará las claves foráneas sin pérdida de datos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>El escáner QR en celulares no conecta con la PC</strong></td>
+                        <td>Bloqueo del Firewall de Windows en la red Wi-Fi local.</td>
+                        <td>Habilite las reglas de entrada para los puertos 3000 y 4000 en el Firewall de Windows Defender según se explica en la Sección 2.3.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('section.section-card');
+        const navLinks = document.querySelectorAll('aside.sidebar nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+@import "tailwindcss";
+
+:root {
+  /* Colores Institucionales */
+  --color-azul-oscuro: #1D3343;
+  --color-azul-claro: #035C80;
+  --color-amarillo: #FFCD02;
+  --color-blanco: #FCFCFC;
+
+  /* Colores Generales */
+  --background: var(--color-blanco);
+  --foreground: var(--color-azul-oscuro);
+
+  /* Tipografías */
+  --font-principal: "Archivo", Arial, sans-serif;
+  --font-secundaria: Arial, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-azul-oscuro: var(--color-azul-oscuro);
+  --color-azul-claro: var(--color-azul-claro);
+  --color-amarillo: var(--color-amarillo);
+  --color-blanco: var(--color-blanco);
+
+  --color-frontend-hero: var(--frontend-hero-bg, var(--color-azul-oscuro));
+  --color-frontend-cta: var(--frontend-btn-cta-bg, var(--color-amarillo));
+  --color-frontend-header: var(--frontend-header-bg, #ffffff);
+  --color-frontend-card: var(--frontend-card-bg, #ffffff);
+
+  --font-sans: var(--font-principal);
+}
+
+html {
+  font-family: var(--font-principal);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-principal);
+}
+
+/* ==========================================================================
+   ESTILOS DINÁMICOS EXCLUSIVOS DEL PANEL ADMINISTRATIVO (BACKEND)
+   ========================================================================== */
+.admin-root {
+  background-color: var(--admin-bg, #f8fafc) !important;
+  color: var(--admin-text-main, #0f172a) !important;
+}
+
+/* Tarjetas y Paneles */
+.admin-root .admin-card,
+.admin-root div[class*="bg-white"]:not(.admin-preview-box *):not(.swal2-popup *):not(.credential-card *) {
+  background-color: var(--admin-card-bg, #ffffff) !important;
+  color: var(--admin-text-main, #0f172a) !important;
+  border-color: var(--admin-border, #e2e8f0) !important;
+}
+
+/* Encabezados y Barras de Navegación */
+.admin-root header,
+.admin-root nav {
+  background-color: var(--admin-header-bg, #ffffff) !important;
+  border-color: var(--admin-border, #e2e8f0) !important;
+  color: var(--admin-text-header, #0f172a) !important;
+}
+
+/* Menú Lateral Drawer */
+.admin-root .admin-drawer {
+  background-color: var(--admin-drawer-bg, #ffffff) !important;
+  border-color: var(--admin-border, #e2e8f0) !important;
+}
+
+/* Tablas de Datos */
+.admin-root table {
+  border-color: var(--admin-border, #e2e8f0) !important;
+}
+
+.admin-root thead,
+.admin-root thead tr,
+.admin-root thead th {
+  background-color: var(--admin-table-header-bg, #f8fafc) !important;
+  color: var(--admin-text-muted, #64748b) !important;
+  border-color: var(--admin-border, #e2e8f0) !important;
+}
+
+.admin-root tbody tr:hover {
+  background-color: var(--admin-table-row-hover, #f8fafc) !important;
+}
+
+.admin-root tbody td {
+  border-color: var(--admin-border, #e2e8f0) !important;
+  color: var(--admin-text-main, #0f172a);
+}
+
+/* Formularios: Cajas de texto, Selects y Textareas */
+.admin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.admin-root select,
+.admin-root textarea {
+  background-color: var(--admin-input-bg, #ffffff) !important;
+  color: var(--admin-input-text, #0f172a) !important;
+  border-color: var(--admin-input-border, #cbd5e1) !important;
+}
+
+.admin-root input::placeholder,
+.admin-root textarea::placeholder {
+  color: var(--admin-text-muted, #64748b) !important;
+  opacity: 0.8;
+}
+
+/* Textos Generales y Subtítulos */
+.admin-root h1,
+.admin-root h2,
+.admin-root h3,
+.admin-root h4 {
+  color: var(--admin-text-main, #0f172a);
+}
+
+.admin-root p,
+.admin-root span[class*="text-gray-500"],
+.admin-root span[class*="text-gray-600"],
+.admin-root p[class*="text-gray-500"] {
+  color: var(--admin-text-muted, #64748b);
+}
+
+/* Botones de Acento Principal */
+.admin-root .admin-btn-accent,
+.admin-root button[class*="bg-blue-600"]:not(.swal2-confirm) {
+  background-color: var(--admin-accent, #005691) !important;
+  color: var(--admin-accent-text, #ffffff) !important;
+  border-radius: var(--admin-btn-radius, 8px) !important;
+}
+
+.admin-root button[class*="bg-blue-600"]:not(.swal2-confirm):hover {
+  background-color: var(--admin-accent-hover, #00416d) !important;
+}
+
+/* Botones Secundarios / Cancelar / Volver */
+.admin-root .admin-btn-secondary,
+.admin-root button[class*="bg-gray-100"]:not(.admin-preview-box *),
+.admin-root button[class*="bg-gray-200"]:not(.admin-preview-box *),
+.admin-root button[class*="bg-slate-100"]:not(.admin-preview-box *) {
+  background-color: var(--admin-btn-secondary-bg, #f1f5f9) !important;
+  color: var(--admin-btn-secondary-text, #334155) !important;
+  border-color: var(--admin-btn-secondary-border, #cbd5e1) !important;
+  border-radius: var(--admin-btn-radius, 8px) !important;
+}
+
+/* Botones de Acción Crítica / Peligro */
+.admin-root .admin-btn-danger,
+.admin-root button[class*="bg-red-600"]:not(.swal2-confirm),
+.admin-root button[class*="bg-red-500"]:not(.swal2-confirm) {
+  background-color: var(--admin-danger-bg, #ef4444) !important;
+  color: var(--admin-danger-text, #ffffff) !important;
+  border-radius: var(--admin-btn-radius, 8px) !important;
+}
+
+/* Botones de Éxito / Confirmar / Aprobar */
+.admin-root .admin-btn-success,
+.admin-root button[class*="bg-emerald-600"]:not(.swal2-confirm),
+.admin-root button[class*="bg-green-600"]:not(.swal2-confirm) {
+  background-color: var(--admin-success-bg, #10b981) !important;
+  color: var(--admin-success-text, #ffffff) !important;
+  border-radius: var(--admin-btn-radius, 8px) !important;
+}
+
+/* Badges e Insignias de Estado */
+.admin-root .admin-badge,
+.admin-root span[class*="bg-blue-100"][class*="text-blue-800"],
+.admin-root span[class*="bg-indigo-100"][class*="text-indigo-800"] {
+  background-color: var(--admin-badge-bg, #e0f2fe) !important;
+  color: var(--admin-badge-text, #0369a1) !important;
+}
+
+/* Ventanas Modales y Diálogos Emergentes */
+.admin-root .admin-modal,
+.admin-root div[role="dialog"] div[class*="bg-white"] {
+  background-color: var(--admin-modal-bg, #ffffff) !important;
+  color: var(--admin-modal-text, #0f172a) !important;
+  border-color: var(--admin-border, #cbd5e1) !important;
+}
+
+/* ==========================================================================
+   ESTILOS DINÁMICOS DEL PORTAL PÚBLICO (FRONTEND)
+   ========================================================================== */
+body:not(.admin-root) {
+  background-color: var(--background, #FCFCFC) !important;
+  color: var(--foreground, #1D3343) !important;
+}
+
+/* 1. Header y Navegación */
+body:not(.admin-root) header {
+  background-color: var(--frontend-header-bg, #ffffff) !important;
+  border-color: var(--frontend-header-border, #E2E8F0) !important;
+  color: var(--frontend-header-text, #1D3343) !important;
+}
+
+body:not(.admin-root) header nav a,
+body:not(.admin-root) header a:not([href="/login"]) {
+  color: var(--frontend-header-text, #1D3343);
+}
+
+body:not(.admin-root) header nav a:hover,
+body:not(.admin-root) header a:not([href="/login"]):hover {
+  color: var(--frontend-header-link-hover, #FFCD02);
+}
+
+/* 2. Hero y Portada */
+body:not(.admin-root) section[class*="bg-azul-oscuro"],
+body:not(.admin-root) .bg-azul-oscuro {
+  background-color: var(--frontend-hero-bg, var(--color-azul-oscuro)) !important;
+}
+
+body:not(.admin-root) section[class*="bg-azul-oscuro"] h1,
+body:not(.admin-root) section[class*="bg-azul-oscuro"] h2,
+body:not(.admin-root) section[class*="bg-azul-oscuro"] h3,
+body:not(.admin-root) section[class*="bg-azul-oscuro"] h4,
+body:not(.admin-root) section[class*="bg-azul-oscuro"] p {
+  color: var(--frontend-hero-text, #ffffff) !important;
+}
+
+/* 3. Botones CTA Principales y Acciones */
+body:not(.admin-root) .bg-amarillo,
+body:not(.admin-root) button[class*="bg-amarillo"],
+body:not(.admin-root) a[href="/login"]:not(.admin-root *),
+body:not(.admin-root) .bg-amber-400 {
+  background-color: var(--frontend-btn-cta-bg, var(--color-amarillo)) !important;
+  color: var(--frontend-btn-cta-text, var(--color-azul-oscuro)) !important;
+}
+
+body:not(.admin-root) button,
+body:not(.admin-root) .bg-amarillo,
+body:not(.admin-root) button[class*="bg-amarillo"],
+body:not(.admin-root) a[href="/login"]:not(.admin-root *),
+body:not(.admin-root) .bg-amber-400,
+body:not(.admin-root) .btn-diploma {
+  border-radius: var(--frontend-btn-radius, 6px) !important;
+}
+
+body:not(.admin-root) .bg-amarillo:hover,
+body:not(.admin-root) button[class*="bg-amarillo"]:hover,
+body:not(.admin-root) a[href="/login"]:not(.admin-root *):hover,
+body:not(.admin-root) .bg-amber-400:hover {
+  background-color: var(--frontend-btn-cta-hover, #e6b800) !important;
+}
+
+/* 4. Banner de Notificaciones Push */
+body:not(.admin-root) div[class*="from-blue-900"] {
+  background: var(--frontend-banner-push-bg, #1e3a8a) !important;
+  border-color: var(--frontend-banner-push-border, #3b82f6) !important;
+  color: var(--frontend-banner-push-text, #ffffff) !important;
+}
+
+/* 5. Sección Sobre el Congreso */
+body:not(.admin-root) section#congreso,
+body:not(.admin-root) .bg-blanco {
+  background-color: var(--frontend-sobre-bg, var(--color-blanco)) !important;
+}
+
+body:not(.admin-root) section#congreso h2 {
+  color: var(--frontend-sobre-title, var(--color-azul-oscuro)) !important;
+}
+
+body:not(.admin-root) section#congreso p {
+  color: var(--frontend-sobre-text, #334155);
+}
+
+/* 6. Tarjetas de Actividades y Módulos Formativos */
+body:not(.admin-root) div[class*="bg-[#FCFCFC]"],
+body:not(.admin-root) .card-custom {
+  background-color: var(--frontend-card-bg, #ffffff) !important;
+  border-color: var(--frontend-card-border, #E2E8F0) !important;
+}
+
+body:not(.admin-root) div[class*="bg-[#FCFCFC]"] h3,
+body:not(.admin-root) div[class*="bg-[#FCFCFC]"] h4 {
+  color: var(--frontend-card-title, #1D3343) !important;
+}
+
+body:not(.admin-root) div[class*="bg-[#FCFCFC]"] p {
+  color: var(--frontend-card-text, #4B5563) !important;
+}
+
+body:not(.admin-root) div[class*="bg-[#FCFCFC]"] a {
+  color: var(--frontend-card-link, #035C80) !important;
+}
+
+/* 7. Programa y Grilla de Conferencias */
+body:not(.admin-root) .border-azul-oscuro {
+  border-color: var(--frontend-activity-card-border, #CBD5E1) !important;
+  background-color: var(--frontend-activity-card-bg, #ffffff) !important;
+}
+
+body:not(.admin-root) button[class*="bg-azul-oscuro"] {
+  background-color: var(--frontend-filter-active-bg, #1D3343) !important;
+  color: var(--frontend-filter-active-text, #ffffff) !important;
+}
+
+/* 8. Formularios de Inscripción e Inputs */
+body:not(.admin-root) main input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+body:not(.admin-root) main select,
+body:not(.admin-root) main textarea {
+  background-color: var(--frontend-input-bg, #ffffff) !important;
+  border-color: var(--frontend-input-border, #CBD5E1) !important;
+  color: var(--frontend-input-text, #1D3343) !important;
+}
+
+/* 9. Credencial Digital y QR Criptográfico */
+body:not(.admin-root) .credential-card,
+body:not(.admin-root) div[class*="credential-preview"] {
+  background-color: var(--frontend-credencial-card-bg, #ffffff) !important;
+  border-color: var(--frontend-credencial-border, #CBD5E1) !important;
+}
+
+body:not(.admin-root) .credential-card-header {
+  background-color: var(--frontend-credencial-header-bg, #1D3343) !important;
+  color: var(--frontend-credencial-header-text, #ffffff) !important;
+}
+
+body:not(.admin-root) .credential-badge {
+  background-color: var(--frontend-credencial-badge-bg, #035C80) !important;
+  color: var(--frontend-credencial-badge-text, #ffffff) !important;
+}
+
+body:not(.admin-root) .btn-diploma {
+  background-color: var(--frontend-credencial-btn-diploma-bg, #FFCD02) !important;
+  color: var(--frontend-credencial-btn-diploma-text, #1D3343) !important;
+}
+
+/* 10. Centro de Recursos y Tarjetas de Materiales */
+body:not(.admin-root) article[class*="bg-white"],
+body:not(.admin-root) .material-card {
+  background-color: var(--frontend-materiales-card-bg, #ffffff) !important;
+  border-color: var(--frontend-materiales-card-border, #E2E8F0) !important;
+}
+
+body:not(.admin-root) .material-tag {
+  background-color: var(--frontend-materiales-tag-bg, #1D3343) !important;
+  color: var(--frontend-materiales-tag-text, #ffffff) !important;
+}
+
+/* 11. Preguntas Frecuentes y Acordeón FAQ */
+body:not(.admin-root) details[class*="bg-white"],
+body:not(.admin-root) .faq-card {
+  background-color: var(--frontend-faq-card-bg, #ffffff) !important;
+  border-color: var(--frontend-faq-card-border, #E2E8F0) !important;
+}
+
+body:not(.admin-root) details summary h3,
+body:not(.admin-root) .faq-question {
+  color: var(--frontend-faq-question-text, #1D3343) !important;
+}
+
+body:not(.admin-root) details div[class*="text-slate-600"],
+body:not(.admin-root) .faq-answer {
+  color: var(--frontend-faq-answer-text, #475569) !important;
+}
+
+/* 12. Footer Institucional */
+body:not(.admin-root) footer[class*="bg-azul-oscuro"],
+body:not(.admin-root) footer {
+  background-color: var(--frontend-footer-bg, var(--color-azul-oscuro)) !important;
+  color: var(--frontend-footer-text, var(--color-blanco)) !important;
+  border-color: var(--frontend-footer-border, #334155) !important;
+}
+
+/* ==========================================================================
+   ESTILOS DE IMPRESIÓN OFICIAL - HOJA A4 ÚNICA ESTRICTA
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  /* Ocultar elementos no imprimibles */
+  .no-print,
+  .no-print *,
+  header:not(.print-header),
+  nav,
+  footer:not(.print-footer),
+  aside,
+  button,
+  .swal2-container,
+  .alert-info {
+    display: none !important;
+  }
+
+  /* Clases auxiliares para visibilidad exclusiva en impresión */
+  .d-print-none {
+    display: none !important;
+  }
+
+  .d-print-block {
+    display: block !important;
+  }
+
+  .d-print-flex {
+    display: flex !important;
+  }
+
+  /* Forzar fondo blanco y dimensiones exactas de una sola hoja A4 */
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: auto !important;
+    max-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Evitar saltos de página y forzar contención en una hoja */
+  .credential-print-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important;
+    break-after: avoid !important;
+    break-before: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .credential-card {
+    box-shadow: none !important;
+    border: 2px dashed #94a3b8 !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    background-color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Neutralizar contenedores que puedan agregar padding o scroll */
+  main.container,
+  .container,
+  .min-h-screen {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: block !important;
+  }
+}

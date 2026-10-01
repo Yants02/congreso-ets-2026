@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Documentación y Manuales | Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1080px;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .badge-gov {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        p.lead {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .grid-manuales {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .card-manual {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-manual:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .card-manual .tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            width: fit-content;
+            margin-bottom: 16px;
+        }
+
+        .tag-user { background: #e0f2fe; color: #0369a1; }
+        .tag-tech { background: #e0e7ff; color: #4338ca; }
+        .tag-ops { background: #dcfce7; color: #15803d; }
+
+        .card-manual h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .card-manual p {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            flex: 1;
+        }
+
+        .card-manual a.btn-acceder {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            transition: background 0.15s ease;
+        }
+
+        .card-manual a.btn-acceder:hover {
+            background: #0369a1;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="hero">
+            <span class="badge-gov">DETS · GCABA</span>
+            <h1>Centro de Documentación y Manuales</h1>
+            <p class="lead">Manuales oficiales del Sistema de Gestión Integral del 1° Congreso de Educación Técnica Superior.</p>
+        </div>
+
+        <div class="grid-manuales">
+            <!-- MANUAL DE USUARIO -->
+            <div class="card-manual">
+                <span class="tag tag-user">Ilustrado · Editores WYSIWYG</span>
+                <h2>Manual de Usuario</h2>
+                <p>Guía de operación paso a paso para asistentes, operadores de acreditación y administradores. Incluye instructivos para el Diseñador Visual de Certificados, Constructor de Encuestas y el nuevo <strong>Editor Integral de Temas en Vivo con inspector Clic para Corregir</strong>.</p>
+                <div style="display: flex; gap: 8px; margin-top: auto;">
+                    <a href="manual_usuario.html" class="btn-acceder" style="flex: 1;">Ver Manual &rarr;</a>
+                    <a href="manual_usuario.html" target="_blank" class="btn-acceder" style="background: #ef4444; padding: 12px 14px;" title="Abrir para imprimir o descargar en PDF">📥 PDF</a>
+                </div>
+            </div>
+
+            <!-- MANUAL TÉCNICO -->
+            <div class="card-manual">
+                <span class="tag tag-tech">Arquitectura & APIs</span>
+                <h2>Manual Técnico</h2>
+                <p>Especificación de software, esquema relacional en 3FN, criptografía simétrica AES-256 para códigos QR, catálogo de endpoints REST, motor de tematización dinámica scoped (<code>.admin-root</code>) y sincronización batch.</p>
+                <div style="display: flex; gap: 8px; margin-top: auto;">
+                    <a href="manual_tecnico.html" class="btn-acceder" style="flex: 1;">Ver Manual &rarr;</a>
+                    <a href="manual_tecnico.html" target="_blank" class="btn-acceder" style="background: #ef4444; padding: 12px 14px;" title="Abrir para imprimir o descargar en PDF">📥 PDF</a>
+                </div>
+            </div>
+
+            <!-- MANUAL OPERATIVO -->
+            <div class="card-manual">
+                <span class="tag tag-ops">Sistemas & IT</span>
+                <h2>Manual Operativo</h2>
+                <p>Guía de despliegue nativo en Microsoft Windows 10/11, administración del servicio PostgreSQL, configuración de correo Google SMTP, gestión de perfiles visuales oficiales CABA, exportación JSON y contingencia offline.</p>
+                <div style="display: flex; gap: 8px; margin-top: auto;">
+                    <a href="manual_operativo.html" class="btn-acceder" style="flex: 1;">Ver Manual &rarr;</a>
+                    <a href="manual_operativo.html" target="_blank" class="btn-acceder" style="background: #ef4444; padding: 12px 14px;" title="Abrir para imprimir o descargar en PDF">📥 PDF</a>
+                </div>
+            </div>
+
+            <!-- DICCIONARIO DE DATOS -->
+            <div class="card-manual">
+                <span class="tag" style="background: #f3e8ff; color: #6b21a8;">PostgreSQL 16 · 3FN</span>
+                <h2>Diccionario de Datos</h2>
+                <p>Catálogo exhaustivo de tablas, atributos, tipos de datos, claves primarias, foráneas, restricciones de unicidad y reglas de integridad referencial agrupadas por módulos.</p>
+                <div style="display: flex; gap: 8px; margin-top: auto;">
+                    <a href="diccionario_datos.html" class="btn-acceder" style="flex: 1; background: #8b5cf6;">Ver Diccionario &rarr;</a>
+                    <a href="diccionario_datos.html" target="_blank" class="btn-acceder" style="background: #ef4444; padding: 12px 14px;" title="Abrir para imprimir o descargar en PDF">📥 PDF</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Congreso ETS 2026 &bull; Dirección de Educación Técnica Superior (DETS - GCABA) &bull; Documentación Oficial
+        </footer>
+    </div>
+
+</body>
+</html>

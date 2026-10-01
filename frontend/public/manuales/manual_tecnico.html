@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Técnico | Sistema Congreso ETS 2026</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        aside.sidebar {
+            width: 320px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        aside.sidebar .logo-area {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        aside.sidebar .badge-tech {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        aside.sidebar h1 { font-size: 18px; color: var(--secondary); font-weight: 800; }
+        aside.sidebar h2 { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+        aside.sidebar nav ul { list-style: none; }
+        aside.sidebar nav li { margin-bottom: 6px; }
+        aside.sidebar nav a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        aside.sidebar nav a:hover { background-color: var(--primary-light); color: var(--primary-dark); transform: translateX(4px); }
+        aside.sidebar nav a.active { background-color: var(--primary); color: white; }
+
+        main.content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1180px;
+            overflow-x: hidden;
+        }
+
+        .header-doc {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            border-left: 6px solid var(--primary);
+        }
+
+        .header-doc h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+        .header-doc p { font-size: 16px; opacity: 0.9; max-width: 800px; }
+
+        .meta-tags { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .meta-tag { background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        section.section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        section.section-card h2 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 800;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        section.section-card h3 {
+            font-size: 18px;
+            color: var(--primary-dark);
+            margin: 28px 0 12px 0;
+            font-weight: 700;
+        }
+
+        section.section-card p { margin-bottom: 16px; color: #334155; font-size: 15px; }
+
+        /* Bloques de Código */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "JetBrains Mono", Consolas, Monaco, "Courier New", monospace;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin: 18px 0;
+            border: 1px solid #334155;
+        }
+
+        code {
+            font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+            background: #f1f5f9;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14.5px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .callout.tip { background-color: #f0fdf4; border-left: 4px solid var(--accent); color: #166534; }
+        .callout.warning { background-color: #fffbeb; border-left: 4px solid var(--warning); color: #92400e; }
+        .callout.info { background-color: #f0f9ff; border-left: 4px solid var(--primary); color: #075985; }
+
+        table.doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        table.doc-table th, table.doc-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        table.doc-table th { background: #f1f5f9; color: var(--secondary); font-weight: 700; }
+        table.doc-table tr:nth-child(even) { background: #f8fafc; }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            main.content { padding: 24px 20px; }
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: #ffffff !important;
+            }
+            aside.sidebar {
+                display: none !important;
+            }
+            main.content {
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .header-doc {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+                color: #ffffff !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                border-left: 6px solid var(--primary) !important;
+                page-break-after: avoid;
+            }
+            .meta-tags {
+                display: flex !important;
+            }
+            .meta-tag {
+                background: rgba(255, 255, 255, 0.2) !important;
+                color: #ffffff !important;
+            }
+            section.section-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                page-break-inside: auto;
+                break-inside: auto;
+                margin-bottom: 30px !important;
+            }
+            pre {
+                background: #1e293b !important;
+                color: #e2e8f0 !important;
+                border: 1px solid #334155 !important;
+                page-break-inside: avoid;
+            }
+            code {
+                color: #0369a1 !important;
+            }
+            table.doc-table {
+                page-break-inside: auto;
+            }
+            table.doc-table tr {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            table.doc-table th {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
+            .btn-print-action {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <span class="badge-tech">ARQUITECTURA & API</span>
+            <h1>Congreso ETS 2026</h1>
+            <h2>Manual Técnico del Sistema</h2>
+            <div style="margin-top: 12px; display: flex; gap: 6px;">
+                <button onclick="window.print()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; items-center; gap: 4px;">
+                    📥 Descargar PDF
+                </button>
+                <a href="index.html" style="background: #f1f5f9; color: #334155; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                    ← Índice
+                </a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#arquitectura">1. Arquitectura General</a></li>
+                <li><a href="#stack">2. Stack Tecnológico</a></li>
+                <li><a href="#modelo-datos">3. Modelo Relacional (3FN)</a></li>
+                <li><a href="#criptografia">4. Criptografía QR AES-256</a></li>
+                <li><a href="#seguridad">5. Seguridad y Sesiones</a></li>
+                <li><a href="#motores">6. Motores de Negocio</a></li>
+                <li><a href="#api">7. Especificación de APIs</a></li>
+                <li><a href="#pwa">8. Motor PWA Offline</a></li>
+                <li><a href="#cron">9. Tareas Programadas</a></li>
+                <li><a href="#backup-engine">10. Motor de Backups</a></li>
+                <li><a href="#windows-arch">11. Despliegue en Windows</a></li>
+                <li><a href="#theming-engine">12. Motor de Tematización Scoped (.admin-root)</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <header class="header-doc">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h1>Manual de Arquitectura y Especificación Técnica</h1>
+                    <p>Documentación técnica profunda para desarrolladores, auditores y administradores de infraestructura sobre el diseño de software, esquemas de bases de datos, seguridad criptográfica y endpoints de la plataforma Congreso ETS 2026.</p>
+                </div>
+                <button onclick="window.print()" class="btn-print-action" style="background: #0284c7; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.25); transition: all 0.2s ease;">
+                    <span style="font-size: 16px;">📥</span>
+                    <span>Descargar PDF</span>
+                </button>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">Arquitectura Monorepo Desacoplado</span>
+                <span class="meta-tag">PostgreSQL 16 Normalizado 3FN</span>
+                <span class="meta-tag">Cifrado AES-256-CBC</span>
+                <span class="meta-tag">Next.js 14 + Node.js Express</span>
+            </div>
+        </header>
+
+        <!-- 1. ARQUITECTURA GENERAL -->
+        <section class="section-card" id="arquitectura">
+            <h2>1. Arquitectura General del Sistema</h2>
+            <p>La plataforma está diseñada siguiendo una arquitectura modular desacoplada cliente-servidor (Frontend SPA/SSR + Backend RESTful API) con persistencia relacional en PostgreSQL y capacidad de ejecución en modo desconectado mediante Service Workers y base de datos local IndexedDB.</p>
+
+            <pre><code>+-------------------------------------------------------------------------+
+|                              CLIENTES                                   |
+|   Navegadores de Asistentes  |  Terminales de Operadores (PWA Offline)  |
++-------------------------------------------------------------------------+
+                                    │ (HTTPS / HTTP en localhost)
+                                    ▼
++-------------------------------------------------------------------------+
+|                  FRONTEND (Next.js 14 / React 19)                       |
+|   • Puerto Local: 3000                                                  |
+|   • Server-Side Rendering (SSR) & Static Site Generation (SSG)          |
+|   • Service Worker + CacheStorage (sw.js)                               |
+|   • Almacenamiento local IndexedDB para contingencia sin conexión       |
+|   • Proxy de reescritura hacia Backend: /api/:path* -> :4000/api/:path* |
++-------------------------------------------------------------------------+
+                                    │ (Llamadas API REST / JSON)
+                                    ▼
++-------------------------------------------------------------------------+
+|                    BACKEND (Node.js / Express / TypeScript)             |
+|   • Puerto Local: 4000                                                  |
+|   • Autenticación JWT con Cookies HTTP-Only SameSite                    |
+|   • Cripto-Motor AES-256-CBC (Firma y Verificación de Códigos QR)      |
+|   • Motor de Prevención de Solapamiento Temporal de Actividades         |
+|   • Motor de Promoción Automática de Lista de Espera                    |
+|   • Motor de Generación de Certificados PDF (pdf-lib)                   |
+|   • Servicio de Despacho de Correo SMTP (Google STARTTLS/SSL / Sandbox) |
+|   • Servicio de Notificaciones Push Web (VAPID)                         |
+|   • Planificador de Tareas Cron Autónomo                                |
+|   • Motor de Backups con Separación de Estructura y Datos               |
++-------------------------------------------------------------------------+
+                                    │ (TCP / Pool de conexiones pg)
+                                    ▼
++-------------------------------------------------------------------------+
+|                   MOTOR DE BASE DE DATOS (PostgreSQL 16)                |
+|   • Puerto Estándar: 5432 / 5433                                        |
+|   • Esquema estrictamente normalizado en Tercera Forma Normal (3FN)     |
+|   • Integridad referencial con restricciones FOREIGN KEY y CASCADE      |
+|   • Registro inmutable de auditoría forense (auditoria_logs)            |
++-------------------------------------------------------------------------+</code></pre>
+        </section>
+
+        <!-- 2. STACK TECNOLÓGICO -->
+        <section class="section-card" id="stack">
+            <h2>2. Stack Tecnológico</h2>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Capa</th>
+                        <th>Tecnología Principal</th>
+                        <th>Versión</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Frontend Framework</strong></td>
+                        <td>Next.js (App Router)</td>
+                        <td>16.1.1 / React 19.2</td>
+                        <td>Interfaz reactiva, gestión de estado y renderizado híbrido.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diseño y Componentes</strong></td>
+                        <td>Bootstrap 5 + Boxicons</td>
+                        <td>5.3.8 / 2.1.4</td>
+                        <td>Maquetación responsiva y set de iconos vectoriales.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Escaneo de Códigos QR</strong></td>
+                        <td>html5-qrcode</td>
+                        <td>2.3.8</td>
+                        <td>Lectura óptica desde cámaras web y cámaras móviles en PWA.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Persistencia Offline</strong></td>
+                        <td>IndexedDB (wrapper idb)</td>
+                        <td>8.0.3</td>
+                        <td>Almacenamiento de credenciales y cola de sincronización.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Backend Runtime</strong></td>
+                        <td>Node.js + tsx engine</td>
+                        <td>20.x / 22.x LTS</td>
+                        <td>Ejecución de TypeScript nativa sin compilación intermedia en dev.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servidor HTTP API</strong></td>
+                        <td>Express</td>
+                        <td>4.21.2</td>
+                        <td>Ruteo de servicios REST, middlewares y control de errores.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Base de Datos</strong></td>
+                        <td>PostgreSQL</td>
+                        <td>16 (soporta 14-17)</td>
+                        <td>Motor relacional ACID con transacciones y funciones trigadas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cliente SQL</strong></td>
+                        <td>pg (node-postgres)</td>
+                        <td>8.13.1</td>
+                        <td>Pool de conexiones de alto rendimiento con parametrización anti-inyección.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generación de PDFs</strong></td>
+                        <td>pdf-lib</td>
+                        <td>1.17.1</td>
+                        <td>Construcción programática de credenciales y certificados oficiales.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Correo Saliente</strong></td>
+                        <td>Nodemailer</td>
+                        <td>6.10.0</td>
+                        <td>Transporte SMTP con soporte para Google STARTTLS/SSL y Sandbox.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Push Notifications</strong></td>
+                        <td>web-push</td>
+                        <td>3.6.7</td>
+                        <td>Envío de avisos conforme al estándar VAPID (RFC 8292).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 3. MODELO DE DATOS 3FN -->
+        <section class="section-card" id="modelo-datos">
+            <h2>3. Modelo Relacional Normalizado en Tercera Forma Normal (3FN)</h2>
+            <p>El esquema de base de datos reside en <code>backend/database/schema_3fn.sql</code>. Se diseñó bajo las reglas estrictas de la Tercera Forma Normal para erradicar redundancias, anomalías de inserción, actualización y borrado.</p>
+
+            <h3>3.1 Entidades Principales</h3>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><code>usuarios</code>: Asistentes e inscriptos con datos identificatorios y token de credencial.</li>
+                <li><code>operadores</code>: Personal con acceso al sistema administrativo o estaciones de escaneo.</li>
+                <li><code>roles</code>: Jerarquías y niveles de privilegio (Superadmin: 5, Administrador: 4, Verificador: 3, Operador: 2, Asistente: 1).</li>
+                <li><code>actividades</code>: Conferencias, paneles y talleres con fecha, hora inicio/fin y aforo.</li>
+                <li><code>salas</code>: Espacios físicos de la sede con capacidad máxima reglamentaria.</li>
+                <li><code>inscripciones_actividades</code>: Relación N:M entre asistentes y actividades con estado (<code>INSCRIPTO</code>, <code>LISTA_ESPERA</code>, <code>CANCELADO</code>).</li>
+                <li><code>puntos_acceso</code>: Terminales o puertas de ingreso físico habilitadas.</li>
+                <li><code>acreditaciones</code>: Registros inmutables de check-in con marca temporal y operador responsable.</li>
+                <li><code>certificados</code>: Registro de diplomas generados con hash de validación criptográfica.</li>
+                <li><code>encuestas</code>: Definición de encuestas de satisfacción, ventanas de vigencia y bloqueo de certificados.</li>
+                <li><code>encuesta_preguntas</code>: Batería de preguntas normalizadas (estrellas, texto, opciones) vinculadas a cada encuesta.</li>
+                <li><code>encuesta_respuestas</code>: Respuestas registradas por los participantes con control de unicidad.</li>
+                <li><code>configuraciones_sistema</code>: Almacén de pares clave-valor (SMTP, push, sandbox, cupos, plantilla_certificado_oficial).</li>
+                <li><code>auditoria_logs</code>: Trazabilidad forense inmutable de todas las mutaciones del sistema.</li>
+            </ul>
+
+            <div class="callout tip">
+                <div>
+                    <strong>Diccionario de Datos Completo:</strong> Consulte el <a href="diccionario_datos.html" style="font-weight:700; color:var(--primary-dark); text-decoration:underline;">Diccionario de Datos Normalizado (3FN)</a> para ver el catálogo exhaustivo de los 21 modelos de datos, atributos, claves primarias, foráneas, valores por defecto y propósitos de negocio clasificados por módulos.
+                </div>
+            </div>
+
+            <h3>3.2 Disparadores (Triggers) de Integridad y Trazabilidad</h3>
+            <pre><code>-- Trigger de actualización automática de marca temporal
+CREATE OR REPLACE FUNCTION actualizar_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.actualizado_en = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger de Registro Forense Inmutable
+CREATE OR REPLACE FUNCTION auditar_cambios()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO auditoria_logs (tabla_afectada, operacion, registro_id, datos_previos, datos_nuevos)
+    VALUES (TG_TABLE_NAME, TG_OP, COALESCE(NEW.id, OLD.id), row_to_json(OLD), row_to_json(NEW));
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+        </section>
+
+        <!-- 4. CRIPTOGRAFÍA QR -->
+        <section class="section-card" id="criptografia">
+            <h2>4. Motor Criptográfico y Seguridad de Códigos QR</h2>
+            <p>Implementado en <code>backend/src/lib/cryptoQR.ts</code>. Para impedir la falsificación de gafetes o la alteración manual del DNI en el código óptico, se utiliza el algoritmo de cifrado simétrico <strong>AES-256-CBC</strong> con Vector de Inicialización (IV) dinámico de 16 bytes.</p>
+
+            <h3>4.1 Estructura del Payload Cifrado</h3>
+            <pre><code>{
+  "u": 1042,                        // ID único de usuario en base de datos
+  "d": "35890123",                  // DNI o Pasaporte del asistente
+  "r": 1,                           // Rol asignado
+  "t": 1790400000000,               // Timestamp de emisión (milisegundos)
+  "h": "a1b2c3d4e5f6..."            // HMAC-SHA256 para integridad
+}</code></pre>
+
+            <h3>4.2 Formato del Código QR en el Gafete</h3>
+            <p>El código generado y almacenado en el QR tiene el formato:</p>
+            <pre><code>[IV_HEX_32_CHARS]:[CIPHERTEXT_HEX]
+Ejemplo: 4f8a1c9e2b3d...:8d9e2a1b5c6f7a8b9c0d...</code></pre>
+
+            <div class="callout tip">
+                <div>
+                    <strong>Ventaja de Seguridad:</strong> Aun si un atacante conoce el DNI de otra persona, no puede fabricar un código QR válido porque desconoce la clave simétrica <code>ENCRYPTION_KEY</code> de 32 bytes custodiada exclusivamente en el servidor.
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SEGURIDAD Y SESIONES -->
+        <section class="section-card" id="seguridad">
+            <h2>5. Seguridad, Autenticación y Autorización</h2>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Almacenamiento de Contraseñas:</strong> Las contraseñas de los operadores se procesan mediante <code>crypto.pbkdf2Sync</code> con sal (salt) aleatorio de 16 bytes, 100.000 iteraciones de SHA-512, almacenándose como <code>[salt_hex]:[hash_hex]</code>.</li>
+                <li><strong>Transporte de Sesión:</strong> Se emite un JSON Web Token (JWT) firmado con algoritmo HS256 transmitido en una cookie HTTP-Only con directivas <code>SameSite=Lax</code> y expiración de 7 días.</li>
+                <li><strong>Control de Acceso Basado en Roles (RBAC):</strong> El middleware <code>requerirJerarquia(nivelMinimo)</code> intercepta cada petición a la API y valida que <code>operador.jerarquia >= nivelMinimo</code>.</li>
+            </ul>
+        </section>
+
+        <!-- 6. MOTORES DE NEGOCIO -->
+        <section class="section-card" id="motores">
+            <h2>6. Motores de Negocio Centrales</h2>
+
+            <h3>6.1 Motor de Conflicto y Solapamiento de Horarios (ConflictEngine)</h3>
+            <p>Ubicado en <code>backend/src/lib/conflictEngine.ts</code>. Antes de asentar una inscripción a un taller, calcula la intersección temporal:</p>
+            <pre><code>-- Condición de Solapamiento Temporal:
+(nueva.inicio &lt; existente.fin) AND (nueva.fin &gt; existente.inicio)</code></pre>
+            <p>Si la condición se cumple, la API devuelve error <code>ERR_HORARIO_SOLAPADO</code> con el nombre de la actividad en conflicto.</p>
+
+            <h3>6.2 Motor de Lista de Espera y Promoción Automática</h3>
+            <p>Cuando un asistente cancela su inscripción o un administrador amplía el cupo, se ejecuta una transacción atómica FIFO (First In, First Out):</p>
+            <ol style="margin-left: 24px; margin-bottom: 16px;">
+                <li>Selecciona el primer registro con estado <code>LISTA_ESPERA</code> ordenado por <code>creado_en ASC</code>.</li>
+                <li>Actualiza el estado a <code>INSCRIPTO</code>.</li>
+                <li>Despacha un correo electrónico y notificación push al participante notificando su pase a cupo titular.</li>
+            </ol>
+
+            <h3>6.3 Motor Dinámico de Certificados Vectoriales (PDF-Lib)</h3>
+            <p>Implementado en <code>backend/src/lib/certificatePdfService.ts</code> y consumido por las rutas de <code>backend/src/routes/admin/certificados.routes.ts</code>. El sistema desacopla los textos, colores y autoridades firmantes del código fuente duro, cargándolos en tiempo de ejecución desde la clave <code>plantilla_certificado_oficial</code> de la tabla <code>configuraciones_sistema</code>.</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Renderizado Vectorial en Milisegundos:</strong> Genera documentos PDF apaisados A4 (841.89 x 595.28 pt) con doble orla geométrica perimetral, paleta tipográfica dinámica (encabezado, títulos, cuerpo, firmas) y cálculo automático de centrado horizontal por métricas de glifos <code>StandardFonts.Helvetica</code>.</li>
+                <li><strong>Cálculo Automático de Firmantes y Sellos:</strong> Distribuye equitativamente en el eje X de 1 a 4 autoridades firmantes calculando márgenes y líneas de rúbrica vectoriales de manera responsiva.</li>
+                <li><strong>Validación Forense Criptográfica:</strong> Incrusta código QR con URL canónica absoluta (<code>/certificados/validar/:hash</code>) y el hash SHA-256 único de validación para prevenir falsificaciones en papel o formato digital.</li>
+                <li><strong>Vista Previa WYSIWYG y Descarga de Prueba:</strong> El endpoint <code>POST /api/admin/certificados/plantilla/preview</code> recibe el payload JSON del diseñador y devuelve un buffer binario <code>application/pdf</code> en tiempo real con datos de un participante ficticio sin necesidad de persistir cambios preliminares en la base de datos.</li>
+            </ul>
+
+            <h3>6.4 Motor de Encuestas de Calidad y Bloqueo Pedagógico</h3>
+            <p>Ubicado en <code>backend/src/routes/encuestas.routes.ts</code> y <code>backend/src/routes/certificados.routes.ts</code>. Regula la recolección de métricas de satisfacción y el condicionamiento obligatorio de emisión de credenciales finales:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Diseñador y Transacción Atómica de Sincronización (WYSIWYG Sync):</strong> El endpoint <code>PUT /api/encuestas/:id/sync-completa</code> procesa en un único bloque transaccional ACID (<code>BEGIN...COMMIT</code>) los metadatos de la encuesta (título, descripción, vigencia, obligatoriedad) y la recreación ordenada de su batería de preguntas (estrellas 1-5, opciones radio, respuesta libre).</li>
+                <li><strong>Bloqueo Pedagógico de Descarga:</strong> Si una encuesta activa posee la directiva <code>obligatoria_para_certificado = true</code>, el motor de certificados rechaza la descarga o emisión de diplomas (<code>403 Forbidden - ENCUESTA_PENDIENTE</code>) hasta que el asistente complete la encuesta desde su portal personal.</li>
+                <li><strong>Métricas de Satisfacción Agregadas:</strong> Consolida respuestas en tiempo real computando promedios de calificación por estrellas, distribución porcentual de opciones múltiples y libro abierto de devoluciones cualitativas.</li>
+            </ul>
+        </section>
+
+        <!-- 7. ESPECIFICACIÓN DE APIS -->
+        <section class="section-card" id="api">
+            <h2>7. Catálogo de APIs y Endpoints RESTful</h2>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Método</th>
+                        <th>Ruta del Endpoint</th>
+                        <th>Nivel Rol</th>
+                        <th>Descripción y Códigos HTTP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/admin/auth/login</code></td>
+                        <td>Público</td>
+                        <td>Autenticación de operador. <code>200 OK</code>, <code>401 Unauthorized</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/admin/auth/me</code></td>
+                        <td>Operador (2)</td>
+                        <td>Obtiene datos del operador autenticado y verifica sesión.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/admin/auth/logout</code></td>
+                        <td>Público</td>
+                        <td>Revoca la cookie de sesión y destruye el token.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/registro/roles</code></td>
+                        <td>Público</td>
+                        <td>Retorna los roles habilitados para auto-inscripción pública con sus vacantes e instituciones admitidas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/registro</code></td>
+                        <td>Público</td>
+                        <td>Registra un nuevo participante en el congreso, validando DNI duplicado, límites de aforo y enviando correo de confirmación.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/actividades</code></td>
+                        <td>Público</td>
+                        <td>Retorna el programa cronológico oficial de ponencias, paneles y talleres directamente desde la base de datos PostgreSQL.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/push/public-key</code></td>
+                        <td>Público</td>
+                        <td>Provee la clave pública VAPID requerida por los navegadores para suscribirse al servicio Web Push.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/push/subscribe</code></td>
+                        <td>Público / Autenticado</td>
+                        <td>Registra o actualiza la suscripción Push del dispositivo en BD y despacha de inmediato una notificación push de bienvenida.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/usuarios</code></td>
+                        <td>Admin (4)</td>
+                        <td>Listado paginado de usuarios del sistema con filtros de búsqueda.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/usuarios</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Crea un nuevo usuario u operador con rol asignado y validación de estados permitidos según rol.</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/api/usuarios/:id</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Actualiza datos, rol y estado de activación del usuario. Aplica restricción: solo 'Estudiante' admite 'Lista de espera', 'Baja Automática 48hs' o 'Sancionados'.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/usuarios/batch</code></td>
+                        <td>Admin (4) / Superadmin (5)</td>
+                        <td>Acción masiva sobre usuarios (cambio de estado / baja). Valida que los estados restringidos solo se apliquen a Estudiantes.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/acreditaciones/check-in</code></td>
+                        <td>Operador (2)</td>
+                        <td>Registra check-in escaneando el código QR criptográfico o DNI.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/acreditaciones/sincronizar-offline</code></td>
+                        <td>Operador (2)</td>
+                        <td>Recibe lote de check-ins registrados en IndexedDB sin conexión.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/certificados/validar/:hash</code></td>
+                        <td>Público</td>
+                        <td>Verifica la autenticidad de un certificado emitido mediante su hash criptográfico.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/admin/certificados/plantilla</code></td>
+                        <td>Admin (4)</td>
+                        <td>Obtiene la configuración JSON activa de la plantilla oficial de diplomas y firmas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/api/admin/certificados/plantilla</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Persiste en base de datos la nueva configuración visual, textos, firmas y colores del diploma.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/admin/certificados/plantilla/preview</code></td>
+                        <td>Admin (4)</td>
+                        <td>Genera y devuelve al vuelo el PDF binario del certificado renderizado según el borrador WYSIWYG.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/encuestas</code></td>
+                        <td>Público / Asistente</td>
+                        <td>Lista las encuestas activas y su estado de obligatoriedad pedagógica.</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/api/encuestas/:id/sync-completa</code></td>
+                        <td>Admin (4)</td>
+                        <td>Sincronización transaccional batch WYSIWYG: actualiza encuesta y reemplaza ordenadamente su batería de preguntas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/encuestas/:id/metricas</code></td>
+                        <td>Admin (4)</td>
+                        <td>Métricas consolidadas de satisfacción, promedios de calificación y respuestas agregadas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/encuestas/:id/respuestas</code></td>
+                        <td>Asistente (1)</td>
+                        <td>Envía las respuestas de la encuesta, desbloqueando el certificado de asistencia si correspondía.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/configuraciones</code></td>
+                        <td>Admin (4)</td>
+                        <td>Obtiene parámetros del sistema (correo, push, sandbox, cupos).</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/api/configuraciones/:clave</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Modifica parámetros y cuentas SMTP en base de datos.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/configuraciones/test-email</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Ejecuta prueba de transporte y autenticación SMTP en vivo.</td>
+                    </tr>
+                    <tr>
+                        <td><code>POST</code></td>
+                        <td><code>/api/admin/backups/generar</code></td>
+                        <td>Superadmin (5)</td>
+                        <td>Genera copia de seguridad SQL/ZIP de estructura o datos.</td>
+                    </tr>
+                    <tr>
+                        <td><code>GET</code></td>
+                        <td><code>/api/admin/configuracion/tema-default</code></td>
+                        <td>Autenticado (1)</td>
+                        <td>Obtiene el tema predeterminado global del sistema guardado en <code>configuraciones_sistema</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>PUT</code></td>
+                        <td><code>/api/admin/configuracion/tema-default</code></td>
+                        <td>Admin (4)</td>
+                        <td>Establece el tema predeterminado global para todos los operadores en PostgreSQL y genera log de auditoría.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 8. MOTOR PWA -->
+        <section class="section-card" id="pwa">
+            <h2>8. Motor PWA Offline y Sincronización</h2>
+            <p>Implementado mediante el Service Worker <code>frontend/public/sw.js</code> y el hook reactivo <code>useOfflineAcreditacion.ts</code>.</p>
+
+            <h3>8.1 Estrategia de Caché</h3>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>App Shell (HTML/CSS/JS):</strong> Estrategia <em>Cache First</em> con actualización en segundo plano (Stale-While-Revalidate).</li>
+                <li><strong>Consultas API de Validación:</strong> Estrategia <em>Network First</em> con persistencia en IndexedDB como almacén de contingencia.</li>
+            </ul>
+
+            <h3>8.2 Esquema del Almacén Local IndexedDB (<code>congreso_offline_db</code>)</h3>
+            <pre><code>Almacén: 'asistentes_cache'  -> KeyPath: 'dni'  (Índice por 'token_qr')
+Almacén: 'cola_sincronizacion' -> KeyPath: 'id_transaccion' (Autoincremental)
+  {
+    "id_transaccion": 101,
+    "dni": "35890123",
+    "punto_acceso_id": 1,
+    "timestamp": 1790412345000,
+    "operador_id": 4,
+    "sincronizado": false
+  }</code></pre>
+
+            <h3>8.3 Subsistema Web Push VAPID PWA y Segmentación de Audiencias</h3>
+            <p>El portal integra notificaciones push estándares W3C/IETF con cifrado RFC 8292 (VAPID) estructurado con reglas estrictas de destinatarios:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Generación de Par de Claves:</strong> Claves VAPID administradas en backend con <code>web-push</code> y expuestas vía <code>GET /api/push/public-key</code>.</li>
+                <li><strong>Suscripción desde Cliente:</strong> Gestionada por el componente <code>PushNotificationToggle.tsx</code> y el Service Worker (<code>sw.js</code>), con fallback amigable cuando los permisos son denegados o el navegador no soporta PushManager.</li>
+                <li><strong>Emparejamiento de Suscripción con Usuario Registrado:</strong> Al suscribirse (<code>POST /api/push/subscribe</code>), el endpoint extrae el <code>usuario_id</code> de la sesión autenticada o token del participante y lo almacena en <code>suscripciones_push</code>.</li>
+                <li><strong>Notificación Unidireccional de Bienvenida:</strong> Se despacha exclusivamente al endpoint del navegador que solicitó el alta, sin afectar a otros usuarios.</li>
+                <li><strong>Notificaciones Individuales de Transición:</strong> El motor de cupos y confirmaciones (<code>sendPushNotificationToUser</code>) notifica únicamente al usuario individual promovido desde lista de espera o al recibir asignaciones personales.</li>
+                <li><strong>Segmentación de Difusión Masiva (Broadcast):</strong> La función <code>broadcastPushNotification(payload, filter)</code> aplica filtros SQL estrictos:
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><code>sp.usuario_id IS NOT NULL</code>: Excluye de forma categórica a visitantes anónimos o suscripciones desvinculadas.</li>
+                        <li><code>filter.rol_id</code>: Filtra por categoría institucional (e.g. únicamente Estudiantes o Docentes).</li>
+                        <li><code>filter.solo_acreditados = true</code>: Realiza un <code>INNER JOIN acreditaciones a ON a.usuario_id = sp.usuario_id AND a.tipo_movimiento = 'INGRESO'</code>, limitando el envío únicamente a los asistentes que ya pasaron por el escáner de acceso físico en la sede.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>8.4 Motor Dinámico de Actividades y Cronograma</h3>
+            <p>La vista pública del cronograma (<code>/programa</code> y componente <code>ProgramaCongreso.tsx</code>) realiza llamadas en tiempo de ejecución a <code>GET /api/actividades</code> con revalidación periódica. Cualquier cambio, reprogramación de orador o actualización de aforo efectuada en el panel administrativo impacta de manera inmediata en la grilla visual de los asistentes.</p>
+        </section>
+
+        <!-- 9. TAREAS PROGRAMADAS -->
+        <section class="section-card" id="cron">
+            <h2>9. Planificador de Tareas Cron Autónomo</h2>
+            <p>Implementado en <code>backend/src/lib/cronScheduler.ts</code> y <code>cronTasks.ts</code>. Corre en segundo plano sin dependencias de servicios externos del sistema operativo.</p>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Tarea Programada</th>
+                        <th>Frecuencia</th>
+                        <th>Propósito Técnico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Recordatorio 48hs</strong></td>
+                        <td>Cada 1 hora</td>
+                        <td>Detecta inscriptos con eventos en las próximas 48 horas y despacha correo con su QR adjunto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Promoción de Espera</strong></td>
+                        <td>Cada 5 minutos</td>
+                        <td>Verifica si existen vacantes generadas en talleres y promueve registros de la lista de espera.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Purga de Sesiones</strong></td>
+                        <td>Diaria (03:00 AM)</td>
+                        <td>Elimina tokens JWT revocados y registros de auditoría transitorios expirados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 10. MOTOR DE BACKUPS -->
+        <section class="section-card" id="backup-engine">
+            <h2>10. Motor de Backups con Separación de Responsabilidades</h2>
+            <p>Ubicado en <code>backend/src/lib/backupService.ts</code>. Diseñado para garantizar que los datos transaccionales y las estructuras DDL de tablas se mantengan en copias separadas o paquetes consolidados con suma de verificación SHA-256.</p>
+            <pre><code>// Modos de Generación de Respaldo:
+enum BackupType {
+    FULL_CONSOLIDATED = 'FULL_CONSOLIDATED', // Estructura DDL + Datos en ZIP
+    SCHEMA_ONLY       = 'SCHEMA_ONLY',       // Solo definiciones DDL de tablas y tipos
+    DATA_ONLY         = 'DATA_ONLY'          // Solo volcados INSERT con datos transaccionales
+}</code></pre>
+        </section>
+
+        <!-- 11. DESPLIEGUE EN WINDOWS -->
+        <section class="section-card" id="windows-arch">
+            <h2>11. Arquitectura de Despliegue Nativo en Windows 10 y 11</h2>
+            <p>A diferencia del entorno de desarrollo que utiliza contenedores, la versión desplegada en Windows corre de manera <strong>100% Nativa</strong>:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px;">
+                <li><strong>Base de Datos:</strong> Servicio estándar de Windows <code>postgresql-x64-16</code> gestionado mediante el Administrador de Servicios (<code>services.msc</code>).</li>
+                <li><strong>Backend:</strong> Proceso de Node.js en puerto 4000 iniciado en segundo plano sin terminal bloqueante.</li>
+                <li><strong>Frontend:</strong> Servidor de producción en puerto 3000 con soporte de renderizado Next.js.</li>
+                <li><strong>Control del Sistema:</strong> Orquestado mediante scripts por lotes (<code>Iniciar_Congreso.bat</code> y <code>Detener_Congreso.bat</code>) sin requerir Docker, WSL2 ni virtualización.</li>
+            </ul>
+        </section>
+
+        <!-- 12. MOTOR DE TEMATIZACIÓN DINÁMICA SCOPED (.admin-root) -->
+        <section class="section-card" id="theming-engine">
+            <h2>12. Motor de Tematización Dinámica Aislada (Scoped CSS Variables)</h2>
+            <p>Para permitir una personalización cromática total del panel administrativo sin requerir recompilaciones ni alterar en absoluto el portal público institucional, se implementó una arquitectura de <strong>Variables CSS Scoped</strong> inyectadas en tiempo de ejecución.</p>
+
+            <h3>12.1 Contrato de Variables CSS (`BackendThemeVars`)</h3>
+            <p>El sistema expone 24 tokens visuales normalizados definidos en <code>frontend/components/admin/adminThemes.ts</code>, cubriendo la totalidad de componentes de la interfaz administrativa:</p>
+            <pre><code>export interface BackendThemeVars {
+  // Fondos y Superficies
+  '--admin-bg': string;              // Fondo general perimetral
+  '--admin-card-bg': string;         // Superficie de tarjetas y contenedores
+  '--admin-header-bg': string;       // Fondo de cabecera superior
+  '--admin-nav-bg': string;          // Fondo de barras de navegación
+  '--admin-drawer-bg': string;       // Menú lateral desplegable
+  '--admin-card-hover': string;      // Hover de tarjetas interactivas
+
+  // Tipografía y Jerarquía
+  '--admin-text-main': string;       // Texto base de títulos y celdas
+  '--admin-text-muted': string;      // Subtítulos e información secundaria
+  '--admin-text-header': string;     // Texto sobre la barra superior
+
+  // Bordes y Divisores
+  '--admin-border': string;          // Bordes de paneles, tablas e inputs
+  '--admin-border-subtle': string;   // Líneas divisorias suaves
+
+  // Tablas de Datos
+  '--admin-table-header-bg': string; // Cabecera thead de tablas
+  '--admin-table-row-hover': string; // Fila activa de tabla al apoyar cursor
+
+  // Formularios e Inputs
+  '--admin-input-bg': string;        // Fondo de cajas de texto y selects
+  '--admin-input-border': string;    // Borde perimetral de inputs
+  '--admin-input-text': string;      // Color de la tipografía ingresada
+
+  // Acentos y Botón Principal
+  '--admin-accent': string;          // Botón principal de acción
+  '--admin-accent-hover': string;    // Estado hover del botón principal
+  '--admin-accent-text': string;     // Texto contrastante sobre el botón
+
+  // Botón Secundario y Cancelación
+  '--admin-btn-secondary-bg': string;     // Fondo neutro secundario
+  '--admin-btn-secondary-text': string;   // Texto del botón secundario
+  '--admin-btn-secondary-border': string; // Borde del botón secundario
+
+  // Acciones Críticas y Peligro
+  '--admin-danger-bg': string;       // Fondo botón crítico (Eliminar / Sancionar)
+  '--admin-danger-text': string;     // Texto botón crítico
+
+  // Acciones de Éxito
+  '--admin-success-bg': string;      // Fondo botón de éxito (Aprobar / Confirmar)
+  '--admin-success-text': string;    // Texto botón de éxito
+
+  // Badges e Insignias
+  '--admin-badge-bg': string;        // Fondo de etiquetas de estado y roles
+  '--admin-badge-text': string;      // Texto de insignias y badges
+
+  // Modales y Ventanas Emergentes
+  '--admin-modal-bg': string;        // Superficie de cuadros de diálogo flotantes
+  '--admin-modal-text': string;      // Tipografía interna de ventanas modales
+}</code></pre>
+
+            <h3>12.2 Aislamiento Estricto mediante `.admin-root`</h3>
+            <p>En <code>frontend/app/globals.css</code>, todas las reglas de reasignación visual están encapsuladas bajo el selector descendente <code>.admin-root</code>. Esto garantiza que las rutas públicas (<code>/</code>, <code>/participa</code>, <code>/mi-credencial</code>) y las plantillas de impresión oficial de gafetes A4 no reciban ninguna interferencia de estilo:</p>
+            <pre><code>.admin-root {
+  background-color: var(--admin-bg, #f8fafc) !important;
+  color: var(--admin-text-main, #0f172a) !important;
+}
+
+.admin-root div[class*="bg-white"]:not(.admin-preview-box *):not(.swal2-popup *) {
+  background-color: var(--admin-card-bg, #ffffff) !important;
+  color: var(--admin-text-main, #0f172a) !important;
+  border-color: var(--admin-border, #e2e8f0) !important;
+}
+
+.admin-root button[class*="bg-blue-600"]:not(.swal2-confirm) {
+  background-color: var(--admin-accent, #005691) !important;
+  color: var(--admin-accent-text, #ffffff) !important;
+}
+
+.admin-root button[class*="bg-gray-100"],
+.admin-root button[class*="bg-gray-200"] {
+  background-color: var(--admin-btn-secondary-bg, #f1f5f9) !important;
+  color: var(--admin-btn-secondary-text, #334155) !important;
+  border-color: var(--admin-btn-secondary-border, #cbd5e1) !important;
+}
+
+.admin-root button[class*="bg-red-600"],
+.admin-root button[class*="bg-red-500"] {
+  background-color: var(--admin-danger-bg, #ef4444) !important;
+  color: var(--admin-danger-text, #ffffff) !important;
+}
+
+.admin-root button[class*="bg-emerald-600"],
+.admin-root button[class*="bg-green-600"] {
+  background-color: var(--admin-success-bg, #10b981) !important;
+  color: var(--admin-success-text, #ffffff) !important;
+}
+
+.admin-root .admin-modal,
+.admin-root div[role="dialog"] div[class*="bg-white"] {
+  background-color: var(--admin-modal-bg, #ffffff) !important;
+  color: var(--admin-modal-text, #0f172a) !important;
+  border-color: var(--admin-border, #cbd5e1) !important;
+}</code></pre>
+
+            <h3>12.3 Reactividad en Caliente y Event Bus</h3>
+            <p>Cuando el operador interactúa con el componente <code>AdminThemeEditor.tsx</code> o <code>AdminFrontendThemeEditor.tsx</code>:</p>
+            <ol style="margin-left: 24px; margin-bottom: 16px; font-size: 14.5px; line-height: 1.6;">
+                <li>Los valores modificados se persisten inmediatamente en <code>localStorage</code> (claves <code>congreso_backend_theme</code> / <code>congreso_frontend_theme</code> y sus variantes personalizadas).</li>
+                <li>Se despachan eventos nativos desacoplados: <code>backend-theme-changed</code> para el panel o <code>frontend-theme-changed</code> para el portal público.</li>
+                <li>El contenedor raíz del panel (<code>admin/page.tsx</code>) o el proveedor de portal (<code>FrontendThemeProvider.tsx</code>) escuchan el evento y actualizan en caliente las variables CSS inyectadas en tiempo real sin recargar la página.</li>
+            </ol>
+
+            <h3>12.4 Persistencia Centralizada en PostgreSQL (Default Global)</h3>
+            <p>Para garantizar uniformidad institucional sin configurar manualmente cada equipo:</p>
+            <ul style="margin-left: 24px; margin-bottom: 16px; font-size: 14.5px; line-height: 1.6;">
+                <li><strong>Tabla <code>configuraciones_sistema</code>:</strong> Almacena el objeto JSON bajo las claves:
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><code>'tema_backend_default'</code>: Configuración visual del panel administrativo para los operadores.</li>
+                        <li><code>'tema_frontend_default'</code>: Configuración visual predeterminada del portal público para todos los visitantes y participantes.</li>
+                    </ul>
+<pre><code>{
+  "themeId": "caba-oficial",
+  "themeName": "Paleta Oficial CABA Institucional",
+  "customVars": null,
+  "actualizado_en": "2026-09-26T01:30:00.000Z"
+}</code></pre>
+                </li>
+                <li><strong>Seguridad & Auditoría:</strong> Los endpoints <code>PUT /api/admin/configuracion/tema-default</code> y <code>PUT /api/admin/configuracion/tema-frontend-default</code> exigen jerarquía mínima 4 (Administrador) y registran automáticamente el cambio en <code>logs_auditoria</code> (módulo <code>CONFIGURACION</code>, acción <code>TEMA_DEFAULT_UPDATE</code> o <code>TEMA_FRONTEND_DEFAULT_UPDATE</code>) con el ID del operador responsable.</li>
+                <li><strong>Secuencia de Carga y Fallbacks:</strong> Tanto en el backend como en el frontend público, los componentes verifican primero las preferencias locales en <code>localStorage</code>. Si no existen, consultan los endpoints correspondientes de configuración global en PostgreSQL y realizan la hidratación automática de las variables de diseño.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('section.section-card');
+        const navLinks = document.querySelectorAll('aside.sidebar nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

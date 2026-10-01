@@ -1,0 +1,19 @@
+{
+  "name": "congreso-new-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Workspace raíz del Congreso ETS 2026 (Frontend + Backend)",
+  "scripts": {
+    "git:sync": "bash scripts/git-sync.sh",
+    "start": "bash Iniciar_Congreso.sh",
+    "stop": "bash Detener_Congreso.sh",
+    "restart": "bash Reiniciar_Congreso.sh",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "test:api": "cd backend && npm run test:api",
+    "test:crud": "cd backend && npm run test:crud",
+    "test:db": "cd backend && npm run test:db",
+    "ssl:generate": "node scripts/generate-ssl.js",
+    "https:proxy": "node scripts/https-proxy.js"
+  }
+}
